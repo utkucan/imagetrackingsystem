@@ -1,4 +1,4 @@
-﻿Build started 09.01.2012 20:40:41.
+﻿Build started 10.01.2012 20:27:45.
      1>Project "C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\ITS\ITS.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Touching "Debug\ITS.unsuccessfulbuild".
@@ -17,9 +17,9 @@
          	Inline native assembly not supported in managed code
          All outputs are up-to-date.
        ResourceCompile:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D "_UNICODE" /D "UNICODE" /l"0x0409" /nologo /fo"Debug\app.res" app.rc 
+         All outputs are up-to-date.
        Link:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\Debug\ITS.dll" /INCREMENTAL /NOLOGO "C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\ITS\\lib\opencv_core231d.lib" "C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\ITS\\lib\opencv_highgui231d.lib" "C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\ITS\\lib\opencv_video231d.lib" "C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\ITS\\lib\opencv_ml231d.lib" "C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\ITS\\lib\opencv_legacy231d.lib" "C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\ITS\\lib\opencv_objdetect231d.lib" "C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\ITS\\lib\opencv_objdetect220d.lib" "C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\ITS\\lib\opencv_imgproc231d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\ITS.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\Debug\ITS.pdb" /ASSEMBLYDEBUG /TLBID:1 /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 /DLL Debug\app.res
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\Debug\ITS.dll" /INCREMENTAL /NOLOGO "C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\ITS\\lib\opencv_core220d.lib" "C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\ITS\\lib\opencv_highgui220d.lib" "C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\ITS\\lib\opencv_video220d.lib" "C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\ITS\\lib\opencv_ml220d.lib" "C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\ITS\\lib\opencv_legacy220d.lib" "C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\ITS\\lib\opencv_objdetect220d.lib" "C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\ITS\\lib\opencv_imgproc220d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\ITS.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\sercan\Desktop\dene\imagetrackingsystem\ImageTrackingSystem\Debug\ITS.pdb" /ASSEMBLYDEBUG /TLBID:1 /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 /DLL Debug\app.res
          "Debug\AssemblyInfo.obj"
          "Debug\ITS.obj"
          Debug\Stdafx.obj
@@ -34,4 +34,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:05.16
+Time Elapsed 00:00:02.70
