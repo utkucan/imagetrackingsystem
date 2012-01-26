@@ -29,19 +29,20 @@ ITS::facedetect::facedetect(int counter)
 	if(openfile.is_open()){
 		while(openfile.good()){
 			getline(openfile,imagename);
-			IplImage* originalImage = NULL; //delete etmeyi unutma
-			string errmsg;
-			if(readImage(imagename,originalImage,errmsg)){
-				double scale;
-				image = modifyImage(originalImage,scale);
+			IplImage* originalImage = NULL;
+			string errmsg; // if an error occurs in somewhere, it contains the error message
+			if(readImage(imagename,originalImage,errmsg)){ // read image
+				double scale; // scale factor of image
+				image = modifyImage(originalImage,scale); // modifies the image in order to get faster and more reliable results
 
 				head = NULL;
 				numOfFace = 0;
-				detectFaces();
+				detectFaces(); // detects faces in the images
 
-				markFacesOnOriginalImage(originalImage,scale);
+				markFacesOnOriginalImage(originalImage,scale); //draws rectangular frame around the detected faces 
 
-				int length = imagename.length();
+				/* generate the name of output file and directories */
+				int length = imagename.length(); 
 				string out ="";		
 				for(int i = imagename.length()-1; i> 0; i--){
 					if(imagename[i] != '\\')
@@ -50,13 +51,15 @@ ITS::facedetect::facedetect(int counter)
 						break;
 				}
 				string outFileName = "detectedface/"+out;
+				/* write the image to the specified directory */
 				if(!writeImage(originalImage,outFileName,errmsg)){
 					// if image cannot be writen do....
 				}
-				clearList();
-				cvReleaseImage(&originalImage);
-				IplImage* tmp = image;
-				cvReleaseImage(&tmp);
+
+				clearList(); // clear the link list
+				cvReleaseImage(&originalImage); // release the memory allocated for original image
+				IplImage* tmp = image; 
+				cvReleaseImage(&tmp); // release the memory allocated for modified image
 			}else{
 				// if the image cannot be red...
 			}
