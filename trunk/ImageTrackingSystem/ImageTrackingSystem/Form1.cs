@@ -46,7 +46,6 @@ namespace ImageTrackingSystem
         private void threadfunc() {
          //   ITS.facedetect fc = new ITS.facedetect();
             ITS.facedetect fc = new ITS.facedetect(thrdlst.Count-1);
-            while (fc.isfin() == false) ;
         }
 
         private void button1_Click(object sender, EventArgs e)
