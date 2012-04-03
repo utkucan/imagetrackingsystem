@@ -1,0 +1,20 @@
+﻿Build started 03.04.2012 12:33:56.
+     1>Project "C:\Users\sercan\Desktop\seniorProj\ITS_QT\ITS\ITS\ITS.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\ITS.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       CustomBuild:
+         All outputs are up-to-date.
+       ClCompile:
+         All outputs are up-to-date.
+         All outputs are up-to-date.
+       Link:
+         All outputs are up-to-date.
+         ITS.vcxproj -> C:\Users\sercan\Desktop\seniorProj\ITS_QT\ITS\ITS.exe
+       FinalizeBuildStatus:
+         Deleting file "Debug\ITS.unsuccessfulbuild".
+         Touching "Debug\ITS.lastbuildstate".
+     1>Done Building Project "C:\Users\sercan\Desktop\seniorProj\ITS_QT\ITS\ITS\ITS.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.20
