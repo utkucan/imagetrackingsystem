@@ -13,6 +13,27 @@ mdi::~mdi(void)
 {
 }
 
+
+void mdi::addMdiPhoto(photo* photoObject){
+	if(photoWindows.size()>0){
+		photoWindows[0]->close();
+		delete photoWindows[0];
+		photoWindows.removeFirst();
+	}
+	mdiPhoto *child = new mdiPhoto(mdiArea,photoObject);
+	
+	photoWindows.append(child);
+	child->setSubWinAdd(mdiArea->addSubWindow(child,Qt::FramelessWindowHint));
+	 child->setChildGeometry(0,0);
+	// child'larý array'e koy, arraydaki pozisyonþarýna göre, pasýlacaklarý yeri ayarla panpa
+	// ekrana bastýðýn yüzleri ayný zamanda bir file'a kaydet, tekrar iþlem yapmak zorunda kalma
+	// childPosx = (childPosx+130)%650;
+	// if(childPosx == 0)
+	//	childPosy += 130;
+    child->show();
+}
+
+/*
 void mdi::addMdiPhoto(photo* photoObject){
 	mdiPhoto *child = new mdiPhoto(mdiArea,photoObject);
 	
@@ -26,7 +47,7 @@ void mdi::addMdiPhoto(photo* photoObject){
 	//	childPosy += 130;
     child->show();
 }
-
+*/
 void mdi::addMdiFace(face* faceObject){
 
 	mdiFace *child = new mdiFace(mdiArea,faceObject);

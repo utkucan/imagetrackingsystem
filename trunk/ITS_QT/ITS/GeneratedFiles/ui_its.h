@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'its.ui'
 **
-** Created: Wed 11. Apr 13:08:18 2012
+** Created: Wed 11. Apr 21:06:26 2012
 **      by: Qt User Interface Compiler version 4.7.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -38,6 +38,7 @@ public:
     QWidget *centralWidget;
     QMdiArea *mdiArea;
     QTreeWidget *treeWidget;
+    QMdiArea *mdiDownSapmle;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuImport_Photos;
@@ -49,7 +50,7 @@ public:
     {
         if (ITSClass->objectName().isEmpty())
             ITSClass->setObjectName(QString::fromUtf8("ITSClass"));
-        ITSClass->resize(858, 511);
+        ITSClass->resize(913, 580);
         actionImport = new QAction(ITSClass);
         actionImport->setObjectName(QString::fromUtf8("actionImport"));
         actionKlasor = new QAction(ITSClass);
@@ -66,16 +67,20 @@ public:
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         mdiArea = new QMdiArea(centralWidget);
         mdiArea->setObjectName(QString::fromUtf8("mdiArea"));
-        mdiArea->setGeometry(QRect(190, 10, 650, 440));
+        mdiArea->setGeometry(QRect(190, 10, 700, 400));
         mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         mdiArea->setViewMode(QMdiArea::SubWindowView);
         treeWidget = new QTreeWidget(centralWidget);
         treeWidget->setObjectName(QString::fromUtf8("treeWidget"));
-        treeWidget->setGeometry(QRect(10, 30, 171, 291));
+        treeWidget->setGeometry(QRect(10, 10, 170, 510));
+        mdiDownSapmle = new QMdiArea(centralWidget);
+        mdiDownSapmle->setObjectName(QString::fromUtf8("mdiDownSapmle"));
+        mdiDownSapmle->setGeometry(QRect(190, 410, 700, 110));
+        mdiDownSapmle->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         ITSClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(ITSClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 858, 21));
+        menuBar->setGeometry(QRect(0, 0, 913, 21));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuImport_Photos = new QMenu(menuFile);

@@ -5,6 +5,7 @@ photo::photo(QString path,QList<face*>*faces)
 {
 	this->path = QStringToString(path);
 	this->faceList = faces;
+	downSampleImage();
 }
 
 
@@ -24,4 +25,14 @@ string photo::QStringToString(QString str){
 		filename += c;
 	}
 	return filename;
+}
+
+void photo::downSampleImage(){
+	QImage* tmp = new QImage(path.c_str());
+	if(tmp->height()>tmp->width()){
+		downSample = new QImage(tmp->scaledToHeight( 100,Qt::FastTransformation));
+	}else{
+		downSample = new QImage(tmp->scaledToWidth( 100,Qt::FastTransformation));
+	}
+	delete tmp;
 }

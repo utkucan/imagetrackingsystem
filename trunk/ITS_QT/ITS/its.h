@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <fstream>
 
+#include "mdiDS.h"
 #include "mdi.h"
 #include "importPhotos.h"
 #include "photo.h"
@@ -39,12 +40,13 @@ private slots:;
 	void on_actionKlasor_triggered();
 private:
 	void displayFace();
-	void displayPhoto();
+	void displayPhoto(int);
 	void initializeTree();
 
 	int faceCount;
 	QList<photo*> *photoList;
 	mdi* mdiArea;
+	mdiDS* mdids;
 	QTreeWidget* treeWidget;
 	QTreeWidgetItem* photoItem;
 	QTreeWidgetItem* labelItem;
