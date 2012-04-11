@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'its.ui'
 **
-** Created: Fri 6. Apr 17:56:07 2012
+** Created: Wed 11. Apr 12:47:33 2012
 **      by: Qt User Interface Compiler version 4.7.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -21,7 +21,7 @@
 #include <QtGui/QMenuBar>
 #include <QtGui/QStatusBar>
 #include <QtGui/QToolBar>
-#include <QtGui/QTreeView>
+#include <QtGui/QTreeWidget>
 #include <QtGui/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -37,7 +37,7 @@ public:
     QAction *actionSearch_HardDisk;
     QWidget *centralWidget;
     QMdiArea *mdiArea;
-    QTreeView *treeView;
+    QTreeWidget *treeWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuImport_Photos;
@@ -69,9 +69,14 @@ public:
         mdiArea->setGeometry(QRect(190, 10, 650, 440));
         mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         mdiArea->setViewMode(QMdiArea::SubWindowView);
-        treeView = new QTreeView(centralWidget);
-        treeView->setObjectName(QString::fromUtf8("treeView"));
-        treeView->setGeometry(QRect(0, 160, 181, 291));
+        treeWidget = new QTreeWidget(centralWidget);
+        new QTreeWidgetItem(treeWidget);
+        QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem(treeWidget);
+        new QTreeWidgetItem(__qtreewidgetitem);
+        new QTreeWidgetItem(__qtreewidgetitem);
+        new QTreeWidgetItem(__qtreewidgetitem);
+        treeWidget->setObjectName(QString::fromUtf8("treeWidget"));
+        treeWidget->setGeometry(QRect(10, 30, 171, 291));
         ITSClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(ITSClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
@@ -113,6 +118,21 @@ public:
         actionExport->setText(QApplication::translate("ITSClass", "Export", 0, QApplication::UnicodeUTF8));
         actionExport_Photos->setText(QApplication::translate("ITSClass", "Export Photos", 0, QApplication::UnicodeUTF8));
         actionSearch_HardDisk->setText(QApplication::translate("ITSClass", "Search HardDisk", 0, QApplication::UnicodeUTF8));
+
+        const bool __sortingEnabled = treeWidget->isSortingEnabled();
+        treeWidget->setSortingEnabled(false);
+        QTreeWidgetItem *___qtreewidgetitem = treeWidget->topLevelItem(0);
+        ___qtreewidgetitem->setText(0, QApplication::translate("ITSClass", "Not Labeled Photos", 0, QApplication::UnicodeUTF8));
+        QTreeWidgetItem *___qtreewidgetitem1 = treeWidget->topLevelItem(1);
+        ___qtreewidgetitem1->setText(0, QApplication::translate("ITSClass", "Labels", 0, QApplication::UnicodeUTF8));
+        QTreeWidgetItem *___qtreewidgetitem2 = ___qtreewidgetitem1->child(0);
+        ___qtreewidgetitem2->setText(0, QApplication::translate("ITSClass", "sercan", 0, QApplication::UnicodeUTF8));
+        QTreeWidgetItem *___qtreewidgetitem3 = ___qtreewidgetitem1->child(1);
+        ___qtreewidgetitem3->setText(0, QApplication::translate("ITSClass", "burak", 0, QApplication::UnicodeUTF8));
+        QTreeWidgetItem *___qtreewidgetitem4 = ___qtreewidgetitem1->child(2);
+        ___qtreewidgetitem4->setText(0, QApplication::translate("ITSClass", "New Item", 0, QApplication::UnicodeUTF8));
+        treeWidget->setSortingEnabled(__sortingEnabled);
+
         menuFile->setTitle(QApplication::translate("ITSClass", "File", 0, QApplication::UnicodeUTF8));
         menuImport_Photos->setTitle(QApplication::translate("ITSClass", "Import Photos", 0, QApplication::UnicodeUTF8));
         menuFilter->setTitle(QApplication::translate("ITSClass", "Filter", 0, QApplication::UnicodeUTF8));

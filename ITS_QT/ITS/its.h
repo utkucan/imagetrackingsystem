@@ -36,6 +36,7 @@ private slots:;
 	void on_actionKlasor_triggered();
 private:
 	void displayFace();
+	void displayPhoto();
 
 	int faceCount;
 	QList<photo*> *photoList;
