@@ -101,6 +101,9 @@
 	 e = NULL;
  }
 
+
+
+
  bool MdiChild::loadFile(const QString &fileName)
  {
 /*     QFile file(fileName);

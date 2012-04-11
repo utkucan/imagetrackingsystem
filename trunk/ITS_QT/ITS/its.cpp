@@ -15,6 +15,11 @@ ITS::~ITS()
 
 }
 
+void ITS::displayPhoto(){
+	for(int i = 0; i< photoList->size(); i++){
+		mdiArea->addMdiPhoto((*photoList)[i]);
+	}
+}
 
 void ITS::displayFace(){
 	for(int i = 0; i< photoList->size(); i++){
@@ -22,7 +27,7 @@ void ITS::displayFace(){
 		for(int j = 0; j< faces->size(); j++){
 			(*faces)[j]->setID(faceCount);
 			faceCount++;
-			mdiArea->addMdiChild((*faces)[j]);
+			mdiArea->addMdiFace((*faces)[j]);
 		}
 	}
 }
@@ -43,7 +48,8 @@ void ITS::on_actionKlasor_triggered(){
 	
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	while(!ip->isFinished());
-	displayFace();
+//	displayFace();
+	displayPhoto();
 	QApplication::restoreOverrideCursor();
 	
 }

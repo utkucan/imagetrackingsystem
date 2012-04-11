@@ -15,6 +15,7 @@ public:
 	photo(QString,QList<face*>*);
 	~photo(void);
 	QList<face*>* getFaces();
+	string getPath(){return path;}
 private:
 	string QStringToString(QString);
 

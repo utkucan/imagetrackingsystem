@@ -13,11 +13,25 @@ mdi::~mdi(void)
 {
 }
 
-void mdi::addMdiChild(face* faceObject){
-
-	MdiChild *child = new MdiChild(mdiArea,faceObject);
+void mdi::addMdiPhoto(photo* photoObject){
+	mdiPhoto *child = new mdiPhoto(mdiArea,photoObject);
 	
-	childWindows.append(child);
+	photoWindows.append(child);
+	child->setSubWinAdd(mdiArea->addSubWindow(child,Qt::FramelessWindowHint));
+	 child->setChildGeometry(childPosx+5,childPosy+5);
+	// child'larý array'e koy, arraydaki pozisyonþarýna göre, pasýlacaklarý yeri ayarla panpa
+	// ekrana bastýðýn yüzleri ayný zamanda bir file'a kaydet, tekrar iþlem yapmak zorunda kalma
+	// childPosx = (childPosx+130)%650;
+	// if(childPosx == 0)
+	//	childPosy += 130;
+    child->show();
+}
+
+void mdi::addMdiFace(face* faceObject){
+
+	mdiFace *child = new mdiFace(mdiArea,faceObject);
+	
+	faceWindows.append(child);
 	child->setSubWinAdd(mdiArea->addSubWindow(child,Qt::FramelessWindowHint));
 	child->setChildGeometry(childPosx+5,childPosy+5);
 	// child'larý array'e koy, arraydaki pozisyonþarýna göre, pasýlacaklarý yeri ayarla panpa
