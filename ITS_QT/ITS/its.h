@@ -15,6 +15,9 @@
 #include <QCheckBox>
 #include <QListWidget>
 #include <QList>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
+
 #include <stdio.h>
 #include <fstream>
 
@@ -37,10 +40,14 @@ private slots:;
 private:
 	void displayFace();
 	void displayPhoto();
+	void initializeTree();
 
 	int faceCount;
 	QList<photo*> *photoList;
 	mdi* mdiArea;
+	QTreeWidget* treeWidget;
+	QTreeWidgetItem* photoItem;
+	QTreeWidgetItem* labelItem;
 //	analyzer* imageAnalyzer;
 	Ui::ITSClass ui;
 };

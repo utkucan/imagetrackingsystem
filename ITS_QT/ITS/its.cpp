@@ -6,13 +6,24 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	ui.setupUi(this);
 	mdiArea = new mdi(ui.mdiArea);
 	photoList = new QList<photo*>();
-
+	treeWidget = ui.treeWidget;
+	initializeTree();
 	faceCount = 1;
 }
 
 ITS::~ITS()
 {
 
+}
+
+void ITS::initializeTree(){
+	photoItem = new QTreeWidgetItem(treeWidget);
+	QString phtotemp("Photos");
+	photoItem->setText(0,phtotemp);
+	
+	labelItem = new QTreeWidgetItem(treeWidget);
+	QString temp("Labels");
+	labelItem->setText(0,temp);
 }
 
 void ITS::displayPhoto(){
@@ -34,14 +45,24 @@ void ITS::displayFace(){
 
 
 void ITS::on_actionKlasor_triggered(){
-	QListWidgetItem *item;
-    QCheckBox *cbox;
     
     QStringList QDirectory = QFileDialog::getOpenFileNames(
                          this,
                          "Select one or more files to open",
                          "",
                          "Images (*.jpg)");
+
+
+
+
+	for( int i = 0; i<QDirectory.size(); i++){
+		
+		QTreeWidgetItem *subItem = new QTreeWidgetItem();
+		photoItem->addChild(subItem);
+		QString imageName = QFileInfo(QDirectory[i]).fileName();
+		subItem->setText(0,imageName);
+	}
+
 
 	importPhotos* ip = new importPhotos(QDirectory,photoList);
 	ip->start();
