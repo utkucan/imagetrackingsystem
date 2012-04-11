@@ -16,11 +16,14 @@ public:
 	~photo(void);
 	QList<face*>* getFaces();
 	string getPath(){return path;}
+	QImage* getDSImage(){return downSample;}
 private:
 	string QStringToString(QString);
+	void downSampleImage();
 
 	string path;
 	QList<face*> *faceList;
+	QImage* downSample;
 };
 #endif
 

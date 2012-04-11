@@ -4,7 +4,10 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)
 {
 	ui.setupUi(this);
+	
+
 	mdiArea = new mdi(ui.mdiArea);
+	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea);
 	photoList = new QList<photo*>();
 	treeWidget = ui.treeWidget;
 	initializeTree();
@@ -26,9 +29,9 @@ void ITS::initializeTree(){
 	labelItem->setText(0,temp);
 }
 
-void ITS::displayPhoto(){
-	for(int i = 0; i< photoList->size(); i++){
-		mdiArea->addMdiPhoto((*photoList)[i]);
+void ITS::displayPhoto(int pos){
+	for(int i = pos; i< photoList->size(); i++){
+		mdids->addMdiDSChild((*photoList)[i]);
 	}
 }
 
@@ -63,14 +66,14 @@ void ITS::on_actionKlasor_triggered(){
 		subItem->setText(0,imageName);
 	}
 
-
+	int pos = photoList->size();
 	importPhotos* ip = new importPhotos(QDirectory,photoList);
 	ip->start();
 	
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	while(!ip->isFinished());
 //	displayFace();
-	displayPhoto();
+	displayPhoto(pos);
 	QApplication::restoreOverrideCursor();
 	
 }
