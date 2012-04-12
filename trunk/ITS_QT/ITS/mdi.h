@@ -18,6 +18,7 @@ public:
 	~mdi(void);
 	void addMdiFace(face*);
 	void addMdiPhoto(photo*);
+
 private:
 	QImage* IplImage2QImage(const IplImage *iplImage);
 
