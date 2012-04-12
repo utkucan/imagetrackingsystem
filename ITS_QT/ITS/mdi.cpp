@@ -13,7 +13,6 @@ mdi::~mdi(void)
 {
 }
 
-
 void mdi::addMdiPhoto(photo* photoObject){
 	if(photoWindows.size()>0){
 		photoWindows[0]->close();
