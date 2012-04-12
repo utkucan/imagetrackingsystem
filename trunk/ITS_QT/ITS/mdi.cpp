@@ -19,6 +19,8 @@ void mdi::addMdiPhoto(photo* photoObject){
 		photoWindows[0]->close();
 		delete photoWindows[0];
 		photoWindows.removeFirst();
+		mdiArea->closeAllSubWindows();
+//		return;
 	}
 	mdiPhoto *child = new mdiPhoto(mdiArea,photoObject);
 	
