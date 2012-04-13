@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'its.ui'
 **
-** Created: Wed 11. Apr 21:06:26 2012
+** Created: Thu 12. Apr 18:19:44 2012
 **      by: Qt User Interface Compiler version 4.7.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -50,7 +50,7 @@ public:
     {
         if (ITSClass->objectName().isEmpty())
             ITSClass->setObjectName(QString::fromUtf8("ITSClass"));
-        ITSClass->resize(913, 580);
+        ITSClass->resize(911, 577);
         actionImport = new QAction(ITSClass);
         actionImport->setObjectName(QString::fromUtf8("actionImport"));
         actionKlasor = new QAction(ITSClass);
@@ -71,6 +71,9 @@ public:
         mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         mdiArea->setViewMode(QMdiArea::SubWindowView);
         treeWidget = new QTreeWidget(centralWidget);
+        QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem();
+        __qtreewidgetitem->setText(0, QString::fromUtf8("1"));
+        treeWidget->setHeaderItem(__qtreewidgetitem);
         treeWidget->setObjectName(QString::fromUtf8("treeWidget"));
         treeWidget->setGeometry(QRect(10, 10, 170, 510));
         mdiDownSapmle = new QMdiArea(centralWidget);
@@ -80,7 +83,7 @@ public:
         ITSClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(ITSClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 913, 21));
+        menuBar->setGeometry(QRect(0, 0, 911, 21));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuImport_Photos = new QMenu(menuFile);

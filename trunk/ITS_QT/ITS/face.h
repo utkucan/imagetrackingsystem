@@ -34,6 +34,7 @@ public:
 	int getTransformedWidth(){return tw;}
 	int getTransformedHeight(){return th;}
 	void setID(int id){ this->id = id;}
+	void setLabel(string lbl){label = lbl;}
 private:
 
 	int id;

@@ -4,7 +4,6 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)
 {
 	ui.setupUi(this);
-	
 
 	mdiArea = new mdi(ui.mdiArea);
 	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea);
