@@ -17,6 +17,7 @@
 #include <QList>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
+ #include <QMoveEvent>
 
 #include <stdio.h>
 #include <fstream>
