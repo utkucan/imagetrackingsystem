@@ -22,7 +22,6 @@ public:
 private:
 	QImage* IplImage2QImage(const IplImage *iplImage);
 
-
 	int childPosx,childPosy;
 	QList<mdiFace*> faceWindows;
 	QList<mdiPhoto*> photoWindows;
