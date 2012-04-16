@@ -76,3 +76,9 @@ void ITS::on_actionKlasor_triggered(){
 	QApplication::restoreOverrideCursor();
 	
 }
+
+bool ITS::event ( QEvent * e ){
+	if(e->type() == QEvent::Move)
+		mdiArea->setPosition();
+	return QWidget::event(e);
+}

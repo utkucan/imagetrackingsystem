@@ -18,7 +18,7 @@ public:
 	~mdi(void);
 	void addMdiFace(face*);
 	void addMdiPhoto(photo*);
-
+	void setPosition();
 private:
 	QImage* IplImage2QImage(const IplImage *iplImage);
 

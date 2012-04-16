@@ -27,7 +27,7 @@ public:
 	void setSubWinAdd(QMdiSubWindow* );
 	bool event(QEvent * e);
 	void setChildGeometry(int posX,int posY);
-
+	void setPosition();
 protected:
     void closeEvent(QCloseEvent *event);
 private:
