@@ -44,6 +44,9 @@ private:
 	void displayPhoto(int);
 	void initializeTree();
 
+	bool event(QEvent * e);
+
+
 	int faceCount;
 	QList<photo*> *photoList;
 	mdi* mdiArea;

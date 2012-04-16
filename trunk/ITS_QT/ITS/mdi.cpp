@@ -93,3 +93,10 @@ QImage* mdi::IplImage2QImage(const IplImage *iplImage)
 		return new QImage();
 	}
 }
+
+void mdi::setPosition(){
+	for( int i = 0; i< photoWindows.size(); i++){
+		photoWindows[i]->setPosition();
+	}
+
+}

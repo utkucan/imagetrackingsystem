@@ -172,7 +172,7 @@ mdiPhoto::~mdiPhoto(void)
 			QToolTip::hideText();
 		}
 	}
-	
+/*	
 	if(e->type() == QEvent::Paint){
 
 		if(ld != NULL){
@@ -185,7 +185,7 @@ mdiPhoto::~mdiPhoto(void)
 			}
 		}
 	 }
-	 
+*/	 
 	 return QWidget::event(e);
  }
 
@@ -215,4 +215,16 @@ mdiPhoto::~mdiPhoto(void)
 		 }
 		 ld = NULL;
 	 }
+ }
+
+ void mdiPhoto::setPosition(){
+	if(ld != NULL){
+		QPoint lp = ld->getRelativePos();
+		QPoint gp = widgetadd->mapToGlobal(lp);
+		QPoint ldp = ld->pos();
+		if(ld->pos() != gp){
+			ld->setPoint(gp);
+			ld->repaint();
+		}
+	}
  }
