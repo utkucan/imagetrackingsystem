@@ -65,16 +65,34 @@ void ITS::on_actionKlasor_triggered(){
 		subItem->setText(0,imageName);
 	}
 
-	int pos = photoList->size();
-	importPhotos* ip = new importPhotos(QDirectory,photoList);
+
+	photoPos = photoList->size();
+	ip = new importPhotos(QDirectory,photoList);
 	ip->start();
 	
+	QTimer::singleShot(1000*3, this, SLOT(controlList()));
+/*	timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(controlList()));
+	timer->start(100);
+*/
+/*
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	while(!ip->isFinished());
 //	displayFace();
 	displayPhoto(pos);
 	QApplication::restoreOverrideCursor();
+*/
 	
+}
+
+void ITS::controlList(){
+	if(!ip->isFinished()){
+			ip->lockProcess();
+			displayPhoto(photoPos);
+			photoPos = photoList->size();
+			ip->wakeProcess();
+			QTimer::singleShot(1000*3, this, SLOT(controlList()));			
+		}
 }
 
 bool ITS::event ( QEvent * e ){

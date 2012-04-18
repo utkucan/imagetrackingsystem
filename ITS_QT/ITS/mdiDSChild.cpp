@@ -1,26 +1,29 @@
 #include "mdiDSChild.h"
 
 
-mdiDSChild::mdiDSChild(QMdiArea* parent,mdi* mdiArea,photo* photoObject)
+mdiDSChild::mdiDSChild(QMdiArea* parent,mdi* mdiArea)
 {
 	prnt = parent;
 	this->mdiArea = mdiArea;
 	setAttribute(Qt::WA_DeleteOnClose);
-	this->photoObject = photoObject;
+
 	image = new QLabel(this);
 	image->setScaledContents(true);
 	image->setMouseTracking(true);
-
-	QPixmap* p = new QPixmap();
-	p->convertFromImage(*photoObject->getDSImage());
-	image->setPixmap(*p);
-	w = p->width();
-	h = p->height();
 }
 
 
 mdiDSChild::~mdiDSChild(void)
 {
+}
+
+void mdiDSChild::setPhoto(photo* photoObject){
+	this->photoObject = photoObject;
+	QPixmap* p = new QPixmap();
+	p->convertFromImage(*photoObject->getDSImage());
+	image->setPixmap(*p);
+	w = p->width();
+	h = p->height();
 }
 
  void mdiDSChild::setChildGeometry(int posX,int posY){

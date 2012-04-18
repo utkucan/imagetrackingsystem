@@ -6,6 +6,7 @@
 #include <QMdiSubWindow>
 #include <QTextEdit>
 #include <QDebug>
+#include <QScrollBar>
 
 #include "mdi.h"
 #include "mdiDSChild.h"
