@@ -39,11 +39,12 @@ public:
 	~ITS();
 private slots:;
 	void on_actionKlasor_triggered();
+	void on_actionSearch_HardDisk_triggered();
 private:
 	void displayFace();
 	void displayPhoto(int);
 	void initializeTree();
-
+	void findImage(QString inp);
 	bool event(QEvent * e);
 
 
@@ -54,6 +55,7 @@ private:
 	QTreeWidget* treeWidget;
 	QTreeWidgetItem* photoItem;
 	QTreeWidgetItem* labelItem;
+	QList<QString>* allImagesList;
 //	analyzer* imageAnalyzer;
 	Ui::ITSClass ui;
 };

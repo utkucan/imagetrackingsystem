@@ -47,14 +47,14 @@ void ITS::displayFace(){
 
 
 void ITS::on_actionKlasor_triggered(){
-    
+
     QStringList QDirectory = QFileDialog::getOpenFileNames(
                          this,
                          "Select one or more files to open",
                          "",
                          "Images (*.jpg)");
 
-
+	
 
 
 	for( int i = 0; i<QDirectory.size(); i++){
@@ -81,4 +81,41 @@ bool ITS::event ( QEvent * e ){
 	if(e->type() == QEvent::Move)
 		mdiArea->setPosition();
 	return QWidget::event(e);
+}
+
+void ITS::on_actionSearch_HardDisk_triggered(){
+	QFileDialog dialog(this);
+
+	dialog.setFileMode(QFileDialog::Directory);
+
+	dialog.exec();
+	QString* fileName = new QString();
+	QStringList QDirectory = dialog.selectedFiles();
+	allImagesList = new QList<QString>();
+	findImage(QDirectory[0]);
+	int a = 5;
+}
+
+void ITS::findImage(QString inp){
+	QDir* direc = new QDir(inp);
+	QFileInfoList fili = direc->entryInfoList();
+	for(int i = 0 ; i < fili.size() ;i++){
+		QFileInfo info = fili.at(i);
+		if(info.fileName().compare(".")!=0 && info.fileName().compare("..")!=0){
+			bool isDirec = info.isDir();
+			if(isDirec){
+				findImage(info.absoluteFilePath());
+			}
+			else{
+				QString suf = info.suffix();
+				if(suf.compare("jpg")==0)
+					allImagesList->append(info.absoluteFilePath());
+			}
+		}
+	}
+	/*direc->entr
+	QFileSystemModel* fsm = new QFileSystemModel();
+	fsm->setRootPath(inp);
+	//bool a = fsm->isDir();
+	return new QList<QString>();*/
 }
