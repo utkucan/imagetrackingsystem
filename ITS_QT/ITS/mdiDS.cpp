@@ -11,6 +11,7 @@ mdiDS::mdiDS(QMdiArea* mdids,mdi* mdiArea)
 
 mdiDS::~mdiDS(void)
 {
+
 }
 
 void mdiDS::addMdiDSChild(photo* photoObject){
