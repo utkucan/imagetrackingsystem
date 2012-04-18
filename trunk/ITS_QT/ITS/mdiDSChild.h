@@ -18,12 +18,13 @@
 class mdiDSChild : public QWidget
 {
 public:
-	mdiDSChild(QMdiArea*,mdi*,photo*);
+	mdiDSChild(QMdiArea*,mdi*);
 	~mdiDSChild(void);
 
 	void setSubWinAdd(QMdiSubWindow* );
 	bool event(QEvent * e);
 	void setChildGeometry(int posX,int posY);
+	void setPhoto(photo*);
 
 protected:
     void closeEvent(QCloseEvent *event);

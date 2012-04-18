@@ -17,7 +17,8 @@
 #include <QList>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
- #include <QMoveEvent>
+#include <QMoveEvent>
+#include <QTimer>
 
 #include <stdio.h>
 #include <fstream>
@@ -40,7 +41,9 @@ public:
 private slots:;
 	void on_actionKlasor_triggered();
 	void on_actionSearch_HardDisk_triggered();
+	void controlList();
 private:
+	
 	void displayFace();
 	void displayPhoto(int);
 	void initializeTree();
@@ -49,6 +52,9 @@ private:
 
 
 	int faceCount;
+	int photoPos;
+	importPhotos* ip;
+
 	QList<photo*> *photoList;
 	mdi* mdiArea;
 	mdiDS* mdids;

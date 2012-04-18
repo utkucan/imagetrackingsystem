@@ -14,13 +14,19 @@ mdiDS::~mdiDS(void)
 }
 
 void mdiDS::addMdiDSChild(photo* photoObject){
-	mdiDSChild *child = new mdiDSChild(mdids,mdiArea,photoObject);
 	
+	mdiDSChild *child = new mdiDSChild(mdids,mdiArea);
+	child->setPhoto(photoObject);
+
 	photoWindows.append(child);
 	child->setSubWinAdd(mdids->addSubWindow(child,Qt::FramelessWindowHint));
-	child->setChildGeometry(childPosx,childPosy);
+	QScrollBar* scroll = mdids->horizontalScrollBar();
+	
+	int x = scroll->value();
+	int cpx = childPosx - x;
+	child->setChildGeometry(cpx,childPosy);
 	childPosx += 105;
-    child->show();
+	child->show();
 }
 
 bool mdiDS::event(QEvent * e){

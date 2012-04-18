@@ -5,7 +5,8 @@ importPhotos::importPhotos(QStringList QDirectory,QList<photo*> *photos)
 {
 	this->QDirectory = new QStringList(QDirectory);
 	this->photos = photos;
-	maxNumOfThread = 2;//QDirectory->size();
+	m = new QMutex();
+	maxNumOfThread = 1;//QDirectory->size();
 }
 
 
@@ -15,8 +16,6 @@ importPhotos::~importPhotos(void)
 	QDirectory->clear();
 	delete QDirectory;
 	QDirectory = NULL;
-
-
 	photos = NULL;
 	
 }
