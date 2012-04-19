@@ -75,7 +75,6 @@
   <ItemGroup>
     <ClCompile Include="analyzer.cpp" />
     <ClCompile Include="db.cpp" />
-    <ClCompile Include="dbdisplay.cpp" />
     <ClCompile Include="displaydb.cpp" />
     <ClCompile Include="face.cpp" />
     <ClCompile Include="facedetect.cpp" />
@@ -157,7 +156,6 @@
   <ItemGroup>
     <ClInclude Include="analyzer.h" />
     <ClInclude Include="db.h" />
-    <ClInclude Include="dbdisplay.h" />
     <CustomBuild Include="displaydb.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(AdditionalInputs)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

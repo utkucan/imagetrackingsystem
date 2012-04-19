@@ -63,42 +63,74 @@ bool db::deleteDB()
     }
 
 bool db::insertLabel(QString s)
-{	QSqlQuery	query(database);
-	 /*query.exec("SELECT * FROM Person");
-         while(query.next())
-         {
-			  int id = query.value(0).toInt();
-			  QString name = query.value(1).toString();
-         }
-		 return true;	*/
-	const QString INSERT("INSERT INTO Person(Pid,name) VALUES(NULL,:name);");
-	//QSqlQuery	query(database);
-	 query.bindValue( ":name", s );		
-	if(query.exec(INSERT))
-	{
-		qDebug() << "Table created";
+{
+        bool a=false;
+        QSqlQuery query(database);
 
-		return true;
-	}
-	else
-	{
-		QSqlError e = query.lastError();
-		qDebug() << "Failed to create table:" << query.lastError();
-		return false;
-	}/*
-	const QString	SELECT("SELECT name FROM Person");
-	if(query.exec(SELECT))
-	{
-        QString country = query.value(0).toInt();
-		return true;
-	}
-	else
-	{
-		QSqlError e = query.lastError();
-		qDebug() << "Failed to create table:" << query.lastError();
-		return false;
-	}*/
-}
+        query.prepare("INSERT INTO Person VALUES( NULL , 'ali')");
+        //query.bindValue(":name", "Burak");
+         a=query.exec();
+          {
+    // SELECT1
+
+            QSqlQuery query(database);
+            bool k=false;
+            k=query.exec("SELECT name FROM Person");
+
+
+
+            while (query.next()) {
+                QString name = query.value(0).toString();
+            
+    
+            }
+
+    }
+        return a;
+    }
+
+//{
+//	
+//
+//	QSqlQuery	query(database);
+//	 /*query.exec("SELECT * FROM Person");
+//         while(query.next())
+//         {
+//			  int id = query.value(0).toInt();
+//			  QString name = query.value(1).toString();
+//         }
+//		 return true;	*/
+//	const QString INSERT("INSERT INTO Person(Pid,name) VALUES(NULL,:name);");
+//	//QSqlQuery	query(database);
+//	 query.bindValue( ":name", s );		
+//	if(query.exec(INSERT))
+//	{
+//		qDebug() << "Table created";
+//
+//		return true;
+//	}
+//	else
+//	{
+//		QSqlError e = query.lastError();
+//		qDebug() << "Failed to create table:" << query.lastError();
+//		return false;
+//	}
+//	
+//	/*
+//	const QString	SELECT("SELECT name FROM Person");
+//	if(query.exec(SELECT))
+//	{
+//        QString country = query.value(0).toInt();
+//		return true;
+//	}
+//	else
+//	{
+//		QSqlError e = query.lastError();
+//		qDebug() << "Failed to create table:" << query.lastError();
+//		return false;
+//	}*/
+//}
+
 void db::createTables(){
 	const QString	CREATE_TABLE("CREATE TABLE Images (Iid int AUTO_INCREMENT  not null PRIMARY KEY,path TEXT);");
 	QSqlQuery	query(database);
@@ -108,12 +140,12 @@ void db::createTables(){
 		qDebug() << "Table created";
 	}
 	else
-	{
+	{	
 		QSqlError e = query.lastError();
 		qDebug() << "Failed to create table:" << query.lastError();
 	}
-
-	const QString	CREATE_TABLE2("CREATE TABLE Person (Pid int AUTO_INCREMENT not null PRIMARY KEY,name TEXT);");
+	//* AUTO_INCREMENT not null */
+	const QString	CREATE_TABLE2("CREATE TABLE Person (Pid int PRIMARY KEY,name TEXT);");
 	if(query.exec(CREATE_TABLE2))
 	{
 		qDebug() << "Table created";
