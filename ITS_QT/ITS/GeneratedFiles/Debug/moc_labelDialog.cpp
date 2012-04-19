@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'labelDialog.h'
 **
-** Created: Sun 15. Apr 22:50:33 2012
+** Created: Thu 19. Apr 14:36:16 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.3)
 **
 ** WARNING! All changes made in this file will be lost!
