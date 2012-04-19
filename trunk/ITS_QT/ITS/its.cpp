@@ -9,6 +9,12 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea);
 	photoList = new QList<photo*>();
 	treeWidget = ui.treeWidget;
+
+	database = new db();
+/*	if(!database->openDB())
+		exit(1);
+*/
+
 	initializeTree();
 	faceCount = 1;
 }

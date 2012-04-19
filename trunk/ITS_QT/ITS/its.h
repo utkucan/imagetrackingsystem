@@ -28,6 +28,7 @@
 #include "importPhotos.h"
 #include "photo.h"
 #include "face.h"
+#include "db.h"
 
 using namespace std;
 
@@ -54,7 +55,7 @@ private:
 	int faceCount;
 	int photoPos;
 	importPhotos* ip;
-
+	db *database;
 	QList<photo*> *photoList;
 	mdi* mdiArea;
 	mdiDS* mdids;

@@ -21,6 +21,7 @@ private:
 	string QStringToString(QString);
 	void downSampleImage();
 
+	int id;
 	string path;
 	QList<face*> *faceList;
 	QImage* downSample;

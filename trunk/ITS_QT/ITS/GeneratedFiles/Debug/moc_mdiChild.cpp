@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mdiChild.h'
 **
-** Created: Sun 15. Apr 22:31:15 2012
+** Created: Thu 19. Apr 14:36:17 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.3)
 **
 ** WARNING! All changes made in this file will be lost!
