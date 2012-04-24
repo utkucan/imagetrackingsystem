@@ -1,38 +1,39 @@
-﻿Build started 06.04.2012 18:09:37.
-     1>Project "C:\Users\sercan\Desktop\seniorProj\ITS_QT\imagetrackingsystem\ITS_QT\ITS\ITS.vcxproj" on node 2 (build target(s)).
-     1>InitializeBuildStatus:
-         Creating "Debug\ITS.unsuccessfulbuild" because "AlwaysCreate" was specified.
-       CustomBuild:
-         All outputs are up-to-date.
-       ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I.\GeneratedFiles /IC:\Qt\4.7.3\include /I.\GeneratedFiles\Debug /IC:\Qt\4.7.3\include\qtmain /IC:\Qt\4.7.3\include\QtCore /IC:\Qt\4.7.3\include\QtGui /I.\ /Zi /nologo /W1 /WX- /Od /Oy- /D "UNICODE" /D "WIN32" /D "QT_LARGEFILE_SUPPORT" /D "QT_CORE_LIB" /D "QT_GUI_LIB" /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t- /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt facedetect.cpp
-         facedetect.cpp
-     1>c:\users\sercan\desktop\seniorproj\its_qt\imagetrackingsystem\its_qt\its\facedetect.cpp(174): warning C4715: 'facedetect::getHaarFileName' : not all control paths return a value
-         All outputs are up-to-date.
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\sercan\Desktop\seniorProj\ITS_QT\imagetrackingsystem\ITS_QT\\ITS.exe" /NOLOGO /LIBPATH:C:\OpenCV2.2\lib /LIBPATH:C:\Qt\4.7.3\lib qtmaind.lib QtCored4.lib QtGuid4.lib C:\OpenCV2.2\lib\opencv_core220d.lib C:\OpenCV2.2\lib\opencv_highgui220d.lib C:\OpenCV2.2\lib\opencv_video220d.lib C:\OpenCV2.2\lib\opencv_ml220d.lib C:\OpenCV2.2\lib\opencv_legacy220d.lib C:\OpenCV2.2\lib\opencv_objdetect220d.lib C:\OpenCV2.2\lib\opencv_imgproc220d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\ITS.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\sercan\Desktop\seniorProj\ITS_QT\imagetrackingsystem\ITS_QT\ITS.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\sercan\Desktop\seniorProj\ITS_QT\imagetrackingsystem\ITS_QT\ITS.lib" /MACHINE:X86 Debug\analyzer.obj
-         Debug\face.obj
-         Debug\facedetect.obj
-         Debug\facialFeature.obj
-         Debug\moc_its.obj
-         Debug\moc_mdiChild.obj
-         Debug\qrc_its.obj
-         Debug\importPhotos.obj
-         Debug\its.obj
-         Debug\main.obj
-         Debug\mdi.obj
-         Debug\mdiChild.obj
-         Debug\photo.obj
-         Debug\popupDisplay.obj
-         LINK : C:\Users\sercan\Desktop\seniorProj\ITS_QT\imagetrackingsystem\ITS_QT\\ITS.exe not found or not built by the last incremental link; performing full link
-         ITS.vcxproj -> C:\Users\sercan\Desktop\seniorProj\ITS_QT\imagetrackingsystem\ITS_QT\ITS.exe
-       Manifest:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\sercan\Desktop\seniorProj\ITS_QT\imagetrackingsystem\ITS_QT\\ITS.exe;#1" /manifest "Debug\ITS.exe.intermediate.manifest"
-       FinalizeBuildStatus:
-         Deleting file "Debug\ITS.unsuccessfulbuild".
-         Touching "Debug\ITS.lastbuildstate".
-     1>Done Building Project "C:\Users\sercan\Desktop\seniorProj\ITS_QT\imagetrackingsystem\ITS_QT\ITS\ITS.vcxproj" (build target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:02.01
+﻿  Moc'ing its.h...
+  Uic'ing its.ui...
+  Moc'ing labelDialog.h...
+  Moc'ing mdiFace.h...
+  Moc'ing mdiPhoto.h...
+  Moc'ing mdiChild.h...
+  Rcc'ing its.qrc...
+RCC : warning : No resources in 'D:\Senior Project\ITS_QT\ITS\its.qrc'.
+  
+  Uic'ing labelDialog.ui...
+  analyzer.cpp
+  face.cpp
+  facedetect.cpp
+  facialFeature.cpp
+  moc_its.cpp
+d:\senior project\its_qt\its\db.h(5): fatal error C1083: Cannot open include file: 'QSqlDatabase': No such file or directory
+  moc_labelDialog.cpp
+  moc_mdiChild.cpp
+  moc_mdiFace.cpp
+  moc_mdiPhoto.cpp
+  importPhotos.cpp
+  its.cpp
+d:\senior project\its_qt\its\db.h(5): fatal error C1083: Cannot open include file: 'QSqlDatabase': No such file or directory
+  labelDialog.cpp
+  main.cpp
+d:\senior project\its_qt\its\db.h(5): fatal error C1083: Cannot open include file: 'QSqlDatabase': No such file or directory
+  mdi.cpp
+  mdiChild.cpp
+  mdiDS.cpp
+  mdiDSChild.cpp
+  mdiFace.cpp
+  mdiPhoto.cpp
+  photo.cpp
+  Generating Code...
+d:\senior project\its_qt\its\facedetect.cpp(174): warning C4715: 'facedetect::getHaarFileName' : not all control paths return a value
+  Compiling...
+  popupDisplay.cpp
+popupDisplay.cpp(6): warning C4482: nonstandard extension used: enum 'Qt::WindowState' used in qualified name
+  Generating Code...
