@@ -35,9 +35,12 @@ public:
 	int getTransformedHeight(){return th;}
 	void setID(int id){ this->id = id;}
 	void setLabel(string lbl){label = lbl;}
+	void setPhotoID(int pid){photoId = pid;}
+	int getPhotoId(){return photoId;}
 private:
 
 	int id;
+	int photoId;
 	int x,y,width,height,tw,th;
 	string imagePath;
 	string label;
