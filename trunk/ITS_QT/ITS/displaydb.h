@@ -1,20 +1,4 @@
 
-#ifndef DISPLAYDB_H
-#define DISPLAYDB_H
-#include <QWidget>
-#include "ui_DBdisplay.h"
-
-class displaydb : public QWidget
-{
-public:
-	displaydb(QWidget *parent = 0, Qt::WFlags flags = 0);
-	~displaydb(void);
-private:
-	Ui::DBdisplay uidb;
-};
-#endif
-/*
-
 #include <QtGui>
 #include <QtSql>
  
@@ -41,4 +25,4 @@ class displaydb : public QDialog
         QLineEdit*                  nameLineEdit;
         QPushButton*                saveButton;
     };
-	*/
+	
