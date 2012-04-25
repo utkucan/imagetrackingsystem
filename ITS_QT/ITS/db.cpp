@@ -1,12 +1,11 @@
 #include "db.h"
 #include <QSqlDatabase>
-
+#include "photo.h"
 db::db(QObject *parent){
 	if(openDB()){
 		createTables();
-		insertLabel("Ali");
-	//	insertLabel("srcn");
-	//	displayDatabase();
+		
+	
 	}
 
 }
@@ -71,27 +70,32 @@ bool db::insertIntoPerson(QString name){
 		return a;
 	}
 }
-bool db::insertIntoPhoto(QString s){
+bool db::insertIntoPhoto(photo *p){
 	{
 		bool a=false;
 		QSqlQuery query(database);
 		query.prepare("INSERT INTO Images VALUES(NULL , :name)");
+		QString s=  QString(p->getPath().c_str());
 		query.bindValue(":name", s);
 		a=query.exec();
+		for(int i=0; i < p->getFaces()->count()  ;i++ ){
+			
+			insertIntoFaces(p->getFaces()->at(i));
+		}
 		return a;
 	}
 }
-bool db::insertIntoFaces(face f){
+bool db::insertIntoFaces(face* f){
 	{
 		bool a=false;
 		QSqlQuery query(database);
 		query.prepare("INSERT INTO Faces VALUES(NULL , :x, :y , :width, :height , :tw , :th )");
-		query.bindValue(":x", f.getX());
-		query.bindValue(":y", f.getY());
-		query.bindValue(":width", f.getWidth());
-		query.bindValue(":height", f.getHeight());
-		query.bindValue(":tw", f.getTransformedWidth());
-		query.bindValue(":th", f.getTransformedHeight());
+		query.bindValue(":x", f->getX());
+		query.bindValue(":y", f->getY());
+		query.bindValue(":width", f->getWidth());
+		query.bindValue(":height", f->getHeight());
+		query.bindValue(":tw", f->getTransformedWidth());
+		query.bindValue(":th", f->getTransformedHeight());
 		a=query.exec();
 		return a;
 	}
@@ -200,7 +204,7 @@ void db::createTables(){
 		qDebug() << "Failed to create table:" << query.lastError();
 	}
 
-	const QString	CREATE_TABLE2("CREATE TABLE Person (Pid INTEGER PRIMARY KEY,name TEXT);");
+	const QString	CREATE_TABLE2("CREATE TABLE Person (Pid INTEGER PRIMARY KEY,name TEXT UNIQUE );");
 	if(query.exec(CREATE_TABLE2))
 	{
 		qDebug() << "Table created";
