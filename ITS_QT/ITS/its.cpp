@@ -73,7 +73,7 @@ void ITS::on_actionKlasor_triggered(){
 
 
 	photoPos = photoList->size();
-	ip = new importPhotos(QDirectory,photoList);
+	ip = new importPhotos(QDirectory,photoList,database);
 	ip->start();
 	
 	QTimer::singleShot(1000*3, this, SLOT(controlList()));
@@ -94,8 +94,8 @@ void ITS::on_actionKlasor_triggered(){
 void ITS::controlList(){
 	if(!ip->isFinished()){
 		ip->lockProcess();
-		//displayPhoto(photoPos);
-		displayFace(photoPos);
+		displayPhoto(photoPos);
+		//displayFace(photoPos);
 		photoPos = photoList->size();
 		ip->wakeProcess();
 		QTimer::singleShot(1000*3, this, SLOT(controlList()));			
