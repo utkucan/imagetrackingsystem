@@ -45,7 +45,7 @@ private slots:;
 	void controlList();
 private:
 	
-	void displayFace();
+	void displayFace(int);
 	void displayPhoto(int);
 	void initializeTree();
 	void findImage(QString inp);

@@ -40,8 +40,8 @@ void ITS::displayPhoto(int pos){
 	}
 }
 
-void ITS::displayFace(){
-	for(int i = 0; i< photoList->size(); i++){
+void ITS::displayFace(int pos){
+	for(int i = pos; i< photoList->size(); i++){
 		QList<face*>* faces = (*photoList)[i]->getFaces();
 		for(int j = 0; j< faces->size(); j++){
 			(*faces)[j]->setID(faceCount);
@@ -93,12 +93,13 @@ void ITS::on_actionKlasor_triggered(){
 
 void ITS::controlList(){
 	if(!ip->isFinished()){
-			ip->lockProcess();
-			displayPhoto(photoPos);
-			photoPos = photoList->size();
-			ip->wakeProcess();
-			QTimer::singleShot(1000*3, this, SLOT(controlList()));			
-		}
+		ip->lockProcess();
+		//displayPhoto(photoPos);
+		displayFace(photoPos);
+		photoPos = photoList->size();
+		ip->wakeProcess();
+		QTimer::singleShot(1000*3, this, SLOT(controlList()));			
+	}
 }
 
 bool ITS::event ( QEvent * e ){

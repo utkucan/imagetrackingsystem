@@ -9,6 +9,9 @@
 #include <QTextEdit>
 #include <QFrame>
 #include <QLineEdit>
+#include <QPushButton>
+#include <QIcon>
+
 #include "face.h"
 class mdiFace : public QWidget
 {
@@ -23,6 +26,9 @@ public:
 	 void setChildGeometry(int posX,int posY);
 protected:
      void closeEvent(QCloseEvent *event);
+private slots:;
+	void accaptButtonClicked();
+	void rejectButtonClicked();
 private:
 	 QPixmap* transformImage();
 
@@ -34,6 +40,8 @@ private:
 	 QEvent *e;
 	 int posX, posY, w, h;
 	 QLineEdit* labelTextEdit;
+	 QPushButton* accaptButton;
+	 QPushButton* rejectButton;
 };
 
  #endif

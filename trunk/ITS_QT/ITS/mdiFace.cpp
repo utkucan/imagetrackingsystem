@@ -15,7 +15,19 @@
 	 image->setPixmap(*transformImage());
 	 image->setGeometry(0,0,w,h);
 
+	 QIcon* accaptIcon = new QIcon("check.png");
+	 accaptButton = new QPushButton(*accaptIcon,"",this);
+	 accaptButton->setGeometry(0,h-20,20,20);
+	 connect(accaptButton,SIGNAL(clicked()),this,SLOT(accaptButtonClicked()));
+
+	 QIcon* rejectIcon = new QIcon("cross.png");
+	 rejectButton = new QPushButton(*rejectIcon,"",this);
+	 rejectButton->setGeometry(w-20,h-20,20,20);
+	 connect(rejectButton,SIGNAL(clicked()),this,SLOT(rejectButtonClicked()));
+	// h += 20;
+	 /*
 	 if(FaceObject->getLabel() == ""){
+
 		labelTextEdit = new QLineEdit(this);
 //		labelTextEdit->setAlignment(Qt::AlignBottom);
 		labelTextEdit->setGeometry(0,h,w,20);
@@ -23,7 +35,7 @@
 		//labelTextEdit->addAction("add label");
 		h +=20;
 	 }
-	 
+	 */
 //	 this->setContextMenuPolicy(Qt::CustomContextMenu);
  }
  mdiFace::~mdiFace(void){
@@ -89,3 +101,12 @@ void mdiFace::closeEvent(QCloseEvent *event)
 	 delete e;
 	 e = NULL;
  }
+
+void mdiFace::accaptButtonClicked(){
+	int a = 5;
+	//sonrasý database
+}
+void mdiFace::rejectButtonClicked(){
+	int a = 5;
+	//sonrasý database
+}
