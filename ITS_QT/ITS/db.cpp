@@ -100,9 +100,26 @@ bool db::insertIntoPhoto(photo *p){
 		return a;
 	}
 }
-bool db::updateHasFaces(int faceId, int personId, int imageId ){
+bool db::updateHasFaces(int faceId, QString  s, int imageId ){
 	bool a=false;
 	QSqlQuery query(database);
+	query.prepare("SELECT Pid FROM Person WHERE name = :name1");
+	query.bindValue(":name1",s );
+	a=query.exec();
+	int personId=0;
+	if(!a){
+		
+		insertIntoPerson(s);
+		
+	}
+	bool k=false;
+	query.prepare("SELECT MAX(Pid) FROM Person");
+	k=query.exec();	
+	query.next();
+	personId=query.value(0).toInt();
+
+	a=false;
+	
 	query.prepare( "UPDATE HasFaces SET Pid = :pid   WHERE Fid = :fid  AND Iid= :iid" );
 	query.bindValue(":fid", faceId);
 	query.bindValue(":pid", personId);
