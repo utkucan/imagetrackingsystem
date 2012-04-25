@@ -18,7 +18,8 @@ public:
 		int transformedWidth,
 		int transformedHeight,
 		QImage* faceImage,
-		QList<double> *featureList,
+		//QList<double> *featureList,
+		double* featureList,
 		string label);
 	~face(void);
 	int getID();
@@ -26,7 +27,7 @@ public:
 	int getY();
 	int getWidth();
 	int getHeight();
-	QList<double>* getFecialFeatures();
+	double* getFecialFeatures();
 	QImage* getImage();
 	string getPath();
 	string getLabel();
@@ -44,7 +45,8 @@ private:
 	int x,y,width,height,tw,th;
 	string imagePath;
 	string label;
-	QList<double> *fecialFeatureList;
+	//QList<double> *fecialFeatureList;
+	double* fecialFeatureList;
 	QImage* faceImage;
 };
 #endif

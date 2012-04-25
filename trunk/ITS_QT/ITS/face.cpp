@@ -1,6 +1,6 @@
 #include "face.h"
 
-face::face(int id,string imagePath,int x,int y,int width,int height,int transformedWidth,int transformedHeight, QImage* faceImage,QList<double> *featureList,string label)
+face::face(int id,string imagePath,int x,int y,int width,int height,int transformedWidth,int transformedHeight, QImage* faceImage,double *featureList,string label)
 {
 	this->imagePath = imagePath;
 	this->x = x;
@@ -16,7 +16,7 @@ face::face(int id,string imagePath,int x,int y,int width,int height,int transfor
 
 face::~face(void)
 {
-	fecialFeatureList->clear();
+	//fecialFeatureList->clear();
 	delete fecialFeatureList;
 	fecialFeatureList = NULL;
 	delete faceImage;
@@ -33,7 +33,7 @@ int face::getWidth(){return width;}
 
 int face::getHeight(){return height;}
 
-QList<double>* face::getFecialFeatures(){return fecialFeatureList;}
+double* face::getFecialFeatures(){return fecialFeatureList;}
 
 QImage* face::getImage(){return (faceImage);}
 
