@@ -25,7 +25,7 @@ public:
 	void displayDatabase();
 
 	QList<photo*> getNotLabeledPhotos();
-	bool updateHasFaces(int faceId, int personId, int imageId);
+	bool updateHasFaces(int faceId, QString s, int imageId);
 	bool insertIntoPerson(QString name);
 	bool insertIntoPhoto(photo* p);
 	bool insertIntoFaces(face* f, int);
