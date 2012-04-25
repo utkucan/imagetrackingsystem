@@ -131,7 +131,7 @@ bool db::insertIntoFaces(face* f, int photoId){
 			query.next();
 			k=query.value(0).toInt();
 			f->setID(k);
-	
+			f->setPhotoID(photoId);
 
 			insertIntoHasFaces(k,1,photoId);
 		}
