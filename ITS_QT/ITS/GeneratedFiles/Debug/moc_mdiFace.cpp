@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mdiFace.h'
 **
-** Created: Tue 24. Apr 20:24:12 2012
+** Created: Wed 25. Apr 19:00:06 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.3)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,18 +23,23 @@ static const uint qt_meta_data_mdiFace[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       0,    0, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
        0,       // signalCount
 
+ // slots: signature, parameters, type, tag, flags
+       9,    8,    8,    8, 0x08,
+      31,    8,    8,    8, 0x08,
+
        0        // eod
 };
 
 static const char qt_meta_stringdata_mdiFace[] = {
-    "mdiFace\0"
+    "mdiFace\0\0accaptButtonClicked()\0"
+    "rejectButtonClicked()\0"
 };
 
 const QMetaObject mdiFace::staticMetaObject = {
@@ -64,6 +69,14 @@ int mdiFace::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     _id = QWidget::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        switch (_id) {
+        case 0: accaptButtonClicked(); break;
+        case 1: rejectButtonClicked(); break;
+        default: ;
+        }
+        _id -= 2;
+    }
     return _id;
 }
 QT_END_MOC_NAMESPACE
