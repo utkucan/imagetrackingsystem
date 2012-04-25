@@ -83,6 +83,12 @@
     <ClCompile Include="photo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="db.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="displaydb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_labelDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -116,6 +122,12 @@
     <ClCompile Include="mdiPhoto.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_displaydb.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_displaydb.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="its.h">
@@ -130,6 +142,9 @@
     <CustomBuild Include="mdiChild.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="displaydb.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
     <CustomBuild Include="labelDialog.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
@@ -140,6 +155,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="labelDialog.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="DBdisplay.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -171,7 +189,10 @@
     <ClInclude Include="photo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_form.h">
+    <ClInclude Include="db.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_DBdisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_labelDialog.h">

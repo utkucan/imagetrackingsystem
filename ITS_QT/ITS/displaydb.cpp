@@ -1,18 +1,4 @@
-#include "displaydb.h"
 
-
-displaydb::displaydb(QWidget *parent, Qt::WFlags flags): QWidget(parent, flags)
-{
-	uidb.setupUi(this);
-	
-}
-
-
-displaydb::~displaydb(void)
-{
-}
-
-/*
 #include "displaydb.h"
 displaydb::displaydb(int id, QWidget *parent)
     : QDialog(parent)
@@ -55,8 +41,8 @@ displaydb::~displaydb()
  
  
 void displaydb::save()
-    {
+   {
     // Stores data from QLineEdit to database using QDataWidgetMapper
     dataMapper->submit();
-    }
-	*/
+   }
+	
