@@ -67,6 +67,8 @@ bool db::insertIntoPerson(QString name){
 		query.prepare("INSERT INTO Person VALUES(NULL , :name)");
 		query.bindValue(":name", name);
 		a=query.exec();
+
+
 		return a;
 	}
 }
@@ -97,6 +99,17 @@ bool db::insertIntoPhoto(photo *p){
 		}
 		return a;
 	}
+}
+bool db::updateHasFaces(int faceId, int personId, int imageId ){
+	bool a=false;
+	QSqlQuery query(database);
+	query.prepare( "UPDATE HasFaces SET Pid = :pid   WHERE Fid = :fid  AND Iid= :iid" );
+	query.bindValue(":fid", faceId);
+	query.bindValue(":pid", personId);
+	query.bindValue(":iid", imageId);
+	a=query.exec();
+	return a;
+
 }
 bool db::insertIntoFaces(face* f, int photoId){
 	{
