@@ -17,6 +17,7 @@ public:
 	QList<face*>* getFaces();
 	string getPath(){return path;}
 	QImage* getDSImage(){return downSample;}
+	void setID(int id){this->id = id;}
 private:
 	string QStringToString(QString);
 	void downSampleImage();
