@@ -1,11 +1,12 @@
 #include "mdiFace.h"
 
- mdiFace::mdiFace(QMdiArea* parent,face* FaceObject)
+ mdiFace::mdiFace(QMdiArea* parent,face* FaceObject,db* database)
  {
 	 prnt = parent;
 	 h = 0;
      setAttribute(Qt::WA_DeleteOnClose);
 	 this->FaceObject = FaceObject;
+	 this->database = database;
 	 
 	 
 

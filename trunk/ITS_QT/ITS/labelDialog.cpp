@@ -1,7 +1,7 @@
 #include "labelDialog.h"
 
 
-labelDialog::labelDialog(QWidget *parent, Qt::WFlags flags): QDialog(parent, flags)
+labelDialog::labelDialog(QWidget *parent, Qt::WFlags flags,db* database): QDialog(parent, flags)
 {
 //	setParent(parent);
 //	setWindowFlags(Qt::FramelessWindowHint);
@@ -9,6 +9,7 @@ labelDialog::labelDialog(QWidget *parent, Qt::WFlags flags): QDialog(parent, fla
 //	setGeometry(position.x(),position.y(),100,30);
 //	setAttribute(Qt::WA_DeleteOnClose);
 	uiLd.setupUi(this);
+	this->database = database;
 	//Qt::FramelessWindowHint
 	closed = false;
 	rpos = new QPoint();
@@ -26,6 +27,7 @@ void labelDialog::textChanged(){
 	QString lbl = uiLd.comboBox->currentText();
 	string l = QStringToString(lbl);
 	this->fc->setLabel(l);
+
 	this->close();
 }
 

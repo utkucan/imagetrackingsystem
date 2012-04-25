@@ -1,10 +1,11 @@
 #include "mdiDSChild.h"
 
 
-mdiDSChild::mdiDSChild(QMdiArea* parent,mdi* mdiArea)
+mdiDSChild::mdiDSChild(QMdiArea* parent,mdi* mdiArea,db* database)
 {
 	prnt = parent;
 	this->mdiArea = mdiArea;
+	this->database = database;
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	image = new QLabel(this);

@@ -1,9 +1,10 @@
 #include "mdi.h"
 
 
-mdi::mdi(QMdiArea* mdiArea)
+mdi::mdi(QMdiArea* mdiArea,db* database)
 {
 	this->mdiArea = mdiArea;
+	this->database = database;
 	childPosx = 0;
 	childPosy = 0;
 }
@@ -21,7 +22,7 @@ void mdi::addMdiPhoto(photo* photoObject){
 		mdiArea->closeAllSubWindows();
 //		return;
 	}
-	mdiPhoto *child = new mdiPhoto(mdiArea,photoObject);
+	mdiPhoto *child = new mdiPhoto(mdiArea,photoObject,database);
 	
 	photoWindows.append(child);
 	child->setSubWinAdd(mdiArea->addSubWindow(child,Qt::FramelessWindowHint));
@@ -51,7 +52,7 @@ void mdi::addMdiPhoto(photo* photoObject){
 */
 void mdi::addMdiFace(face* faceObject){
 
-	mdiFace *child = new mdiFace(mdiArea,faceObject);
+	mdiFace *child = new mdiFace(mdiArea,faceObject,database);
 	
 	faceWindows.append(child);
 	child->setSubWinAdd(mdiArea->addSubWindow(child,Qt::FramelessWindowHint));

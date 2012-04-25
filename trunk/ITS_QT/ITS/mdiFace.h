@@ -11,14 +11,14 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QIcon>
-
+#include "db.h"
 #include "face.h"
 class mdiFace : public QWidget
 {
 	Q_OBJECT
 
 public:
-	mdiFace(QMdiArea*,face*);
+	mdiFace(QMdiArea*,face*,db* database);
 	~mdiFace(void);
 
 	 void setSubWinAdd(QMdiSubWindow* );
@@ -42,6 +42,7 @@ private:
 	 QLineEdit* labelTextEdit;
 	 QPushButton* accaptButton;
 	 QPushButton* rejectButton;
+	 db* database;
 };
 
  #endif

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mdiPhoto.h'
 **
-** Created: Wed 25. Apr 12:48:23 2012
+** Created: Wed 25. Apr 20:47:02 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.3)
 **
 ** WARNING! All changes made in this file will be lost!

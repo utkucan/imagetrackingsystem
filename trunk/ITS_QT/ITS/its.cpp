@@ -4,13 +4,13 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)
 {
 	ui.setupUi(this);
-
-	mdiArea = new mdi(ui.mdiArea);
-	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea);
+	database = new db();
+	mdiArea = new mdi(ui.mdiArea,database);
+	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea,database);
 	photoList = new QList<photo*>();
 	treeWidget = ui.treeWidget;
 
-	database = new db();
+	
 /*	if(!database->openDB())
 		exit(1);
 */

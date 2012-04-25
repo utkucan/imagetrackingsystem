@@ -14,11 +14,12 @@
 #include "photo.h"
 #include "face.h"
 #include "analyzer.h"
+#include "db.h"
 
 class importPhotos  : public QThread
 {
 public:
-	importPhotos(QStringList,QList<photo*>*);
+	importPhotos(QStringList,QList<photo*>*,db*);
 	~importPhotos(void);
 	void run();
 	void lockProcess(){
@@ -34,5 +35,6 @@ private:
 	QStringList* QDirectory;
 	QList<photo*> *photos;
 	int maxNumOfThread;
+	db* database;
 };
 #endif

@@ -16,13 +16,13 @@
 #include "face.h"
 #include "photo.h"
 #include "labelDialog.h"
-
+#include "db.h"
 class mdiPhoto : public QWidget
 {
 	Q_OBJECT
 
 public:
-	mdiPhoto(QMdiArea*,photo*);
+	mdiPhoto(QMdiArea*,photo*,db* database);
 	~mdiPhoto(void);
 	void setSubWinAdd(QMdiSubWindow* );
 	bool event(QEvent * e);
@@ -45,7 +45,7 @@ private:
 //	QList<QString*> *labelList;
 	QPixmap* p;
 	labelDialog* ld;
-
+	db* database;
 };
 
  #endif
