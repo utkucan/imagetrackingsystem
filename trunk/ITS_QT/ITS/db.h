@@ -27,7 +27,7 @@ public:
 	QList<photo*> getNotLabeledPhotos();
 	bool insertIntoPerson(QString name);
 	bool insertIntoPhoto(photo* p);
-	bool insertIntoFaces(face* f);
+	bool insertIntoFaces(face* f, int);
 	bool insertIntoHasFaces(int faceId, int personId, int imageId);
 	
 	QSqlDatabase* getDB(){return &database;}

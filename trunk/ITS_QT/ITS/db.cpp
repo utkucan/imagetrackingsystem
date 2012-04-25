@@ -4,7 +4,7 @@
 db::db(QObject *parent){
 	if(openDB()){
 		createTables();
-		
+		insertIntoPerson("Unknown");
 	
 	}
 
@@ -78,14 +78,27 @@ bool db::insertIntoPhoto(photo *p){
 		QString s=  QString(p->getPath().c_str());
 		query.bindValue(":name", s);
 		a=query.exec();
+		int k=0;
+		if(a){
+
+			query.prepare("SELECT max(Iid) FROM Images");
+			a=query.exec();	
+			
+		
+			k=query.value(0).toInt();
+			p->setID(k);
+
+		}
+
 		for(int i=0; i < p->getFaces()->count()  ;i++ ){
 			
-			insertIntoFaces(p->getFaces()->at(i));
+			insertIntoFaces(p->getFaces()->at(i),k);
+
 		}
 		return a;
 	}
 }
-bool db::insertIntoFaces(face* f){
+bool db::insertIntoFaces(face* f, int photoId){
 	{
 		bool a=false;
 		QSqlQuery query(database);
@@ -97,6 +110,19 @@ bool db::insertIntoFaces(face* f){
 		query.bindValue(":tw", f->getTransformedWidth());
 		query.bindValue(":th", f->getTransformedHeight());
 		a=query.exec();
+		if(a){
+
+			query.prepare("SELECT max(Fid) FROM Faces");
+			a=query.exec();	
+			int k= 0;
+		
+			k=query.value(0).toInt();
+			f->setID(k);
+	
+
+			insertIntoHasFaces(k,1,photoId);
+		}
+
 		return a;
 	}
 
