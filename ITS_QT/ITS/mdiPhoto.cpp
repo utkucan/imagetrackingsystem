@@ -1,12 +1,13 @@
 #include "mdiPhoto.h"
 
 
-mdiPhoto::mdiPhoto(QMdiArea* parent,photo* photoObject)
+mdiPhoto::mdiPhoto(QMdiArea* parent,photo* photoObject,db* database)
 {
 	prnt = parent;
 	setAttribute(Qt::WA_DeleteOnClose);
 	setMouseTracking(true);
 	this->photoObject = photoObject;
+	this->database = database;
 	image = new QLabel(this);
 	image->setScaledContents(true);
 	image->setMouseTracking(true);
@@ -130,7 +131,7 @@ mdiPhoto::~mdiPhoto(void)
 						myMenu.addAction("add label");
 						QAction* selectedItem = myMenu.exec(globalPos);
 						if(selectedItem != NULL && selectedItem->text() == "add label"){
-							ld = new labelDialog(widgetadd,Qt::FramelessWindowHint);
+							ld = new labelDialog(widgetadd,Qt::FramelessWindowHint,database);
 							ld->setFacePointer((*faceList)[i]);
 							ld->setPoint(globalPos);
 							ld->setRelativePos(((QMouseEvent*)e)->pos());
@@ -140,7 +141,7 @@ mdiPhoto::~mdiPhoto(void)
 						myMenu.addAction("change label");
 						QAction* selectedItem = myMenu.exec(globalPos);
 						if(selectedItem != NULL && selectedItem->text() == "change label"){
-							ld = new labelDialog(widgetadd,Qt::FramelessWindowHint);
+							ld = new labelDialog(widgetadd,Qt::FramelessWindowHint,database);
 							ld->setFacePointer((*faceList)[i]);
 							ld->setPoint(globalPos);
 							ld->setRelativePos(((QMouseEvent*)e)->pos());

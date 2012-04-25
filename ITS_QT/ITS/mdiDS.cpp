@@ -1,9 +1,10 @@
 #include "mdiDS.h"
 
-mdiDS::mdiDS(QMdiArea* mdids,mdi* mdiArea)
+mdiDS::mdiDS(QMdiArea* mdids,mdi* mdiArea,db* database)
 {
 	this->mdiArea = mdiArea;
 	this->mdids = mdids;
+	this->database = database;
 	childPosx = 5;
 	childPosy = 5;
 }
@@ -16,7 +17,7 @@ mdiDS::~mdiDS(void)
 
 void mdiDS::addMdiDSChild(photo* photoObject){
 	
-	mdiDSChild *child = new mdiDSChild(mdids,mdiArea);
+	mdiDSChild *child = new mdiDSChild(mdids,mdiArea,database);
 	child->setPhoto(photoObject);
 
 	photoWindows.append(child);

@@ -11,13 +11,13 @@
 #include <QComboBox>
 #include <QPoint>
 #include <string>
-
+#include "db.h"
 class labelDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	labelDialog(QWidget *parent = 0, Qt::WFlags flags = 0);
+	labelDialog(QWidget *parent = 0, Qt::WFlags flags = 0,db* database = 0);
 	~labelDialog(void);
 	void setFacePointer(face* fc);
 	bool isclosed(){return closed;}
@@ -36,5 +36,6 @@ private:
 	bool closed;
 	QPoint* rpos;
 	Ui::LableDialog uiLd;
+	db* database;
 };
 #endif

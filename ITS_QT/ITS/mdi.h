@@ -11,10 +11,11 @@
 #include "mdiFace.h"
 #include "mdiPhoto.h"
 #include "face.h"
+#include "db.h"
 class mdi : public QMdiArea
 {
 public:
-	mdi(QMdiArea*);
+	mdi(QMdiArea*,db* database);
 	~mdi(void);
 	void addMdiFace(face*);
 	void addMdiPhoto(photo*);
@@ -26,6 +27,7 @@ private:
 	QList<mdiFace*> faceWindows;
 	QList<mdiPhoto*> photoWindows;
 	QMdiArea* mdiArea;
+	db* database;
 };
 
  #endif

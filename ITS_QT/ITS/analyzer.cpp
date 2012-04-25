@@ -8,7 +8,6 @@ analyzer::analyzer(QList<face*> *faceList,string imagePath)
 	count = 1;
 }
 
-
 analyzer::~analyzer(void)
 {
 	faceList = NULL;

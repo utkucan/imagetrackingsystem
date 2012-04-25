@@ -1,10 +1,10 @@
 #include "importPhotos.h"
 
-
-importPhotos::importPhotos(QStringList QDirectory,QList<photo*> *photos)
+importPhotos::importPhotos(QStringList QDirectory,QList<photo*> *photos,db* database)
 {
 	this->QDirectory = new QStringList(QDirectory);
 	this->photos = photos;
+	this->database = database;
 	m = new QMutex();
 	maxNumOfThread = 1;//QDirectory->size();
 }
@@ -38,6 +38,8 @@ void importPhotos::run(){
 		while(numOfThread == maxNumOfThread){
 			for(int i = 0; i< threads.size(); i++){
 				if(threads[i]->isFinished()){
+					int pos = photos->size() - threads.size() + i;
+					database->insertIntoPhoto((*photos)[pos]);
 					numOfThread--;
 					delete threads[i];
 					threads.removeAt(i);

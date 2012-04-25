@@ -10,11 +10,12 @@
 
 #include "mdi.h"
 #include "mdiDSChild.h"
+#include "db.h"
 
 class mdiDS : public QMdiArea
 {
 public:
-	mdiDS(QMdiArea*,mdi*);
+	mdiDS(QMdiArea*,mdi*,db* database);
 	~mdiDS(void);
 	void addMdiDSChild(photo* photoObject);
 	bool event(QEvent * e);
@@ -23,6 +24,7 @@ private:
 	QList<mdiDSChild*> photoWindows;
 	QMdiArea* mdids;
 	mdi* mdiArea;
+	db* database;
 };
 
  #endif

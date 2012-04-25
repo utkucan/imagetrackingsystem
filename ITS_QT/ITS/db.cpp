@@ -81,10 +81,10 @@ bool db::insertIntoPhoto(photo *p){
 		int k=0;
 		if(a){
 
-			query.prepare("SELECT max(Iid) FROM Images");
+			query.prepare("SELECT MAX(Iid) FROM Images");
 			a=query.exec();	
 			
-		
+			query.next();
 			k=query.value(0).toInt();
 			p->setID(k);
 
@@ -112,10 +112,10 @@ bool db::insertIntoFaces(face* f, int photoId){
 		a=query.exec();
 		if(a){
 
-			query.prepare("SELECT max(Fid) FROM Faces");
+			query.prepare("SELECT MAX(Fid) FROM Faces");
 			a=query.exec();	
 			int k= 0;
-		
+			query.next();
 			k=query.value(0).toInt();
 			f->setID(k);
 	

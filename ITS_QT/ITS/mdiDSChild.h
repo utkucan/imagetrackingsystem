@@ -15,10 +15,11 @@
 #include <QMenu>
 #include "photo.h"
 #include "mdi.h"
+#include "db.h"
 class mdiDSChild : public QWidget
 {
 public:
-	mdiDSChild(QMdiArea*,mdi*);
+	mdiDSChild(QMdiArea*,mdi*,db* database);
 	~mdiDSChild(void);
 
 	void setSubWinAdd(QMdiSubWindow* );
@@ -37,6 +38,7 @@ private:
 	QLabel* image;
 	mdiPhoto *child;
 	int w,h;
+	db* database;
 };
 
  #endif
