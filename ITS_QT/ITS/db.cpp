@@ -107,16 +107,18 @@ bool db::updateHasFaces(int faceId, QString  s, int imageId ){
 	query.bindValue(":name1",s );
 	a=query.exec();
 	int personId=0;
-	if(!a){
-		
-		insertIntoPerson(s);
-		
-	}
-	bool k=false;
-	query.prepare("SELECT MAX(Pid) FROM Person");
-	k=query.exec();	
 	query.next();
 	personId=query.value(0).toInt();
+	if(personId == 0 ){
+		
+		insertIntoPerson(s);
+		bool k=false;
+		query.prepare("SELECT MAX(Pid) FROM Person");
+		k=query.exec();	
+		query.next();
+		personId=query.value(0).toInt();
+	}
+	
 
 	a=false;
 	
