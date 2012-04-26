@@ -29,7 +29,9 @@ public:
 	int getHeight();
 	double* getFecialFeatures();
 	QImage* getImage();
+	void setImage(QImage* f){faceImage = f;}
 	string getPath();
+	void setPath(string p){imagePath = p;}
 	string getLabel();
 	void setLavel(string label);
 	int getTransformedWidth(){return tw;}
