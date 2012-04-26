@@ -2,6 +2,7 @@
 
 face::face(int id,string imagePath,int x,int y,int width,int height,int transformedWidth,int transformedHeight, QImage* faceImage,double *featureList,string label)
 {
+	this->id = id;
 	this->imagePath = imagePath;
 	this->x = x;
 	this->y = y;
