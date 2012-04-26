@@ -3,6 +3,10 @@
 #include "photo.h"
 db::db(QObject *parent){
 	if(openDB()){
+
+		QSqlQuery query(database);
+		bool a = query.exec("PRAGMA cache_size = 10000;");
+
 		createTables();
 		insertIntoPerson("Unknown");
 	//	getUnlabeledPhotos();
@@ -167,7 +171,11 @@ photo* db::getImage(int imageId){
 		cvSetImageROI(img,cvRect( f->getX(), f->getY(), f->getWidth(), f->getHeight()));
 		cvCopy( img, temp ); 
 		cvResetImageROI( img );
+
 		f->setImage(IplImage2QImage(temp));
+		cvReleaseImage(&img);
+		cvReleaseImage(&temp);
+
 		f->setLabel(QStringToString(getPersonName(personId)));
 		f->setPhotoID(imageId);
 		f->setPath(path);
@@ -179,6 +187,66 @@ photo* db::getImage(int imageId){
 }
 
 QList<photo*>* db::selectPersonPhoto(QString personName){
+	
+	bool a=false;
+	QSqlQuery query(database);
+
+	query.prepare("SELECT DISTINCT F.Fid,I.Iid,F.x,F.y,F.width,F.height,F.tw,F.th,I.path,P.name FROM Faces F,HasFaces H,Images I,Person P WHERE F.Fid=H.Fid AND P.Pid=H.Pid AND H.Iid=I.Iid AND I.Iid IN (SELECT I1.Iid FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid AND P1.name=:personName)");
+	query.bindValue(":personName", personName);
+	a=query.exec();
+
+	QList<face*> fl;
+	QList<int> imageIdList;
+	QList<QString> pathList;
+
+	while(query.next()){
+		int faceId = query.value(0).toInt();
+		int imageId = query.value(1).toInt();
+		double x=query.value(2).toDouble();
+		double y=query.value(3).toDouble();
+		double width=query.value(4).toDouble();
+		double height=query.value(5).toDouble();
+		double tw=query.value(6).toDouble(); 
+		double th=query.value(7).toDouble();
+		QString path = query.value(8).toString();
+		QString name = query.value(9).toString();
+
+		if(!imageIdList.contains(imageId)){
+			imageIdList.append(imageId);
+			pathList.append(path);
+		}
+		
+		IplImage* img = cvLoadImage(QStringToString(path).c_str());
+		IplImage* temp = cvCreateImage( cvSize( width, height), img->depth, img->nChannels );
+		cvSetImageROI(img,cvRect( x, y, width, height));
+		cvCopy( img, temp ); 
+		cvResetImageROI( img );
+		
+		face* f = new face(faceId,QStringToString(path),x,y,width,height,tw,th,IplImage2QImage(temp),NULL,QStringToString(name));
+		f->setPhotoID(imageId);
+
+		cvReleaseImage(&img);
+		cvReleaseImage(&temp);
+		
+		fl.append(f);
+	}
+	QList<photo*>* pl = new QList<photo*>();
+	for(int i = 0; i<imageIdList.size();i++){
+		QList<face*> *pfl = new QList<face*>(); 
+		for(int j = 0; j<fl.size();j++){
+			if(fl[j]->getPhotoId() == imageIdList[i]){
+				pfl->append(fl[j]);
+				fl.removeAt(j);
+				j--;
+			}
+		}
+		photo* np = new photo(pathList[i],pfl);
+		np->setID(imageIdList[i]);
+		pl->append(np);
+	}
+	
+	
+	/*
 	bool a=false;
 	int personId= getPersonId(personName);
 
@@ -192,8 +260,9 @@ QList<photo*>* db::selectPersonPhoto(QString personName){
 		int imageId=query.value(0).toInt();
 		pl->append(getImage(imageId));
 	}
+	*/
 	return pl;
-
+	
 }
 
 QList<face*>* db::selectPersonFace(QString personName){
@@ -212,13 +281,17 @@ QList<face*>* db::selectPersonFace(QString personName){
 		face* f = getFace(faceId);
 
 		QString imagePath = getImagePath(imageId);
+
 		string path = QStringToString(imagePath);
 		IplImage* img = cvLoadImage(path.c_str());
 		IplImage* temp = cvCreateImage( cvSize( f->getWidth(), f->getHeight()), img->depth, img->nChannels );
 		cvSetImageROI(img,cvRect( f->getX(), f->getY(), f->getWidth(), f->getHeight()));
 		cvCopy( img, temp ); 
 		cvResetImageROI( img );
+
 		f->setImage(IplImage2QImage(temp));
+		cvReleaseImage(&img);
+		cvReleaseImage(&temp);
 
 		f->setLabel(QStringToString(getPersonName(personId)));
 		f->setPhotoID(imageId);
