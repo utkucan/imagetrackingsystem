@@ -6,12 +6,13 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	ui.setupUi(this);
 
 	database = new db();
-	treeWidget = new treeWid(this,database,ui.treeWidget);
+	mdiArea = new mdi(ui.mdiArea,database);
+	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea,database);
+	treeWidget = new treeWid(this,database,ui.treeWidget,mdids,mdiArea);
 //	connect(ui.treeWidget,SIGNAL(clicked(QModelIndex)),this,SLOT(controlList()));
 	
 	
-	mdiArea = new mdi(ui.mdiArea,database);
-	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea,database);
+	
 	photoList = new QList<photo*>();
 	
 
@@ -94,6 +95,12 @@ void ITS::controlList(){
 		ip->wakeProcess();
 		QTimer::singleShot(1000*3, this, SLOT(controlList()));			
 	}
+}
+
+void ITS::updateFace(){
+	mdiArea->updateFace();
+	treeWidget->updateTree();
+ //   child->show();
 }
 
 bool ITS::event ( QEvent * e ){

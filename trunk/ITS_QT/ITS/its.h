@@ -44,6 +44,7 @@ private slots:;
 	void on_actionSearch_HardDisk_triggered();
 	void controlList();
 	void treeWidgetSelectionChange();
+	void updateFace();
 private:
 	
 	void displayFace(int);

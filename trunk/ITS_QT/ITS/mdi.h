@@ -20,6 +20,11 @@ public:
 	void addMdiFace(face*);
 	void addMdiPhoto(photo*);
 	void setPosition();
+	void clearPhotos();
+	
+//	bool event(QEvent * e);
+	void updateFace();
+
 private:
 	QImage* IplImage2QImage(const IplImage *iplImage);
 
