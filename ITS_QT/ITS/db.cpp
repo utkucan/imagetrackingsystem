@@ -5,7 +5,7 @@ db::db(QObject *parent){
 	if(openDB()){
 		createTables();
 		insertIntoPerson("Unknown");
-		getUnlabeledPhotos();
+	//	getUnlabeledPhotos();
 	}
 
 }
@@ -60,6 +60,7 @@ bool db::deleteDB()
     return QFile::remove("my.db.sqlite");
     #endif
     }
+
 bool db::insertIntoPerson(QString name){
 	{
 		bool a=false;
@@ -72,6 +73,7 @@ bool db::insertIntoPerson(QString name){
 		return a;
 	}
 }
+
 bool db::insertIntoPhoto(photo *p){
 	{
 		bool a=false;
@@ -101,6 +103,7 @@ bool db::insertIntoPhoto(photo *p){
 		return a;
 	}
 }
+
 QList<photo*>* db::getUnlabeledPhotos(){
 
 	bool a=false;
@@ -170,42 +173,6 @@ QList<photo*>* db::getUnlabeledPhotos(){
 	return NULL;
 }
 
-QImage* db::IplImage2QImage(const IplImage *iplImage)
-{
-	int height = iplImage->height;
-	int width = iplImage->width;
- 
-	if  (iplImage->depth == IPL_DEPTH_8U && iplImage->nChannels == 3)
-	{
-		const uchar *qImageBuffer = (const uchar*)iplImage->imageData;
-		QImage* img = new QImage(qImageBuffer, width, height, QImage::Format_RGB888);
-		img = new QImage(img->rgbSwapped());
-		return img;
-	} else if  (iplImage->depth == IPL_DEPTH_8U && iplImage->nChannels == 1){
-		const uchar *qImageBuffer = (const uchar*)iplImage->imageData;
-		QImage* img = new QImage(qImageBuffer, width, height, QImage::Format_Indexed8);
- 
-		QVector<QRgb> colorTable;
-		for (int i = 0; i < 256; i++){
-			colorTable.push_back(qRgb(i, i, i));
-		}
-		img->setColorTable(colorTable);
-		return img;
-	}else{
-		qWarning() << "Image cannot be converted.";
-		return new QImage();
-	}
-}
-
-string db::QStringToString(QString str){
-	string filename ="";
-	for(int i = 0; i<str.size();i++){
-		char c = (str[i].toAscii());
-		filename += c;
-	}
-	return filename;
-}
-
 bool db::updateHasFaces(int faceId, QString  s, int imageId ){
 	bool a=false;
 	QSqlQuery query(database);
@@ -236,6 +203,7 @@ bool db::updateHasFaces(int faceId, QString  s, int imageId ){
 	return a;
 
 }
+
 bool db::insertIntoFaces(face* f, int photoId){
 	{
 		bool a=false;
@@ -265,6 +233,7 @@ bool db::insertIntoFaces(face* f, int photoId){
 	}
 
 }
+
 bool db::insertIntoHasFaces(int faceId, int personId, int imageId){
 	{
 		bool a=false;
@@ -279,6 +248,7 @@ bool db::insertIntoHasFaces(int faceId, int personId, int imageId){
 
 
 }
+
 bool db::insertLabel(QString s)
 {
 	{
@@ -354,6 +324,7 @@ bool db::insertLabel(QString s)
 	
 	
 }
+
 void db::createTables(){
 	const QString	CREATE_TABLE("CREATE TABLE Images (Iid  INTEGER PRIMARY KEY,path TEXT UNIQUE);");
 	QSqlQuery	query(database);
@@ -402,6 +373,55 @@ void db::createTables(){
 		qDebug() << "Failed to create table:" << query.lastError();
 	}
 }
+
+QStringList db::getAllPerson(){
+	bool a=false;
+	QSqlQuery query(database);
+	query.prepare("SELECT name FROM Person");
+	a=query.exec();
+	QStringList personList;
+	while(query.next()){
+		personList.append(query.value(0).toString());
+	}
+	return personList;
+}
+
+QImage* db::IplImage2QImage(const IplImage *iplImage)
+{
+	int height = iplImage->height;
+	int width = iplImage->width;
+ 
+	if  (iplImage->depth == IPL_DEPTH_8U && iplImage->nChannels == 3)
+	{
+		const uchar *qImageBuffer = (const uchar*)iplImage->imageData;
+		QImage* img = new QImage(qImageBuffer, width, height, QImage::Format_RGB888);
+		img = new QImage(img->rgbSwapped());
+		return img;
+	} else if  (iplImage->depth == IPL_DEPTH_8U && iplImage->nChannels == 1){
+		const uchar *qImageBuffer = (const uchar*)iplImage->imageData;
+		QImage* img = new QImage(qImageBuffer, width, height, QImage::Format_Indexed8);
+ 
+		QVector<QRgb> colorTable;
+		for (int i = 0; i < 256; i++){
+			colorTable.push_back(qRgb(i, i, i));
+		}
+		img->setColorTable(colorTable);
+		return img;
+	}else{
+		qWarning() << "Image cannot be converted.";
+		return new QImage();
+	}
+}
+
+string db::QStringToString(QString str){
+	string filename ="";
+	for(int i = 0; i<str.size();i++){
+		char c = (str[i].toAscii());
+		filename += c;
+	}
+	return filename;
+}
+
 
 void db::displayDatabase(){
 	displaydb* disp = new displaydb();

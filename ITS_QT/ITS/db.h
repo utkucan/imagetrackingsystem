@@ -30,9 +30,11 @@ public:
 	bool insertIntoPhoto(photo* p);
 	bool insertIntoFaces(face* f, int);
 	bool insertIntoHasFaces(int faceId, int personId, int imageId);
+	QStringList getAllPerson();
 	QImage* IplImage2QImage(const IplImage *iplImage);
 	string QStringToString(QString str);
 	QSqlDatabase* getDB(){return &database;}
+
 private:
 	bool openDB();
 	bool deleteDB();
