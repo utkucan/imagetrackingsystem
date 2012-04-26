@@ -108,26 +108,104 @@ QList<photo*>* db::getUnlabeledPhotos(){
 	query.prepare("SELECT DISTINCT Iid FROM HasFaces WHERE Pid = 1 ");
 	a=query.exec();
 
-	QList<int> photoId;
-
+//	QList<int> photoId;
+	QList<photo*>* pl = new QList<photo*>();
 	while(query.next()){
-		photoId.append(query.value(0).toInt());
+		int imageId=query.value(0).toInt();
+//		photoId.append(imageId);
+		QList<face*>* fl = new QList<face*>();
+
+		QSqlQuery query4(database);
+		query4.prepare("SELECT DISTINCT path FROM Images WHERE Iid = :imageId ");
+		query4.bindValue(":imageId", imageId);
+		bool k4 = query4.exec();
+		query4.next();
+		QString imagePath(query4.value(0).toString()); 
+
+
+		QSqlQuery query2(database);
+		query2.prepare("SELECT DISTINCT Fid,Pid FROM HasFaces WHERE Iid = :imageId ");
+		query2.bindValue(":imageId", imageId);
+		bool k=query2.exec();
+		while(query2.next()){
+			int faceId = query2.value(0).toInt(); 
+			int personId = query2.value(1).toInt(); 
+			QSqlQuery query3(database);
+			query3.prepare("SELECT * FROM Faces WHERE Fid = :FId ");
+			query3.bindValue(":FId", faceId);
+			bool k3=query3.exec();
+			//facelist olcak
+			while(query3.next()){
+				 double x=query3.value(1).toDouble();
+				 double y=query3.value(2).toDouble();
+				 double width=query3.value(3).toDouble();
+				 double height=query3.value(4).toDouble();
+				 double tw=query3.value(5).toDouble(); 
+				 double th=query3.value(6).toDouble();
+
+				 IplImage* img = cvLoadImage(QStringToString(imagePath).c_str());
+				IplImage* temp = cvCreateImage( cvSize( width ,height), img->depth, img->nChannels );
+				cvSetImageROI(img,cvRect( (int)(x), (int)(y), (int)(width) ,(int)(height)));
+				cvCopy( img, temp ); 
+				cvResetImageROI( img );
+
+				QSqlQuery query5(database);
+				query5.prepare("SELECT name FROM Person WHERE Pid = :PId ");
+				query5.bindValue(":PId", personId);
+				bool k5=query5.exec();
+				 query5.next();
+				 QString lbl(query5.value(0).toString());
+
+
+				 face* f = new face(faceId,QStringToString(imagePath),x,y,width,height,tw,th,IplImage2QImage(temp),NULL,QStringToString(lbl));
+				 fl->append(f);
+			}
+		}
+		photo* p = new photo(imagePath,fl);
+		p->setID(imageId);
+		pl->append(p);
 	}
 	int b = 5;
-/*
-	int size= query.size();
-	int *photoIDs= new int [size];
-	for(int i=0; i< size; i++){
-		photoIDs[i]=0;
-	}
-	int i=0;
-	while(query.next()){
-		photoIDs[i]=query.value(0).toInt();
-		i++;
-	}
-	*/
+
 	return NULL;
 }
+
+QImage* db::IplImage2QImage(const IplImage *iplImage)
+{
+	int height = iplImage->height;
+	int width = iplImage->width;
+ 
+	if  (iplImage->depth == IPL_DEPTH_8U && iplImage->nChannels == 3)
+	{
+		const uchar *qImageBuffer = (const uchar*)iplImage->imageData;
+		QImage* img = new QImage(qImageBuffer, width, height, QImage::Format_RGB888);
+		img = new QImage(img->rgbSwapped());
+		return img;
+	} else if  (iplImage->depth == IPL_DEPTH_8U && iplImage->nChannels == 1){
+		const uchar *qImageBuffer = (const uchar*)iplImage->imageData;
+		QImage* img = new QImage(qImageBuffer, width, height, QImage::Format_Indexed8);
+ 
+		QVector<QRgb> colorTable;
+		for (int i = 0; i < 256; i++){
+			colorTable.push_back(qRgb(i, i, i));
+		}
+		img->setColorTable(colorTable);
+		return img;
+	}else{
+		qWarning() << "Image cannot be converted.";
+		return new QImage();
+	}
+}
+
+string db::QStringToString(QString str){
+	string filename ="";
+	for(int i = 0; i<str.size();i++){
+		char c = (str[i].toAscii());
+		filename += c;
+	}
+	return filename;
+}
+
 bool db::updateHasFaces(int faceId, QString  s, int imageId ){
 	bool a=false;
 	QSqlQuery query(database);
@@ -277,7 +355,7 @@ bool db::insertLabel(QString s)
 	
 }
 void db::createTables(){
-	const QString	CREATE_TABLE("CREATE TABLE Images (Iid  INTEGER PRIMARY KEY,path TEXT);");
+	const QString	CREATE_TABLE("CREATE TABLE Images (Iid  INTEGER PRIMARY KEY,path TEXT UNIQUE);");
 	QSqlQuery	query(database);
 			
 	if(query.exec(CREATE_TABLE))
