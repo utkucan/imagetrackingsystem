@@ -41,7 +41,7 @@
     </property>
     <column>
      <property name="text">
-      <string notr="true">1</string>
+      <string notr="true">Labels</string>
      </property>
     </column>
    </widget>
