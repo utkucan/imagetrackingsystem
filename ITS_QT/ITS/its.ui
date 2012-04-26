@@ -136,5 +136,25 @@
  <resources>
   <include location="its.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>treeWidget</sender>
+   <signal>itemClicked(QTreeWidgetItem*,int)</signal>
+   <receiver>ITSClass</receiver>
+   <slot>treeWidgetSelectionChange()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>71</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>183</x>
+     <y>50</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>treeWidgetSelectionChange()</slot>
+ </slots>
 </ui>
