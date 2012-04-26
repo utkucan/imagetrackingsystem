@@ -14,6 +14,52 @@ mdi::~mdi(void)
 {
 }
 
+void mdi::updateFace(){
+	int cursize= faceWindows.size();
+	for(int i = 0; i<faceWindows.size();i++){
+		if(faceWindows[i]->isClosed()){
+			delete faceWindows[i];
+			faceWindows.removeAt(i);
+			i--;
+		}
+	}
+	if(cursize>faceWindows.size()){
+		childPosx = 0;
+		childPosy = 0;
+		for(int i = 0; i<faceWindows.size();i++){
+			faceWindows[i]->setChildGeometry(childPosx+5,childPosy+5);
+			childPosx = (childPosx+130)%650;
+			if(childPosx == 0)
+				childPosy += 130;
+		}
+	}
+	
+ //   child->show();
+}
+
+void mdi::clearPhotos(){
+	photoWindows.clear();
+	faceWindows.clear();
+
+	/*
+	while(photoWindows.size()>0){
+		photoWindows[0]->close();
+		delete photoWindows[0];
+		photoWindows.removeFirst();
+	}
+
+	while(faceWindows.size()>0){
+		faceWindows[0]->close();
+		delete photoWindows[0];
+		photoWindows.removeFirst();
+	}
+	*/
+
+	childPosx = 0;
+	childPosy = 0;
+	mdiArea->closeAllSubWindows();
+}
+
 void mdi::addMdiPhoto(photo* photoObject){
 	if(photoWindows.size()>0){
 		photoWindows[0]->close();
@@ -53,9 +99,10 @@ void mdi::addMdiPhoto(photo* photoObject){
 void mdi::addMdiFace(face* faceObject){
 
 	mdiFace *child = new mdiFace(mdiArea,faceObject,database);
-	
+
 	faceWindows.append(child);
 	child->setSubWinAdd(mdiArea->addSubWindow(child,Qt::FramelessWindowHint));
+
 	child->setChildGeometry(childPosx+5,childPosy+5);
 	// child'larý array'e koy, arraydaki pozisyonþarýna göre, pasýlacaklarý yeri ayarla panpa
 	// ekrana bastýðýn yüzleri ayný zamanda bir file'a kaydet, tekrar iþlem yapmak zorunda kalma

@@ -2,7 +2,7 @@
 #define lABELDIALOG_H
 
 #include <QtGui\QDialog>
-#include "ui_labelDialog.h"
+#include "ui_labelDialog.h"t
 #include <QtGui>
 //#include <QDialog>
 #include <QWidget>
