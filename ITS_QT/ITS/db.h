@@ -23,8 +23,8 @@ public:
 	bool insertPhoto(photo*);
 	bool insertLabel(QString);
 	void displayDatabase();
-
-	QList<photo*> getNotLabeledPhotos();
+	
+	QList<photo*>* getUnlabeledPhotos();
 	bool updateHasFaces(int faceId, QString s, int imageId);
 	bool insertIntoPerson(QString name);
 	bool insertIntoPhoto(photo* p);
