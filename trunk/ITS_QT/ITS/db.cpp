@@ -100,6 +100,24 @@ bool db::insertIntoPhoto(photo *p){
 		return a;
 	}
 }
+QList<photo*>* db::getUnlabeledPhotos(){
+
+	bool a=false;
+	QSqlQuery query(database);
+	query.prepare("SELECT Iid FROM HasFaces WHERE Pid = 1 ");
+	a=query.exec();
+	int size= query.size();
+	int *photoIDs= new int [size];
+	for(int i=0; i< size; i++){
+		photoIDs[i]=0;
+	}
+	int i=0;
+	while(query.next()){
+		photoIDs[i]=query.value(0).toInt();
+		i++;
+	}
+	return NULL;
+}
 bool db::updateHasFaces(int faceId, QString  s, int imageId ){
 	bool a=false;
 	QSqlQuery query(database);
@@ -150,7 +168,7 @@ bool db::insertIntoFaces(face* f, int photoId){
 			query.next();
 			k=query.value(0).toInt();
 			f->setID(k);
-			f->setPhotoID(photoId);
+	
 
 			insertIntoHasFaces(k,1,photoId);
 		}
