@@ -6,8 +6,9 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	ui.setupUi(this);
 
 	database = new db();
-
-	treeWidget = new treeWid(database,ui.treeWidget);
+	treeWidget = new treeWid(this,database,ui.treeWidget);
+//	connect(ui.treeWidget,SIGNAL(clicked(QModelIndex)),this,SLOT(controlList()));
+	
 	
 	mdiArea = new mdi(ui.mdiArea,database);
 	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea,database);
@@ -136,4 +137,9 @@ void ITS::findImage(QString inp){
 	fsm->setRootPath(inp);
 	//bool a = fsm->isDir();
 	return new QList<QString>();*/
+}
+
+void ITS::treeWidgetSelectionChange(){
+	treeWidget->selectedItemChange();
+
 }

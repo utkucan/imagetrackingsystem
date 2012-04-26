@@ -43,6 +43,7 @@ private slots:;
 	void on_actionKlasor_triggered();
 	void on_actionSearch_HardDisk_triggered();
 	void controlList();
+	void treeWidgetSelectionChange();
 private:
 	
 	void displayFace(int);
