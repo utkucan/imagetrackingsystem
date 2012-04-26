@@ -153,8 +153,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>mdiArea</sender>
+   <signal>subWindowActivated(QMdiSubWindow*)</signal>
+   <receiver>ITSClass</receiver>
+   <slot>updateFace()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>207</x>
+     <y>139</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>185</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>treeWidgetSelectionChange()</slot>
+  <slot>updateFace()</slot>
  </slots>
 </ui>

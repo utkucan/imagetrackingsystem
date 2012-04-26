@@ -15,8 +15,19 @@ mdiDS::~mdiDS(void)
 
 }
 
+void mdiDS::clearMdiDS(){
+	while(photoWindows.size()>0){
+		photoWindows[0]->close();
+		delete photoWindows[0];
+		photoWindows.removeFirst();
+	}
+	mdids->closeAllSubWindows();
+	mdiArea->clearPhotos();
+	childPosx = 5;
+	childPosy = 5;
+}
+
 void mdiDS::addMdiDSChild(photo* photoObject){
-	
 	mdiDSChild *child = new mdiDSChild(mdids,mdiArea,database);
 	child->setPhoto(photoObject);
 

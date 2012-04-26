@@ -60,11 +60,7 @@ void mdiDSChild::setPhoto(photo* photoObject){
 
  void mdiDSChild::closeEvent(QCloseEvent *event)
  {
-	 delete prnt;
 	 prnt = NULL;
-	 delete widgetadd;
 	 widgetadd = NULL;
-	 delete photoObject;
 	 photoObject = NULL;	
-
  }
