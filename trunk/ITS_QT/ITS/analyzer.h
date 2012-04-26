@@ -8,6 +8,7 @@
 #include <QMdiSubWindow>
 #include <QTextEdit>
 #include <QDebug>
+
 #include "facedetect.h"
 #include "mdi.h"
 #include "face.h"
