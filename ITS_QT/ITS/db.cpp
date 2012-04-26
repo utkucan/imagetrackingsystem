@@ -5,7 +5,7 @@ db::db(QObject *parent){
 	if(openDB()){
 		createTables();
 		insertIntoPerson("Unknown");
-	
+		getUnlabeledPhotos();
 	}
 
 }
@@ -90,13 +90,14 @@ bool db::insertIntoPhoto(photo *p){
 			k=query.value(0).toInt();
 			p->setID(k);
 
-		}
-
-		for(int i=0; i < p->getFaces()->count()  ;i++ ){
+			for(int i=0; i < p->getFaces()->count()  ;i++ ){
 			
-			insertIntoFaces(p->getFaces()->at(i),k);
+				insertIntoFaces(p->getFaces()->at(i),k);
+
+			}
 
 		}
+
 		return a;
 	}
 }
@@ -104,8 +105,16 @@ QList<photo*>* db::getUnlabeledPhotos(){
 
 	bool a=false;
 	QSqlQuery query(database);
-	query.prepare("SELECT Iid FROM HasFaces WHERE Pid = 1 ");
+	query.prepare("SELECT DISTINCT Iid FROM HasFaces WHERE Pid = 1 ");
 	a=query.exec();
+
+	QList<int> photoId;
+
+	while(query.next()){
+		photoId.append(query.value(0).toInt());
+	}
+	int b = 5;
+/*
 	int size= query.size();
 	int *photoIDs= new int [size];
 	for(int i=0; i< size; i++){
@@ -116,6 +125,7 @@ QList<photo*>* db::getUnlabeledPhotos(){
 		photoIDs[i]=query.value(0).toInt();
 		i++;
 	}
+	*/
 	return NULL;
 }
 bool db::updateHasFaces(int faceId, QString  s, int imageId ){
