@@ -19,7 +19,8 @@ class db : public QObject
 public:
 	db(QObject *parent = 0);
 	~db(void);
-	QList<photo*>* selectPhoto(QString personName);
+	QList<photo*>* selectPersonPhoto(QString personName);
+	QList<face*>* selectPersonFace(QString personName);
 	bool insertPhoto(photo*);
 	bool insertLabel(QString);
 	void displayDatabase();
@@ -34,7 +35,11 @@ public:
 	QImage* IplImage2QImage(const IplImage *iplImage);
 	string QStringToString(QString str);
 	QSqlDatabase* getDB(){return &database;}
-
+	int getPersonId(QString personName);
+	QString getPersonName(int PersonID);
+	QString getImagePath(int imageID);
+	photo* getImage(int imageId);
+	face* getFace(int faceId);
 private:
 	bool openDB();
 	bool deleteDB();
