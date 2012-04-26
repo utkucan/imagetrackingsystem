@@ -7,8 +7,7 @@
      setAttribute(Qt::WA_DeleteOnClose);
 	 this->FaceObject = FaceObject;
 	 this->database = database;
-	 
-	 
+	 closed = false;
 
 	 image = new QLabel(this);
 	 image->setScaledContents(true);
@@ -16,32 +15,51 @@
 	 image->setPixmap(*transformImage());
 	 image->setGeometry(0,0,w,h);
 
-	 QIcon* accaptIcon = new QIcon("check.png");
-	 accaptButton = new QPushButton(*accaptIcon,"",this);
-	 accaptButton->setGeometry(0,h-20,20,20);
-	 connect(accaptButton,SIGNAL(clicked()),this,SLOT(accaptButtonClicked()));
+	 if(FaceObject->getLabel() == "Unknown"){
+		 labelComboBox = new QComboBox(this);
+		 labelComboBox->setGeometry(0,h,w-20,20);
+		 labelComboBox->setEditable(true);
 
-	 QIcon* rejectIcon = new QIcon("cross.png");
-	 rejectButton = new QPushButton(*rejectIcon,"",this);
-	 rejectButton->setGeometry(w-20,h-20,20,20);
-	 connect(rejectButton,SIGNAL(clicked()),this,SLOT(rejectButtonClicked()));
-	// h += 20;
-	 /*
-	 if(FaceObject->getLabel() == ""){
+		 labelPushButton = new QPushButton(this);
+		 labelPushButton->setGeometry(w-20,h,20,20);
+		 labelPushButton->setText("ok");
 
+		 connect(labelPushButton,SIGNAL(clicked()),this,SLOT(textChanged()));
+		 /*
 		labelTextEdit = new QLineEdit(this);
-//		labelTextEdit->setAlignment(Qt::AlignBottom);
 		labelTextEdit->setGeometry(0,h,w,20);
 		labelTextEdit->setText("add label");
-		//labelTextEdit->addAction("add label");
+	//	connect(accaptButton,SIGNAL(clicked()),this,SLOT(accaptButtonClicked()));
+		*/
 		h +=20;
+	 }else{
+
+		 QIcon* accaptIcon = new QIcon("check.png");
+		 accaptButton = new QPushButton(*accaptIcon,"",this);
+		 accaptButton->setGeometry(0,h-20,20,20);
+		 connect(accaptButton,SIGNAL(clicked()),this,SLOT(accaptButtonClicked()));
+
+		 QIcon* rejectIcon = new QIcon("cross.png");
+		 rejectButton = new QPushButton(*rejectIcon,"",this);
+		 rejectButton->setGeometry(w-20,h-20,20,20);
+		 connect(rejectButton,SIGNAL(clicked()),this,SLOT(rejectButtonClicked()));
 	 }
-	 */
-//	 this->setContextMenuPolicy(Qt::CustomContextMenu);
  }
  mdiFace::~mdiFace(void){
  
  }
+
+ void mdiFace::textChanged(){
+	QString lbl = labelComboBox->currentText();
+	if(lbl == "")
+		return;
+	string l = QStringToString(lbl);
+	FaceObject->setLabel(l);
+	database->updateHasFaces(FaceObject->getID(),lbl,FaceObject->getPhotoId());
+	this->close();
+}
+
+
  void mdiFace::setChildGeometry(int posX,int posY){
 	 this->posX = posX;
 	 this->posY = posY;
@@ -93,21 +111,30 @@
 
 void mdiFace::closeEvent(QCloseEvent *event)
  {
-	 delete prnt;
+	 closed = true;
+	 widgetadd->close();
+	 
 	 prnt = NULL;
-	 delete widgetadd;
 	 widgetadd = NULL;
-	 delete FaceObject;
-	 FaceObject = NULL;	
-	 delete e;
-	 e = NULL;
+	 FaceObject = NULL;
  }
 
 void mdiFace::accaptButtonClicked(){
 	int a = 5;
 	//sonrasý database
+	this->close();
 }
 void mdiFace::rejectButtonClicked(){
 	int a = 5;
 	//sonrasý database
+	this->close();
+}
+
+string mdiFace::QStringToString(QString str){
+	string filename ="";
+	for(int i = 0; i<str.size();i++){
+		char c = (str[i].toAscii());
+		filename += c;
+	}
+	return filename;
 }

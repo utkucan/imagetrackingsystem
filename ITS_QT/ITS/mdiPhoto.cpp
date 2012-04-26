@@ -102,8 +102,8 @@ mdiPhoto::~mdiPhoto(void)
 	image->setPixmap(*pixptr);
 	delete pixptr;
 			
-	if( (*faceList)[i]->getLabel() == "" ){
-		QToolTip::showText(globalPos,"not labeled",image);
+	if( (*faceList)[i]->getLabel() == "Unknown" ){
+		QToolTip::showText(globalPos,"Unknown",image);
 	}else{
 		QToolTip::showText(globalPos,QString((*faceList)[i]->getLabel().c_str()));
 	}
@@ -127,7 +127,7 @@ mdiPhoto::~mdiPhoto(void)
 					
 					QPoint globalPos = this->mapToGlobal(((QMouseEvent*)e)->pos());
 					QMenu myMenu(this);
-					if((*faceList)[i]->getLabel() == ""){
+					if((*faceList)[i]->getLabel() == "Unknown"){
 						myMenu.addAction("add label");
 						QAction* selectedItem = myMenu.exec(globalPos);
 						if(selectedItem != NULL && selectedItem->text() == "add label"){

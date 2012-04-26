@@ -19,6 +19,7 @@ public:
 	~mdiDS(void);
 	void addMdiDSChild(photo* photoObject);
 	bool event(QEvent * e);
+	void clearMdiDS();
 private:
 	int childPosx,childPosy;
 	QList<mdiDSChild*> photoWindows;
