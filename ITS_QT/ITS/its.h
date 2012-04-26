@@ -15,8 +15,7 @@
 #include <QCheckBox>
 #include <QListWidget>
 #include <QList>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
+
 #include <QMoveEvent>
 #include <QTimer>
 
@@ -29,6 +28,7 @@
 #include "photo.h"
 #include "face.h"
 #include "db.h"
+#include "treeWid.h"
 
 using namespace std;
 
@@ -47,7 +47,7 @@ private:
 	
 	void displayFace(int);
 	void displayPhoto(int);
-	void initializeTree();
+//	void initializeTree();
 	void findImage(QString inp);
 	bool event(QEvent * e);
 
@@ -59,9 +59,12 @@ private:
 	QList<photo*> *photoList;
 	mdi* mdiArea;
 	mdiDS* mdids;
+	treeWid* treeWidget;
+	/*
 	QTreeWidget* treeWidget;
-	QTreeWidgetItem* photoItem;
+	QTreeWidgetItem* unlabeledPhotoItem;
 	QTreeWidgetItem* labelItem;
+	*/
 	QList<QString>* allImagesList;
 //	analyzer* imageAnalyzer;
 	Ui::ITSClass ui;

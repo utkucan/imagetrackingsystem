@@ -4,18 +4,22 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)
 {
 	ui.setupUi(this);
+
 	database = new db();
+
+	treeWidget = new treeWid(database,ui.treeWidget);
+	
 	mdiArea = new mdi(ui.mdiArea,database);
 	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea,database);
 	photoList = new QList<photo*>();
-	treeWidget = ui.treeWidget;
+	
 
 	
 /*	if(!database->openDB())
 		exit(1);
 */
 
-	initializeTree();
+//	initializeTree();
 	faceCount = 1;
 }
 
@@ -23,17 +27,17 @@ ITS::~ITS()
 {
 
 }
-
+/*
 void ITS::initializeTree(){
-	photoItem = new QTreeWidgetItem(treeWidget);
-	QString phtotemp("Photos");
-	photoItem->setText(0,phtotemp);
+	unlabeledPhotoItem = new QTreeWidgetItem(treeWidget);
+	QString phtotemp("Unlabeled Photos");
+	unlabeledPhotoItem->setText(0,phtotemp);
 	
 	labelItem = new QTreeWidgetItem(treeWidget);
 	QString temp("Labels");
 	labelItem->setText(0,temp);
 }
-
+*/
 void ITS::displayPhoto(int pos){
 	for(int i = pos; i< photoList->size(); i++){
 		mdids->addMdiDSChild((*photoList)[i]);
@@ -59,17 +63,6 @@ void ITS::on_actionKlasor_triggered(){
                          "Select one or more files to open",
                          "",
                          "Images (*.jpg)");
-
-	
-
-
-	for( int i = 0; i<QDirectory.size(); i++){
-		
-		QTreeWidgetItem *subItem = new QTreeWidgetItem();
-		photoItem->addChild(subItem);
-		QString imageName = QFileInfo(QDirectory[i]).fileName();
-		subItem->setText(0,imageName);
-	}
 
 
 	photoPos = photoList->size();
