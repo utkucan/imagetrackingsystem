@@ -19,11 +19,11 @@ class db : public QObject
 public:
 	db(QObject *parent = 0);
 	~db(void);
-
+	QList<photo*>* selectPhoto(QString personName);
 	bool insertPhoto(photo*);
 	bool insertLabel(QString);
 	void displayDatabase();
-	
+	bool selectPerson();
 	QList<photo*>* getUnlabeledPhotos();
 	bool updateHasFaces(int faceId, QString s, int imageId);
 	bool insertIntoPerson(QString name);
