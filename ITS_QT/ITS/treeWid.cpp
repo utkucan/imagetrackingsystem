@@ -93,8 +93,9 @@ void treeWid::selectedItemChange(){
 			displayPhoto(photoIDList);	
 		}else{
 			lastOperation = operation::faceOperation;
-			QList<int>* faceIdList = database->selectPersonFace(personName);
-			displayFace(faceIdList);
+			QList<int>*ApprovedList = new QList<int>();
+			QList<int>* faceIdList = database->selectPersonFace(personName,ApprovedList);
+			displayFace(faceIdList,ApprovedList);
 		}
 		QApplication::restoreOverrideCursor();
 	}else{
@@ -119,8 +120,9 @@ void treeWid::reDoLastOperation(){
 			QList<int>* photoIdList = database->selectPersonPhoto(personName);
 			displayPhoto(photoIdList);
 		}else{
-			QList<int>* faceIdList = database->selectPersonFace(personName);
-			displayFace(faceIdList);
+			QList<int>*ApprovedList = new QList<int>();
+			QList<int>* faceIdList = database->selectPersonFace(personName,ApprovedList);
+			displayFace(faceIdList,ApprovedList);
 		}
 	}
 }
@@ -136,13 +138,14 @@ void treeWid::displayPhoto(QList<int>* photoIdList){
 	listPos = photoIdList->size();
 }
 
-void treeWid::displayFace(QList<int>* faceIdList){
+void treeWid::displayFace(QList<int>* faceIdList,QList<int>*ApprovedList){
 	if(!reDoFlag){
 		mdids->clearMdiDS();
 		listPos = 0;
 	}
 	for(int i = listPos; i< faceIdList->size(); i++){
-		mdiArea->addMdiFace((*faceList)[(*faceIdList)[i]-1]);
+	//	if((*ApprovedList)[i] == 0)
+			mdiArea->addMdiFace((*faceList)[(*faceIdList)[i]-1]);
 	}
 	listPos = faceIdList->size();
 }

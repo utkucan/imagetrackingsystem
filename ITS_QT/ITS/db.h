@@ -31,7 +31,7 @@ public:
 	
 	void getAllPhotos(QList<photo*>*,QList<face*>*);
 	QList<int>* selectPersonPhoto(QString personName);
-	QList<int>* selectPersonFace(QString personName);
+	QList<int>* selectPersonFace(QString personName,QList<int>*);
 	bool photoExist(QString path);
 	bool selectPerson();
 	
