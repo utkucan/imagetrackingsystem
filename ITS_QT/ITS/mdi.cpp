@@ -15,6 +15,35 @@ mdi::~mdi(void)
 }
 
 void mdi::updateFace(){
+	int cursize = faceWindows.size();
+	QList<mdiFace*> tmpList;
+	for(int i = 0; i<faceWindows.size();i++){
+		if(!faceWindows[i]->isClosed()){
+			tmpList.append(faceWindows[i]);
+	/*		faceWindows[i]->setChildGeometry(childPosx+5,childPosy+5);
+			childPosx = (childPosx+130)%650;
+			if(childPosx == 0)
+				childPosy += 130;
+				*/
+		}
+	}
+
+	if(cursize != tmpList.size()){
+		childPosx = 0;
+		childPosy = 0;
+		for(int i = 0; i<tmpList.size();i++){
+			tmpList[i]->setChildGeometry(childPosx+5,childPosy+5);
+			childPosx = (childPosx+130)%650;
+			if(childPosx == 0)
+				childPosy += 130;
+		}
+		faceWindows.clear();
+		faceWindows = tmpList;
+	}else
+		tmpList.clear();
+
+	
+	/*
 	int cursize= faceWindows.size();
 	for(int i = 0; i<faceWindows.size();i++){
 		if(faceWindows[i]->isClosed()){
@@ -33,7 +62,7 @@ void mdi::updateFace(){
 				childPosy += 130;
 		}
 	}
-	
+	*/
  //   child->show();
 }
 

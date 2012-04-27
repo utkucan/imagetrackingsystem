@@ -4,6 +4,7 @@
 #include <QImage>
 #include <string>
 #include <iostream>
+#include "facedetect.h"
 using namespace std;
 
 class face
@@ -17,11 +18,12 @@ public:
 		int height,
 		int transformedWidth,
 		int transformedHeight,
-		QImage* faceImage,
+//		QImage* faceImage,
 		//QList<double> *featureList,
 		double* featureList,
 		string label);
 	~face(void);
+
 	int getID();
 	int getX();
 	int getY();
@@ -29,18 +31,22 @@ public:
 	int getHeight();
 	double* getFecialFeatures();
 	QImage* getImage();
-	void setImage(QImage* f){faceImage = f;}
 	string getPath();
-	void setPath(string p){imagePath = p;}
 	string getLabel();
-	void setLavel(string label);
 	int getTransformedWidth(){return tw;}
 	int getTransformedHeight(){return th;}
+	int getPhotoId(){return photoId;}
+
+	void setImage(QImage* f){faceImage = f;}
+	void setPath(string p){imagePath = p;}
+	void setLavel(string label);
 	void setID(int id){ this->id = id;}
 	void setLabel(string lbl){label = lbl;}
 	void setPhotoID(int pid){photoId = pid;}
-	int getPhotoId(){return photoId;}
+	
 private:
+	void loadFaceImage();
+	QImage* IplImage2QImage(const IplImage *iplImage);
 
 	int id;
 	int photoId;

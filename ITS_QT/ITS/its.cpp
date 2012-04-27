@@ -71,7 +71,8 @@ void ITS::on_actionKlasor_triggered(){
 	ip = new importPhotos(QDirectory,photoList,database);
 	ip->start();
 	
-	QTimer::singleShot(1000*3, this, SLOT(controlList()));
+	//QTimer::singleShot(1000*3, this, SLOT(controlList()));
+
 /*	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(controlList()));
 	timer->start(100);

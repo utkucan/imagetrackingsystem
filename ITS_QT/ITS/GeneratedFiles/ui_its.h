@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'its.ui'
 **
-** Created: Wed 25. Apr 12:48:21 2012
+** Created: Thu 26. Apr 22:58:11 2012
 **      by: Qt User Interface Compiler version 4.7.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -72,7 +72,7 @@ public:
         mdiArea->setViewMode(QMdiArea::SubWindowView);
         treeWidget = new QTreeWidget(centralWidget);
         QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem();
-        __qtreewidgetitem->setText(0, QString::fromUtf8("1"));
+        __qtreewidgetitem->setText(0, QString::fromUtf8("Labels"));
         treeWidget->setHeaderItem(__qtreewidgetitem);
         treeWidget->setObjectName(QString::fromUtf8("treeWidget"));
         treeWidget->setGeometry(QRect(10, 10, 170, 510));
@@ -108,6 +108,8 @@ public:
         mainToolBar->addSeparator();
 
         retranslateUi(ITSClass);
+        QObject::connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*,int)), ITSClass, SLOT(treeWidgetSelectionChange()));
+        QObject::connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), ITSClass, SLOT(updateFace()));
 
         QMetaObject::connectSlotsByName(ITSClass);
     } // setupUi
