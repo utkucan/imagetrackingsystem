@@ -109,14 +109,14 @@ void mdiFace::closeEvent(QCloseEvent *event)
  }
 
 void mdiFace::accaptButtonClicked(){
-	FaceObject->setLabel("Unknown");
+
 	database->updateHasFaces(FaceObject->getID(),QString(FaceObject->getLabel().c_str()),FaceObject->getPhotoId(),1);
 	this->close();
 }
 void mdiFace::rejectButtonClicked(){
+	// reject edince nolcak??????
 	FaceObject->setLabel("Unknown");
 	database->updateHasFaces(FaceObject->getID(),"Unknown",FaceObject->getPhotoId(),0);
-	//sonrasý database
 	this->close();
 }
 
