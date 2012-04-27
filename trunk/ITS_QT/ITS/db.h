@@ -28,15 +28,17 @@ public:
 	bool insertIntoHasFaces(int faceId, int personId, int imageId,int);
 	
 
+	
+	void getAllPhotos(QList<photo*>*,QList<face*>*);
+	QList<int>* selectPersonPhoto(QString personName);
+	QList<int>* selectPersonFace(QString personName);
+	bool photoExist(QString path);
 	bool selectPerson();
-	QList<photo*>* selectPersonPhoto(QString personName);
-	QList<face*>* selectPersonFace(QString personName);
+	
+	
 	QList<photo*>* getUnlabeledPhotos();
 
-	bool updateHasFaces(int faceId, QString s, int imageId,int Approved);
-
 	QStringList getAllPerson();
-	
 	
 	QSqlDatabase* getDB(){return &database;}
 	int getPersonId(QString personName);
@@ -44,6 +46,9 @@ public:
 	QString getImagePath(int imageID);
 	photo* getImage(int imageId);
 	face* getFace(int faceId);
+
+	bool updateHasFaces(int faceId, QString s, int imageId,int Approved);
+
 private:
 	string QStringToString(QString str);
 	void displayDatabase();

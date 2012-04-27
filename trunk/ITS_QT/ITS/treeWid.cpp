@@ -11,7 +11,12 @@ treeWid::treeWid(QWidget* prnt,db* database,QTreeWidget* treeWidge,mdiDS* mdids,
 	lastOperation = -1;
 	listPos = 0;
 	reDoFlag = false;
+
+	photoList = new QList<photo*>();
+	faceList = new QList<face*>();
+
 	buildTree();
+	buildLists();
 
 	/*
 	for( int i = 0; i<QDirectory.size(); i++){
@@ -47,7 +52,9 @@ void treeWid::updateTree(){
 
 			itemList->append(item);
 		}
+		size = personList.size();
 	}
+
 }
 
 void treeWid::buildTree(){
@@ -70,6 +77,10 @@ void treeWid::buildTree(){
 	}
 }
 
+void treeWid::buildLists(){
+	database->getAllPhotos(photoList,faceList);
+}
+
 void treeWid::selectedItemChange(){
 	QString selection(treeWidget->currentItem()->text(0));
 	if(selection == "Photos" || selection == "Faces"){
@@ -78,12 +89,12 @@ void treeWid::selectedItemChange(){
 		QApplication::setOverrideCursor(Qt::WaitCursor);
 		if(selection == "Photos" ){
 			lastOperation = operation::photoOperation;
-			QList<photo*>* photoList = database->selectPersonPhoto(personName);
-			displayPhoto(photoList);	
+			QList<int>* photoIDList = database->selectPersonPhoto(personName);
+			displayPhoto(photoIDList);	
 		}else{
 			lastOperation = operation::faceOperation;
-			QList<face*>* faceList = database->selectPersonFace(personName);
-			displayFace(faceList);
+			QList<int>* faceIdList = database->selectPersonFace(personName);
+			displayFace(faceIdList);
 		}
 		QApplication::restoreOverrideCursor();
 	}else{
@@ -105,33 +116,33 @@ void treeWid::reDoLastOperation(){
 	if(lastOperation != -1){
 		reDoFlag = true;
 		if(lastOperation == operation::photoOperation){
-			QList<photo*>* photoList = database->selectPersonPhoto(personName);
-			displayPhoto(photoList);
+			QList<int>* photoIdList = database->selectPersonPhoto(personName);
+			displayPhoto(photoIdList);
 		}else{
-			QList<face*>* faceList = database->selectPersonFace(personName);
-			displayFace(faceList);
+			QList<int>* faceIdList = database->selectPersonFace(personName);
+			displayFace(faceIdList);
 		}
 	}
 }
 
-void treeWid::displayPhoto(QList<photo*>* photoList){
+void treeWid::displayPhoto(QList<int>* photoIdList){
 	if(!reDoFlag){
 		mdids->clearMdiDS();
 		listPos = 0;
 	}
-	for(int i = listPos; i< photoList->size(); i++){
-		mdids->addMdiDSChild((*photoList)[i]);
+	for(int i = listPos; i< photoIdList->size(); i++){
+		mdids->addMdiDSChild((*photoList)[(*photoIdList)[i]-1]);
 	}
-	listPos = photoList->size();
+	listPos = photoIdList->size();
 }
 
-void treeWid::displayFace(QList<face*>* faceList){
+void treeWid::displayFace(QList<int>* faceIdList){
 	if(!reDoFlag){
 		mdids->clearMdiDS();
 		listPos = 0;
 	}
-	for(int i = listPos; i< faceList->size(); i++){
-		mdiArea->addMdiFace((*faceList)[i]);
+	for(int i = listPos; i< faceIdList->size(); i++){
+		mdiArea->addMdiFace((*faceList)[(*faceIdList)[i]-1]);
 	}
-	listPos = faceList->size();
+	listPos = faceIdList->size();
 }
