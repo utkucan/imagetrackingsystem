@@ -319,19 +319,21 @@ QList<int>* db::selectPersonPhoto(QString personName){
 	
 }
 
-QList<int>* db::selectPersonFace(QString personName){
+QList<int>* db::selectPersonFace(QString personName,QList<int>*ApprovedList){
 	bool a=false;
 //	int personId= getPersonId(personName);
 
 	QSqlQuery query(database);
 
-	query.prepare("SELECT F1.Fid FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid AND P1.name=:personName");
+	query.prepare("SELECT F1.Fid, H1.Approved FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid AND P1.name=:personName");
 	query.bindValue(":personName", personName);
 	a=query.exec();
 
 	QList<int>* faceIdList = new QList<int>();
+	//QList<int>* ApprovedList = new QList<int>();
 	while(query.next()){
 		faceIdList->append(query.value(0).toInt());
+		ApprovedList->append(query.value(1).toInt());
 	}
 	return faceIdList;
 }

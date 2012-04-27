@@ -49,17 +49,6 @@
  
  }
 
- void mdiFace::textChanged(){
-	QString lbl = labelComboBox->currentText();
-	if(lbl == "")
-		return;
-	string l = QStringToString(lbl);
-	FaceObject->setLabel(l);
-	database->updateHasFaces(FaceObject->getID(),lbl,FaceObject->getPhotoId(),1);
-	this->close();
-}
-
-
  void mdiFace::setChildGeometry(int posX,int posY){
 	 this->posX = posX;
 	 this->posY = posY;
@@ -120,13 +109,24 @@ void mdiFace::closeEvent(QCloseEvent *event)
  }
 
 void mdiFace::accaptButtonClicked(){
-	int a = 5;
-	//sonrasý database
+	FaceObject->setLabel("Unknown");
+	database->updateHasFaces(FaceObject->getID(),QString(FaceObject->getLabel().c_str()),FaceObject->getPhotoId(),1);
 	this->close();
 }
 void mdiFace::rejectButtonClicked(){
-	int a = 5;
+	FaceObject->setLabel("Unknown");
+	database->updateHasFaces(FaceObject->getID(),"Unknown",FaceObject->getPhotoId(),0);
 	//sonrasý database
+	this->close();
+}
+
+ void mdiFace::textChanged(){
+	QString lbl = labelComboBox->currentText();
+	if(lbl == "")
+		return;
+	string l = QStringToString(lbl);
+	FaceObject->setLabel(l);
+	database->updateHasFaces(FaceObject->getID(),lbl,FaceObject->getPhotoId(),1);
 	this->close();
 }
 

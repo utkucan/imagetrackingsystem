@@ -27,7 +27,7 @@ private:
 	enum operation{photoOperation,faceOperation};
 	
 	void displayPhoto(QList<int>*);
-	void displayFace(QList<int>*);
+	void displayFace(QList<int>*,QList<int>*);
 	
 	void buildTree();
 	void buildLists();
