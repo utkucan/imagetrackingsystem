@@ -1,12 +1,22 @@
 #include "importPhotos.h"
 
-importPhotos::importPhotos(QStringList QDirectory,QList<photo*> *photos,db* database)
+importPhotos::importPhotos(QString dir,db* database){
+	this->database = database;
+	this->dir = dir;
+	QDirectory = new QStringList();
+	m = new QMutex();
+	maxNumOfThread = 1;
+	flag = true;
+}
+
+importPhotos::importPhotos(QStringList QDirectory,db* database)
 {
 	this->QDirectory = new QStringList(QDirectory);
-	this->photos = photos;
+//	this->photos = photos;
 	this->database = database;
 	m = new QMutex();
 	maxNumOfThread = 1;//QDirectory->size();
+	flag = false;
 }
 
 
@@ -16,19 +26,23 @@ importPhotos::~importPhotos(void)
 	QDirectory->clear();
 	delete QDirectory;
 	QDirectory = NULL;
-	photos = NULL;
+//	photos = NULL;
 	
 }
 
 void importPhotos::run(){
+	if(flag)
+		findImage(dir);
+
 	QList<analyzer*> threads;
 	int numOfThread = 0;
+//	QList<photo*> *photos;
 	for(int j = 0 ; j< QDirectory->count(); j++){
 		string filename = QStringToString((*QDirectory)[j]);
 		QList<face*> *tmpLst = new QList<face*>();
 
-		photo* p = new photo((*QDirectory)[j],tmpLst);
-		photos->append(p);
+//		photo* p = new photo((*QDirectory)[j],tmpLst);
+//		photos->append(p);
 
 		analyzer* imageAnalyzer = new analyzer(tmpLst,filename);
 		imageAnalyzer->start();
@@ -38,8 +52,10 @@ void importPhotos::run(){
 		while(numOfThread == maxNumOfThread){
 			for(int i = 0; i< threads.size(); i++){
 				if(threads[i]->isFinished()){
-					int pos = photos->size() - threads.size() + i;
-					database->insertIntoPhoto((*photos)[pos]);
+				//	QList<face*> *tmpLst = threads[i]->getFaceList();
+					database->insertIntoPhoto( new photo( QString( threads[i]->getFileName().c_str()),threads[i]->getFaceList()));
+				//	int pos = photos->size() - threads.size() + i;
+				//	database->insertIntoPhoto((*photos)[pos]);
 					numOfThread--;
 					delete threads[i];
 					threads.removeAt(i);
@@ -64,4 +80,23 @@ string importPhotos::QStringToString(QString str){
 		filename += c;
 	}
 	return filename;
+}
+
+void importPhotos::findImage(QString inp){
+	QDir* direc = new QDir(inp);
+	QFileInfoList fili = direc->entryInfoList();
+	for(int i = 0 ; i < fili.size() ;i++){
+		QFileInfo info = fili.at(i);
+		if(info.fileName().compare(".")!=0 && info.fileName().compare("..")!=0){
+			bool isDirec = info.isDir();
+			if(isDirec){
+				findImage(info.absoluteFilePath());
+			}
+			else{
+				QString suf = info.suffix();
+				if(suf.compare("jpg")==0)
+					QDirectory->append(info.absoluteFilePath());
+			}
+		}
+	}
 }

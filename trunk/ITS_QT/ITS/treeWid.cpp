@@ -8,7 +8,9 @@ treeWid::treeWid(QWidget* prnt,db* database,QTreeWidget* treeWidge,mdiDS* mdids,
 	this->mdids = mdids;
 	this->mdiArea = mdiArea;
 	itemList = new QList<QTreeWidgetItem*>();
-
+	lastOperation = -1;
+	listPos = 0;
+	reDoFlag = false;
 	buildTree();
 
 	/*
@@ -70,14 +72,16 @@ void treeWid::buildTree(){
 
 void treeWid::selectedItemChange(){
 	QString selection(treeWidget->currentItem()->text(0));
-	QString personName;
 	if(selection == "Photos" || selection == "Faces"){
+		reDoFlag = false;
 		personName = treeWidget->currentItem()->parent()->text(0);
 		QApplication::setOverrideCursor(Qt::WaitCursor);
 		if(selection == "Photos" ){
+			lastOperation = operation::photoOperation;
 			QList<photo*>* photoList = database->selectPersonPhoto(personName);
 			displayPhoto(photoList);	
 		}else{
+			lastOperation = operation::faceOperation;
 			QList<face*>* faceList = database->selectPersonFace(personName);
 			displayFace(faceList);
 		}
@@ -97,16 +101,37 @@ void treeWid::selectedItemChange(){
 //	int a = 5;
 }
 
-void treeWid::displayPhoto(QList<photo*>* photoList){
-	mdids->clearMdiDS();
-	for(int i = 0; i< photoList->size(); i++){
-		mdids->addMdiDSChild((*photoList)[i]);
+void treeWid::reDoLastOperation(){
+	if(lastOperation != -1){
+		reDoFlag = true;
+		if(lastOperation == operation::photoOperation){
+			QList<photo*>* photoList = database->selectPersonPhoto(personName);
+			displayPhoto(photoList);
+		}else{
+			QList<face*>* faceList = database->selectPersonFace(personName);
+			displayFace(faceList);
+		}
 	}
 }
 
+void treeWid::displayPhoto(QList<photo*>* photoList){
+	if(!reDoFlag){
+		mdids->clearMdiDS();
+		listPos = 0;
+	}
+	for(int i = listPos; i< photoList->size(); i++){
+		mdids->addMdiDSChild((*photoList)[i]);
+	}
+	listPos = photoList->size();
+}
+
 void treeWid::displayFace(QList<face*>* faceList){
-	mdids->clearMdiDS();
-	for(int i = 0; i< faceList->size(); i++){
+	if(!reDoFlag){
+		mdids->clearMdiDS();
+		listPos = 0;
+	}
+	for(int i = listPos; i< faceList->size(); i++){
 		mdiArea->addMdiFace((*faceList)[i]);
 	}
+	listPos = faceList->size();
 }

@@ -19,8 +19,10 @@
 class importPhotos  : public QThread
 {
 public:
-	importPhotos(QStringList,QList<photo*>*,db*);
+	importPhotos(QString,db*);
+	importPhotos(QStringList,db*);
 	~importPhotos(void);
+	
 	void run();
 	void lockProcess(){
 		m->lock();
@@ -29,11 +31,14 @@ public:
 		m->unlock();
 	}
 private:
-
+	void findImage(QString inp);
 	string QStringToString(QString);
+
+	bool flag;
 	QMutex* m;
 	QStringList* QDirectory;
-	QList<photo*> *photos;
+	QString dir;
+//	QList<photo*> *photos;
 	int maxNumOfThread;
 	db* database;
 };

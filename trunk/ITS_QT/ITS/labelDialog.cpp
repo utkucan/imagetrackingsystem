@@ -27,7 +27,7 @@ void labelDialog::textChanged(){
 	QString lbl = uiLd.comboBox->currentText();
 	string l = QStringToString(lbl);
 	this->fc->setLabel(l);
-	database->updateHasFaces(fc->getID(),lbl,fc->getPhotoId());
+	database->updateHasFaces(fc->getID(),lbl,fc->getPhotoId(),1);
 	this->close();
 }
 

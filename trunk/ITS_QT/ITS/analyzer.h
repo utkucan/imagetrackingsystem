@@ -19,6 +19,8 @@ public:
 	analyzer(QList<face*>*,string);
 	~analyzer(void);
 	void run();
+	QList<face*>* getFaceList(){return faceList;}
+	string getFileName(){return imagePath;}
 //	void analyz(string imagePath);
 private:
 
