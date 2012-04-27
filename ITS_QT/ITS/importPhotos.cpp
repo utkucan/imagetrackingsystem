@@ -1,19 +1,23 @@
 #include "importPhotos.h"
 
-importPhotos::importPhotos(QString dir,db* database){
+importPhotos::importPhotos(QString dir,db* database,QList<photo*> *photos,QList<face*> *faces){
 	this->database = database;
 	this->dir = dir;
+	this->photos = photos;
+	this->faces = faces;
 	QDirectory = new QStringList();
 	m = new QMutex();
 	maxNumOfThread = 1;
 	flag = true;
+	
 }
 
-importPhotos::importPhotos(QStringList QDirectory,db* database)
+importPhotos::importPhotos(QStringList QDirectory,db* database,QList<photo*> *photos,QList<face*> *faces)
 {
 	this->QDirectory = new QStringList(QDirectory);
-//	this->photos = photos;
+	this->photos = photos;
 	this->database = database;
+	this->faces = faces;
 	m = new QMutex();
 	maxNumOfThread = 1;//QDirectory->size();
 	flag = false;
@@ -38,32 +42,38 @@ void importPhotos::run(){
 	int numOfThread = 0;
 //	QList<photo*> *photos;
 	for(int j = 0 ; j< QDirectory->count(); j++){
-		string filename = QStringToString((*QDirectory)[j]);
-		QList<face*> *tmpLst = new QList<face*>();
+		if(!database->photoExist((*QDirectory)[j])){
+			string filename = QStringToString((*QDirectory)[j]);
+			QList<face*> *tmpLst = new QList<face*>();
 
-//		photo* p = new photo((*QDirectory)[j],tmpLst);
-//		photos->append(p);
+	//		photo* p = new photo((*QDirectory)[j],tmpLst);
+	//		photos->append(p);
 
-		analyzer* imageAnalyzer = new analyzer(tmpLst,filename);
-		imageAnalyzer->start();
-		threads.append(imageAnalyzer);
-		numOfThread++;
+			analyzer* imageAnalyzer = new analyzer(tmpLst,filename);
+			imageAnalyzer->start();
+			threads.append(imageAnalyzer);
+			numOfThread++;
 
-		while(numOfThread == maxNumOfThread){
-			for(int i = 0; i< threads.size(); i++){
-				if(threads[i]->isFinished()){
-				//	QList<face*> *tmpLst = threads[i]->getFaceList();
-					database->insertIntoPhoto( new photo( QString( threads[i]->getFileName().c_str()),threads[i]->getFaceList()));
-				//	int pos = photos->size() - threads.size() + i;
-				//	database->insertIntoPhoto((*photos)[pos]);
-					numOfThread--;
-					delete threads[i];
-					threads.removeAt(i);
-					break;
+			while(numOfThread == maxNumOfThread){
+				for(int i = 0; i< threads.size(); i++){
+					if(threads[i]->isFinished()){
+					//	QList<face*> *tmpLst = threads[i]->getFaceList();
+						if(threads[i]->getFaceList()->size()>0){
+							photo* p = new photo( QString( threads[i]->getFileName().c_str()),threads[i]->getFaceList());
+							faces->append(*(threads[i]->getFaceList()));
+							photos->append(p);
+							database->insertIntoPhoto(p);
+						}
+					//	int pos = photos->size() - threads.size() + i;
+					//	database->insertIntoPhoto((*photos)[pos]);
+						numOfThread--;
+						delete threads[i];
+						threads.removeAt(i);
+						break;
+					}
 				}
 			}
 		}
-
 	}
 
 	for(int i = 0; i< threads.size(); i++){

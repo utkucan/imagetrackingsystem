@@ -61,7 +61,7 @@ void analyzer::run(){
 		img = transformImage(img);
 //		saveface(img);
 		// burada fecial feature hesaplicaz, NULL yazan yere featurelarý verecez, label'ý þimdilik boþ verdik, id'yi its set edicek
-		face* fc = new face(0,imagePath,tmp->x,tmp->y,tmp->width,tmp->height,img->width(),img->height(),NULL,"");
+		face* fc = new face(0,imagePath,tmp->x,tmp->y,tmp->width,tmp->height,img->width(),img->height(),NULL,"Unknown");
 		faceList->append(fc);
 //		mdiArea->addMdiChild(fc);
 		tmp= tmp->next;

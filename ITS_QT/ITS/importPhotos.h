@@ -19,8 +19,8 @@
 class importPhotos  : public QThread
 {
 public:
-	importPhotos(QString,db*);
-	importPhotos(QStringList,db*);
+	importPhotos(QString,db*,QList<photo*> *photos,QList<face*> *faces);
+	importPhotos(QStringList,db*,QList<photo*> *photos,QList<face*> *faces);
 	~importPhotos(void);
 	
 	void run();
@@ -38,7 +38,8 @@ private:
 	QMutex* m;
 	QStringList* QDirectory;
 	QString dir;
-//	QList<photo*> *photos;
+	QList<photo*> *photos;
+	QList<face*> *faces;
 	int maxNumOfThread;
 	db* database;
 };

@@ -98,7 +98,7 @@ bool db::insertIntoPhoto(photo *p){
 			p->setID(k);
 
 			for(int i=0; i < p->getFaces()->count()  ;i++ ){
-			
+				p->getFaces()->at(i)->setPhotoID(k);
 				insertIntoFaces(p->getFaces()->at(i),k);
 
 			}
@@ -302,107 +302,56 @@ photo* db::getImage(int imageId){
 	return p;
 }
 
-QList<photo*>* db::selectPersonPhoto(QString personName){
+QList<int>* db::selectPersonPhoto(QString personName){
 	
 	bool a=false;
 	QSqlQuery query(database);
 
-	query.prepare("SELECT DISTINCT F.Fid,I.Iid,F.x,F.y,F.width,F.height,F.tw,F.th,I.path,P.name FROM Faces F,HasFaces H,Images I,Person P WHERE F.Fid=H.Fid AND P.Pid=H.Pid AND H.Iid=I.Iid AND I.Iid IN (SELECT I1.Iid FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid AND P1.name=:personName)");
+	query.prepare("SELECT DISTINCT I.Iid FROM Faces F,HasFaces H,Images I,Person P WHERE F.Fid=H.Fid AND P.Pid=H.Pid AND H.Iid=I.Iid AND I.Iid IN (SELECT I1.Iid FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid AND P1.name=:personName)");
+	query.bindValue(":personName", personName);
+	a=query.exec();
+	QList<int>* photoIdList = new QList<int>();
+
+	while(query.next()){
+		photoIdList->append(query.value(0).toInt());
+	}
+	return photoIdList;
+	
+}
+
+QList<int>* db::selectPersonFace(QString personName){
+	bool a=false;
+//	int personId= getPersonId(personName);
+
+	QSqlQuery query(database);
+
+	query.prepare("SELECT F1.Fid FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid AND P1.name=:personName");
 	query.bindValue(":personName", personName);
 	a=query.exec();
 
-	QList<face*> fl;
-	QList<int> imageIdList;
-	QList<QString> pathList;
-
+	QList<int>* faceIdList = new QList<int>();
 	while(query.next()){
-		int faceId = query.value(0).toInt();
-		int imageId = query.value(1).toInt();
-		double x=query.value(2).toDouble();
-		double y=query.value(3).toDouble();
-		double width=query.value(4).toDouble();
-		double height=query.value(5).toDouble();
-		double tw=query.value(6).toDouble(); 
-		double th=query.value(7).toDouble();
-		QString path = query.value(8).toString();
-		QString name = query.value(9).toString();
-
-		if(!imageIdList.contains(imageId)){
-			imageIdList.append(imageId);
-			pathList.append(path);
-		}
-		
-		
-		
-		face* f = new face(faceId,QStringToString(path),x,y,width,height,tw,th,NULL,QStringToString(name));
-		f->setPhotoID(imageId);
-
-		
-		fl.append(f);
+		faceIdList->append(query.value(0).toInt());
 	}
-	QList<photo*>* pl = new QList<photo*>();
-	for(int i = 0; i<imageIdList.size();i++){
-		QList<face*> *pfl = new QList<face*>(); 
-		for(int j = 0; j<fl.size();j++){
-			if(fl[j]->getPhotoId() == imageIdList[i]){
-				pfl->append(fl[j]);
-				fl.removeAt(j);
-				j--;
-			}
-		}
-		photo* np = new photo(pathList[i],pfl);
-		np->setID(imageIdList[i]);
-		pl->append(np);
-	}
-	
-	
-	/*
-	bool a=false;
-	int personId= getPersonId(personName);
-
-	QSqlQuery query(database);
-	query.prepare("SELECT DISTINCT Iid FROM HasFaces WHERE Pid = :personId ");
-	query.bindValue(":personId", personId);
-	a=query.exec();
-
-	QList<photo*>* pl = new QList<photo*>();
-	while(query.next()){
-		int imageId=query.value(0).toInt();
-		pl->append(getImage(imageId));
-	}
-	*/
-	return pl;
-	
+	return faceIdList;
 }
 
-QList<face*>* db::selectPersonFace(QString personName){
+bool db::photoExist(QString path){
 	bool a=false;
-	int personId= getPersonId(personName);
-
 	QSqlQuery query(database);
-	query.prepare("SELECT DISTINCT Fid,Iid FROM HasFaces WHERE Pid = :personId ");
-	query.bindValue(":personId", personId);
+	query.prepare("SELECT COUNT(*) FROM Images WHERE path=:pathname");
+	query.bindValue(":pathname",path );
 	a=query.exec();
-
-	QList<face*>* fl = new QList<face*>();
-	while(query.next()){
-		int faceId=query.value(0).toInt();
-		int imageId=query.value(1).toInt();
-		face* f = getFace(faceId);
-
-		QString imagePath = getImagePath(imageId);
-		string path = QStringToString(imagePath);
-		f->setLabel(QStringToString(getPersonName(personId)));
-		f->setPhotoID(imageId);
-
-		
-		f->setPath(path);
-
-		fl->append(f);
-	//	fl->append(getImage(imageId));
+	if(a){
+		query.next();
+		int count = query.value(0).toInt();
+		if(count == 0)
+			return false;
+		return true;
 	}
-	return fl;
 }
+
+
 
 QList<photo*>* db::getUnlabeledPhotos(){
 
@@ -481,38 +430,89 @@ QStringList db::getAllPerson(){
 	return personList;
 }
 
+void db::getAllPhotos(QList<photo*>* pl,QList<face*>* faceList){
+	bool a=false;
+	QSqlQuery query(database);
+	// "SELECT DISTINCT F.Fid,I.Iid,F.x,F.y,F.width,F.height,F.tw,F.th,I.path,P.name FROM Faces F,HasFaces H,Images I,Person P WHERE F.Fid=H.Fid AND P.Pid=H.Pid AND H.Iid=I.Iid AND I.Iid IN (SELECT I1.Iid FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid AND P1.name=:personName)");
+	query.prepare("SELECT DISTINCT F.Fid,I.Iid,F.x,F.y,F.width,F.height,F.tw,F.th,I.path,P.name FROM Faces F,HasFaces H,Images I,Person P WHERE F.Fid=H.Fid AND P.Pid=H.Pid AND H.Iid=I.Iid AND I.Iid IN (SELECT I1.Iid FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid )");
+//	query.bindValue(":personName", personName);
+	a=query.exec();
+
+	QList<face*> fl;
+	QList<int> imageIdList;
+	QList<QString> pathList;
+
+	while(query.next()){
+		int faceId = query.value(0).toInt();
+		int imageId = query.value(1).toInt();
+		double x=query.value(2).toDouble();
+		double y=query.value(3).toDouble();
+		double width=query.value(4).toDouble();
+		double height=query.value(5).toDouble();
+		double tw=query.value(6).toDouble(); 
+		double th=query.value(7).toDouble();
+		QString path = query.value(8).toString();
+		QString name = query.value(9).toString();
+
+		if(!imageIdList.contains(imageId)){
+			imageIdList.append(imageId);
+			pathList.append(path);
+		}
+		
+		face* f = new face(faceId,QStringToString(path),x,y,width,height,tw,th,NULL,QStringToString(name));
+		f->setPhotoID(imageId);
+
+		fl.append(f);
+		faceList->append(f);
+	}
+//	QList<photo*>* pl = new QList<photo*>();
+	for(int i = 0; i<imageIdList.size();i++){
+		QList<face*> *pfl = new QList<face*>(); 
+		for(int j = 0; j<fl.size();j++){
+			if(fl[j]->getPhotoId() == imageIdList[i]){
+				pfl->append(fl[j]);
+				fl.removeAt(j);
+				j--;
+			}
+		}
+		photo* np = new photo(pathList[i],pfl);
+		np->setID(imageIdList[i]);
+		pl->append(np);
+	}
+}
 
 
 
 bool db::updateHasFaces(int faceId, QString  s, int imageId,int Approved ){
-	bool a=false;
+
 	QSqlQuery query(database);
 	query.prepare("SELECT Pid FROM Person WHERE name = :name1");
 	query.bindValue(":name1",s );
-	a=query.exec();
-	int personId=0;
-	query.next();
-	personId=query.value(0).toInt();
-	if(personId == 0 ){
-		
-		insertIntoPerson(s);
-		bool k=false;
-		query.prepare("SELECT MAX(Pid) FROM Person");
-		k=query.exec();	
+	if(query.exec()){
 		query.next();
-		personId=query.value(0).toInt();
-	}
+		int personId=query.value(0).toInt();
+		if(personId == 0 ){
+		
+			insertIntoPerson(s);
+			bool k=false;
+			query.prepare("SELECT MAX(Pid) FROM Person");
+			if(query.exec()){
+				query.next();
+				personId=query.value(0).toInt();
+			}else
+				return false;
+		}
 	
-
-	a=false;
-	
-	query.prepare( "UPDATE HasFaces SET Pid = :pid AND Approved = :A  WHERE Fid = :fid  AND Iid= :iid" );
-	query.bindValue(":fid", faceId);
-	query.bindValue(":pid", personId);
-	query.bindValue(":iid", imageId);
-	query.bindValue(":A", Approved);
-	a=query.exec();
-	return a;
+		query.prepare( "UPDATE HasFaces SET Pid = :pid, Approved = :A  WHERE Fid = :fid  AND Iid= :iid" );
+		query.bindValue(":fid", faceId);
+		query.bindValue(":pid", personId);
+		query.bindValue(":iid", imageId);
+		query.bindValue(":A", Approved);
+		if(query.exec())
+			return true;
+		return false;
+	}else
+		return false;
 
 }
 

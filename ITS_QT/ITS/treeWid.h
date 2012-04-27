@@ -19,23 +19,30 @@ public:
 	void updateTree();
 	void selectedItemChange();
 	void reDoLastOperation();
+	QList<face*>* getFaceList(){return faceList;}
+	QList<photo*>* getPhotoList(){return photoList;}
 private slots:;
 	
 private:
 	enum operation{photoOperation,faceOperation};
-	void displayPhoto(QList<photo*>*);
-	void displayFace(QList<face*>*);
+	
+	void displayPhoto(QList<int>*);
+	void displayFace(QList<int>*);
+	
 	void buildTree();
+	void buildLists();
 
 	int lastOperation;
 	QString personName;
 	bool reDoFlag;
-
 	int listPos;
+	int size;
+
+	QList<photo*> *photoList;
+	QList<face*> *faceList;
 
 	db* database;
 	QTreeWidget* treeWidget;
-	int size;
 	QList<QTreeWidgetItem*>* itemList;
 	mdiDS* mdids;
 	mdi* mdiArea;

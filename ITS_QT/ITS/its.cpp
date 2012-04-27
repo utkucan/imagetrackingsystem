@@ -68,7 +68,7 @@ void ITS::on_actionKlasor_triggered(){
 
 
 //	photoPos = photoList->size();
-	ip = new importPhotos(QDirectory,database);
+	ip = new importPhotos(QDirectory,database,treeWidget->getPhotoList(),treeWidget->getFaceList());
 	ip->start();
 	
 	QTimer::singleShot(1000*3, this, SLOT(controlList()));
@@ -118,7 +118,7 @@ void ITS::on_actionSearch_HardDisk_triggered(){
 
 	dialog.exec();
 	QStringList QDirectory = dialog.selectedFiles();
-	ip = new importPhotos(QDirectory[0],database);
+	ip = new importPhotos(QDirectory[0],database,treeWidget->getPhotoList(),treeWidget->getFaceList());
 	ip->start();
 	QTimer::singleShot(1000*3, this, SLOT(controlList()));
 }
