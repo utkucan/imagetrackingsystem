@@ -47,18 +47,18 @@ private slots:;
 	void updateFace();
 private:
 	
-	void displayFace(int);
-	void displayPhoto(int);
+//	void displayFace(int);
+//	void displayPhoto(int);
 //	void initializeTree();
-	void findImage(QString inp);
+//	void findImage(QString inp,QStringList*);
 	bool event(QEvent * e);
 
 
-	int faceCount;
-	int photoPos;
+//	int faceCount;
+//	int photoPos;
 	importPhotos* ip;
 	db *database;
-	QList<photo*> *photoList;
+//	QList<photo*> *photoList;
 	mdi* mdiArea;
 	mdiDS* mdids;
 	treeWid* treeWidget;
@@ -67,7 +67,7 @@ private:
 	QTreeWidgetItem* unlabeledPhotoItem;
 	QTreeWidgetItem* labelItem;
 	*/
-	QList<QString>* allImagesList;
+//	QList<QString>* allImagesList;
 //	analyzer* imageAnalyzer;
 	Ui::ITSClass ui;
 };

@@ -9,11 +9,10 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	mdiArea = new mdi(ui.mdiArea,database);
 	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea,database);
 	treeWidget = new treeWid(this,database,ui.treeWidget,mdids,mdiArea);
-//	connect(ui.treeWidget,SIGNAL(clicked(QModelIndex)),this,SLOT(controlList()));
 	
 	
 	
-	photoList = new QList<photo*>();
+//	photoList = new QList<photo*>();
 	
 
 	
@@ -22,7 +21,7 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 */
 
 //	initializeTree();
-	faceCount = 1;
+//	faceCount = 1;
 }
 
 ITS::~ITS()
@@ -40,6 +39,7 @@ void ITS::initializeTree(){
 	labelItem->setText(0,temp);
 }
 */
+/*
 void ITS::displayPhoto(int pos){
 	for(int i = pos; i< photoList->size(); i++){
 		mdids->addMdiDSChild((*photoList)[i]);
@@ -56,7 +56,7 @@ void ITS::displayFace(int pos){
 		}
 	}
 }
-
+*/
 
 void ITS::on_actionKlasor_triggered(){
 
@@ -67,11 +67,11 @@ void ITS::on_actionKlasor_triggered(){
                          "Images (*.jpg)");
 
 
-	photoPos = photoList->size();
-	ip = new importPhotos(QDirectory,photoList,database);
+//	photoPos = photoList->size();
+	ip = new importPhotos(QDirectory,database);
 	ip->start();
 	
-	//QTimer::singleShot(1000*3, this, SLOT(controlList()));
+	QTimer::singleShot(1000*3, this, SLOT(controlList()));
 
 /*	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(controlList()));
@@ -90,9 +90,10 @@ void ITS::on_actionKlasor_triggered(){
 void ITS::controlList(){
 	if(!ip->isFinished()){
 		ip->lockProcess();
-		displayPhoto(photoPos);
+//		displayPhoto(photoPos);
 		//displayFace(photoPos);
-		photoPos = photoList->size();
+//		photoPos = photoList->size();
+		treeWidget->reDoLastOperation();
 		ip->wakeProcess();
 		QTimer::singleShot(1000*3, this, SLOT(controlList()));			
 	}
@@ -116,14 +117,14 @@ void ITS::on_actionSearch_HardDisk_triggered(){
 	dialog.setFileMode(QFileDialog::Directory);
 
 	dialog.exec();
-	QString* fileName = new QString();
 	QStringList QDirectory = dialog.selectedFiles();
-	allImagesList = new QList<QString>();
-	findImage(QDirectory[0]);
-	int a = 5;
+	ip = new importPhotos(QDirectory[0],database);
+	ip->start();
+	QTimer::singleShot(1000*3, this, SLOT(controlList()));
 }
-
-void ITS::findImage(QString inp){
+/*
+void ITS::findImage(QString inp,QStringList* allImagesList){
+//	QStringList allImagesList; //= new QList<QString>();
 	QDir* direc = new QDir(inp);
 	QFileInfoList fili = direc->entryInfoList();
 	for(int i = 0 ; i < fili.size() ;i++){
@@ -131,7 +132,7 @@ void ITS::findImage(QString inp){
 		if(info.fileName().compare(".")!=0 && info.fileName().compare("..")!=0){
 			bool isDirec = info.isDir();
 			if(isDirec){
-				findImage(info.absoluteFilePath());
+				findImage(info.absoluteFilePath(),allImagesList);
 			}
 			else{
 				QString suf = info.suffix();
@@ -140,13 +141,14 @@ void ITS::findImage(QString inp){
 			}
 		}
 	}
-	/*direc->entr
+//	return allImagesList;
+	direc->entr
 	QFileSystemModel* fsm = new QFileSystemModel();
 	fsm->setRootPath(inp);
 	//bool a = fsm->isDir();
-	return new QList<QString>();*/
+	return new QList<QString>();
 }
-
+*/
 void ITS::treeWidgetSelectionChange(){
 	treeWidget->selectedItemChange();
 

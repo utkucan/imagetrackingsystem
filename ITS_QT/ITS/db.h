@@ -19,21 +19,25 @@ class db : public QObject
 public:
 	db(QObject *parent = 0);
 	~db(void);
-	QList<photo*>* selectPersonPhoto(QString personName);
-	QList<face*>* selectPersonFace(QString personName);
+	
 	bool insertPhoto(photo*);
 	bool insertLabel(QString);
-	void displayDatabase();
-	bool selectPerson();
-	QList<photo*>* getUnlabeledPhotos();
-	bool updateHasFaces(int faceId, QString s, int imageId);
 	bool insertIntoPerson(QString name);
 	bool insertIntoPhoto(photo* p);
 	bool insertIntoFaces(face* f, int);
-	bool insertIntoHasFaces(int faceId, int personId, int imageId);
+	bool insertIntoHasFaces(int faceId, int personId, int imageId,int);
+	
+
+	bool selectPerson();
+	QList<photo*>* selectPersonPhoto(QString personName);
+	QList<face*>* selectPersonFace(QString personName);
+	QList<photo*>* getUnlabeledPhotos();
+
+	bool updateHasFaces(int faceId, QString s, int imageId,int Approved);
+
 	QStringList getAllPerson();
 	
-	string QStringToString(QString str);
+	
 	QSqlDatabase* getDB(){return &database;}
 	int getPersonId(QString personName);
 	QString getPersonName(int PersonID);
@@ -41,6 +45,8 @@ public:
 	photo* getImage(int imageId);
 	face* getFace(int faceId);
 private:
+	string QStringToString(QString str);
+	void displayDatabase();
 	bool openDB();
 	bool deleteDB();
 	QSqlError lastError();

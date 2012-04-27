@@ -55,7 +55,7 @@
 		return;
 	string l = QStringToString(lbl);
 	FaceObject->setLabel(l);
-	database->updateHasFaces(FaceObject->getID(),lbl,FaceObject->getPhotoId());
+	database->updateHasFaces(FaceObject->getID(),lbl,FaceObject->getPhotoId(),1);
 	this->close();
 }
 

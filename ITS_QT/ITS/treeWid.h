@@ -18,12 +18,20 @@ public:
 
 	void updateTree();
 	void selectedItemChange();
+	void reDoLastOperation();
 private slots:;
 	
 private:
+	enum operation{photoOperation,faceOperation};
 	void displayPhoto(QList<photo*>*);
 	void displayFace(QList<face*>*);
 	void buildTree();
+
+	int lastOperation;
+	QString personName;
+	bool reDoFlag;
+
+	int listPos;
 
 	db* database;
 	QTreeWidget* treeWidget;
