@@ -12,7 +12,7 @@
 #include "photo.h"
 #include "face.h"
 #include "displaydb.h"
-#include "facedetect.h"
+
 
 class db : public QObject
 {
@@ -32,7 +32,7 @@ public:
 	bool insertIntoFaces(face* f, int);
 	bool insertIntoHasFaces(int faceId, int personId, int imageId);
 	QStringList getAllPerson();
-	QImage* IplImage2QImage(const IplImage *iplImage);
+	
 	string QStringToString(QString str);
 	QSqlDatabase* getDB(){return &database;}
 	int getPersonId(QString personName);

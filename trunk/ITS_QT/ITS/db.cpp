@@ -149,7 +149,7 @@ face* db::getFace(int faceId){
 	double tw=query.value(5).toDouble(); 
 	double th=query.value(6).toDouble();
 
-	return new face(faceId,"",x,y,width,height,tw,th,NULL,NULL,"");
+	return new face(faceId,"",x,y,width,height,tw,th,NULL,"");
 }
 
 photo* db::getImage(int imageId){
@@ -165,16 +165,6 @@ photo* db::getImage(int imageId){
 		int personId = query.value(1).toInt(); 	
 
 		face* f = getFace(faceId);
-
-		IplImage* img = cvLoadImage(path.c_str());
-		IplImage* temp = cvCreateImage( cvSize( f->getWidth(), f->getHeight()), img->depth, img->nChannels );
-		cvSetImageROI(img,cvRect( f->getX(), f->getY(), f->getWidth(), f->getHeight()));
-		cvCopy( img, temp ); 
-		cvResetImageROI( img );
-
-		f->setImage(IplImage2QImage(temp));
-		cvReleaseImage(&img);
-		cvReleaseImage(&temp);
 
 		f->setLabel(QStringToString(getPersonName(personId)));
 		f->setPhotoID(imageId);
@@ -216,17 +206,11 @@ QList<photo*>* db::selectPersonPhoto(QString personName){
 			pathList.append(path);
 		}
 		
-		IplImage* img = cvLoadImage(QStringToString(path).c_str());
-		IplImage* temp = cvCreateImage( cvSize( width, height), img->depth, img->nChannels );
-		cvSetImageROI(img,cvRect( x, y, width, height));
-		cvCopy( img, temp ); 
-		cvResetImageROI( img );
 		
-		face* f = new face(faceId,QStringToString(path),x,y,width,height,tw,th,IplImage2QImage(temp),NULL,QStringToString(name));
+		
+		face* f = new face(faceId,QStringToString(path),x,y,width,height,tw,th,NULL,QStringToString(name));
 		f->setPhotoID(imageId);
 
-		cvReleaseImage(&img);
-		cvReleaseImage(&temp);
 		
 		fl.append(f);
 	}
@@ -281,18 +265,7 @@ QList<face*>* db::selectPersonFace(QString personName){
 		face* f = getFace(faceId);
 
 		QString imagePath = getImagePath(imageId);
-
 		string path = QStringToString(imagePath);
-		IplImage* img = cvLoadImage(path.c_str());
-		IplImage* temp = cvCreateImage( cvSize( f->getWidth(), f->getHeight()), img->depth, img->nChannels );
-		cvSetImageROI(img,cvRect( f->getX(), f->getY(), f->getWidth(), f->getHeight()));
-		cvCopy( img, temp ); 
-		cvResetImageROI( img );
-
-		f->setImage(IplImage2QImage(temp));
-		cvReleaseImage(&img);
-		cvReleaseImage(&temp);
-
 		f->setLabel(QStringToString(getPersonName(personId)));
 		f->setPhotoID(imageId);
 
@@ -346,11 +319,7 @@ QList<photo*>* db::getUnlabeledPhotos(){
 				 double tw=query3.value(5).toDouble(); 
 				 double th=query3.value(6).toDouble();
 
-				 IplImage* img = cvLoadImage(QStringToString(imagePath).c_str());
-				IplImage* temp = cvCreateImage( cvSize( width ,height), img->depth, img->nChannels );
-				cvSetImageROI(img,cvRect( (int)(x), (int)(y), (int)(width) ,(int)(height)));
-				cvCopy( img, temp ); 
-				cvResetImageROI( img );
+				
 
 				QSqlQuery query5(database);
 				query5.prepare("SELECT name FROM Person WHERE Pid = :PId ");
@@ -360,7 +329,7 @@ QList<photo*>* db::getUnlabeledPhotos(){
 				 QString lbl(query5.value(0).toString());
 
 
-				 face* f = new face(faceId,QStringToString(imagePath),x,y,width,height,tw,th,IplImage2QImage(temp),NULL,QStringToString(lbl));
+				 face* f = new face(faceId,QStringToString(imagePath),x,y,width,height,tw,th,NULL,QStringToString(lbl));
 				 f->setPhotoID(imageId);
 				 fl->append(f);
 			}
@@ -587,32 +556,6 @@ QStringList db::getAllPerson(){
 	return personList;
 }
 
-QImage* db::IplImage2QImage(const IplImage *iplImage)
-{
-	int height = iplImage->height;
-	int width = iplImage->width;
- 
-	if  (iplImage->depth == IPL_DEPTH_8U && iplImage->nChannels == 3)
-	{
-		const uchar *qImageBuffer = (const uchar*)iplImage->imageData;
-		QImage* img = new QImage(qImageBuffer, width, height, QImage::Format_RGB888);
-		img = new QImage(img->rgbSwapped());
-		return img;
-	} else if  (iplImage->depth == IPL_DEPTH_8U && iplImage->nChannels == 1){
-		const uchar *qImageBuffer = (const uchar*)iplImage->imageData;
-		QImage* img = new QImage(qImageBuffer, width, height, QImage::Format_Indexed8);
- 
-		QVector<QRgb> colorTable;
-		for (int i = 0; i < 256; i++){
-			colorTable.push_back(qRgb(i, i, i));
-		}
-		img->setColorTable(colorTable);
-		return img;
-	}else{
-		qWarning() << "Image cannot be converted.";
-		return new QImage();
-	}
-}
 
 string db::QStringToString(QString str){
 	string filename ="";
