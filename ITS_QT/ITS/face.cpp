@@ -12,7 +12,7 @@ face::face(int id,string imagePath,int x,int y,int width,int height,int transfor
 	this->th = transformedHeight;
 	this->fecialFeatureList = featureList;
 	faceImage = NULL;
-//	loadFaceImage();
+	loadFaceImage();
 //	this->faceImage = faceImage;
 	this->label = label;
 }
@@ -56,8 +56,8 @@ int face::getHeight(){return height;}
 double* face::getFecialFeatures(){return fecialFeatureList;}
 
 QImage* face::getImage(){
-	if(faceImage == NULL)
-		loadFaceImage();
+	/*if(faceImage == NULL)
+		loadFaceImage();*/
 	return faceImage;
 }
 
