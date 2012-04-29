@@ -29,9 +29,10 @@ public:
 	bool insertLabel(QString);
 	bool insertIntoPerson(QString name);
 	bool insertIntoPhoto(photo* p);
-	bool insertIntoFaces(face* f, int);
+	bool insertIntoFaces(face* f, int,double *);
 	bool insertIntoHasFaces(int faceId, int personId, int imageId,int);
 	bool insertIntoEqual(int, int,double);
+	void storeFeatureList(double *);
 	QList<Rank*> selectFromEqual(int); 
 	QList<int>* selectPersonsInPhoto(QStringList );
 	QList<int>* selectAllPerson();
