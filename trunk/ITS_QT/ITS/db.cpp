@@ -145,6 +145,7 @@ bool db::insertIntoFaces(face* f, int photoId){
 		QString temp;
 		char buffer [50];
 		for(int i = 0 ; i<1937; i++){
+
 			sprintf(buffer,"%d",fl[i]);
 			featureStr.append(buffer);
 			if(i!=1936){
