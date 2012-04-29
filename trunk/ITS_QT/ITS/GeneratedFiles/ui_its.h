@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'its.ui'
 **
-** Created: Thu 26. Apr 22:58:11 2012
+** Created: Sun 29. Apr 16:16:44 2012
 **      by: Qt User Interface Compiler version 4.7.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -42,7 +42,6 @@ public:
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuImport_Photos;
-    QMenu *menuFilter;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -50,7 +49,7 @@ public:
     {
         if (ITSClass->objectName().isEmpty())
             ITSClass->setObjectName(QString::fromUtf8("ITSClass"));
-        ITSClass->resize(911, 577);
+        ITSClass->resize(902, 573);
         actionImport = new QAction(ITSClass);
         actionImport->setObjectName(QString::fromUtf8("actionImport"));
         actionKlasor = new QAction(ITSClass);
@@ -71,9 +70,6 @@ public:
         mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         mdiArea->setViewMode(QMdiArea::SubWindowView);
         treeWidget = new QTreeWidget(centralWidget);
-        QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem();
-        __qtreewidgetitem->setText(0, QString::fromUtf8("Labels"));
-        treeWidget->setHeaderItem(__qtreewidgetitem);
         treeWidget->setObjectName(QString::fromUtf8("treeWidget"));
         treeWidget->setGeometry(QRect(10, 10, 170, 510));
         mdiDownSapmle = new QMdiArea(centralWidget);
@@ -83,13 +79,11 @@ public:
         ITSClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(ITSClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 911, 21));
+        menuBar->setGeometry(QRect(0, 0, 902, 21));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuImport_Photos = new QMenu(menuFile);
         menuImport_Photos->setObjectName(QString::fromUtf8("menuImport_Photos"));
-        menuFilter = new QMenu(menuBar);
-        menuFilter->setObjectName(QString::fromUtf8("menuFilter"));
         ITSClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(ITSClass);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -99,11 +93,8 @@ public:
         ITSClass->setStatusBar(statusBar);
 
         menuBar->addAction(menuFile->menuAction());
-        menuBar->addAction(menuFilter->menuAction());
         menuFile->addAction(menuImport_Photos->menuAction());
-        menuFile->addAction(actionExport_Photos);
         menuImport_Photos->addAction(actionKlasor);
-        menuImport_Photos->addAction(actionWeb);
         menuImport_Photos->addAction(actionSearch_HardDisk);
         mainToolBar->addSeparator();
 
@@ -118,14 +109,15 @@ public:
     {
         ITSClass->setWindowTitle(QApplication::translate("ITSClass", "ITS", 0, QApplication::UnicodeUTF8));
         actionImport->setText(QApplication::translate("ITSClass", "Import", 0, QApplication::UnicodeUTF8));
-        actionKlasor->setText(QApplication::translate("ITSClass", "Klasor", 0, QApplication::UnicodeUTF8));
+        actionKlasor->setText(QApplication::translate("ITSClass", "Folder", 0, QApplication::UnicodeUTF8));
         actionWeb->setText(QApplication::translate("ITSClass", "Web", 0, QApplication::UnicodeUTF8));
         actionExport->setText(QApplication::translate("ITSClass", "Export", 0, QApplication::UnicodeUTF8));
         actionExport_Photos->setText(QApplication::translate("ITSClass", "Export Photos", 0, QApplication::UnicodeUTF8));
         actionSearch_HardDisk->setText(QApplication::translate("ITSClass", "Search HardDisk", 0, QApplication::UnicodeUTF8));
+        QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
+        ___qtreewidgetitem->setText(0, QApplication::translate("ITSClass", "Munu", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("ITSClass", "File", 0, QApplication::UnicodeUTF8));
         menuImport_Photos->setTitle(QApplication::translate("ITSClass", "Import Photos", 0, QApplication::UnicodeUTF8));
-        menuFilter->setTitle(QApplication::translate("ITSClass", "Filter", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };
