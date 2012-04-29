@@ -132,13 +132,27 @@ bool db::insertIntoFaces(face* f, int photoId){
 	{
 		bool a=false;
 		QSqlQuery query(database);
-		query.prepare("INSERT INTO Faces VALUES(NULL , :x, :y , :width, :height , :tw , :th )");
+		query.prepare("INSERT INTO Faces VALUES(NULL , :x, :y , :width, :height , :tw , :th, :fet )");
 		query.bindValue(":x", f->getX());
 		query.bindValue(":y", f->getY());
 		query.bindValue(":width", f->getWidth());
 		query.bindValue(":height", f->getHeight());
 		query.bindValue(":tw", f->getTransformedWidth());
 		query.bindValue(":th", f->getTransformedHeight());
+		
+		double *fl=f->getFecialFeatures();
+		QString featureStr = "";
+		QString temp;
+		char buffer [50];
+		for(int i = 0 ; i<1937; i++){
+			sprintf(buffer,"%d",fl[i]);
+			featureStr.append(buffer);
+			if(i!=1936){
+				featureStr.append("#");
+			}
+			
+		}
+		query.bindValue(":fet",featureStr );
 		a=query.exec();
 		if(a){
 
@@ -173,83 +187,6 @@ bool db::insertIntoHasFaces(int faceId, int personId, int imageId,int Approved){
 
 
 }
-
-bool db::insertLabel(QString s)
-{
-	{
-		bool a=false;
-		QSqlQuery query(database);
-		query.prepare("INSERT INTO Person VALUES(NULL , :name)");
-	
-		query.bindValue(":name", "aASDSsadak");
-		 a=query.exec();
-
-		query.prepare("INSERT INTO Person VALUES(NULL , :name)");
-		query.bindValue(":name", "BURAKk");
-		a=query.exec();
-		query.prepare("INSERT INTO Person VALUES(NULL , :name)");
-		query.bindValue(":name", "aadak");
-		 a=query.exec();
-		query.prepare("INSERT INTO Person VALUES(NULL , :name)");
-		query.bindValue(":name", "aak");
-		a=query.exec();
-
-		query.prepare("INSERT INTO Images VALUES(NULL , :name)");
-		query.bindValue(":name", "Image1");
-		a=query.exec();
-		query.prepare("INSERT INTO Images VALUES(NULL , :name)");
-		query.bindValue(":name", "Image2");
-		a=query.exec();
-
-
-		query.prepare("INSERT INTO Faces VALUES(NULL , 10, 11 , 12, 13, 14,15 )");
-
-		a=query.exec();
-
-		query.prepare("INSERT INTO Faces VALUES(NULL , 12, 911 , 912, 193, 14.25 ,15 )");
-
-		a=query.exec();
-
-		query.prepare("INSERT INTO HasFaces VALUES(1,1,1 )");
-
-		a=query.exec();
-		  {
-    // SELECT1
-
-			QSqlQuery query(database);
-			bool k=false;
-			k=query.exec("SELECT Pid FROM Person");
-
-
-			int x=-10;
-			while (query.next()) {
-				//QString name = query.value(0).toString();
-				 x=query.value(0).toInt();
-	
-			}
-			 {
-    // SELECT1
-
-			QSqlQuery query(database);
-			bool k=false;
-			k=query.exec("SELECT Iid FROM Images");
-
-
-			int x=-10;
-			while (query.next()) {
-				//QString name = query.value(0).toString();
-				 x=query.value(0).toInt();
-	
-			}
-
-    }
-    }
-		return a;
-	}
-	
-	
-}
-
 
 //2 faceid aliosun benzerlik orani onu sakliosun
 
