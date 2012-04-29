@@ -151,11 +151,11 @@ void treeWid::selectedItemChange(){
 				// databaseden photolarý çek
 				// db nin içine selectPersonsPhoto diye bir method yaz, QStringList alsýn
 				// listenin içindeki labellarýn ortak fotolarýný bulsun gelsin felan
-				/*
+				
 				lastOperation = operation::filterOperation;
-				QList<int>* photoIDList = database->selectPersonsPhoto(filterPersonList);
+				QList<int>* photoIDList = database->selectPersonsInPhoto(filterPersonList);
 				displayPhoto(photoIDList);	
-				*/
+				
 			}else{
 				if(treeWidget->currentItem()->isExpanded())
 					treeWidget->collapse(treeWidget->currentIndex());
