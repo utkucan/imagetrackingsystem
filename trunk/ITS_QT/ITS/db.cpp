@@ -706,5 +706,5 @@ bool db::updateFaceforFeature(int id, QString s){
 	query.bindValue(":fet", s);
 	query.bindValue(":fid", id);
 	a=query.exec();
-
+	return a;
 }
