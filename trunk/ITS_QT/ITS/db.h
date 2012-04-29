@@ -28,7 +28,7 @@ public:
 	bool insertIntoHasFaces(int faceId, int personId, int imageId,int);
 	
 
-	
+	QList<int>* db::selectPersonsInPhoto(QStringList );
 	void getAllPhotos(QList<photo*>*,QList<face*>*);
 	QList<int>* selectPersonPhoto(QString personName);
 	QList<int>* selectPersonFace(QString personName,QList<int>*);

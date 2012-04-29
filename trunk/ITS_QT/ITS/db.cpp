@@ -17,7 +17,7 @@ db::db(QObject *parent){
 db::~db(void){
 	deleteDB();
 }
-		  
+	  
 bool db::openDB()
     {
     // Find QSLite driver
@@ -301,7 +301,27 @@ photo* db::getImage(int imageId){
 	p->setID(imageId);
 	return p;
 }
+QList<int>* db::selectPersonsInPhoto(QStringList personName){
+	bool a=false;
+	QSqlQuery query(database);
+	QString s="";
+	for(int i=0; i<personName.count(); i++){
+		s=s+"SELECT I1.Iid FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid AND P1.name="+"'"+personName.at(i)+"'";
+		if(i!=personName.count()-1)
+			s=s+" INTERSECT ";
+	}
+	
+	
+	query.prepare(s);
+	a=query.exec();
+	QList<int>* integer = new QList<int>();
+	while(query.next()){
 
+		integer->append(query.value(0).toInt());
+	
+	}
+	return integer;
+}
 QList<int>* db::selectPersonPhoto(QString personName){
 	
 	bool a=false;
