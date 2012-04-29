@@ -9,6 +9,7 @@ db::db(QObject *parent){
 
 		createTables();
 		insertIntoPerson("Unknown");
+		
 	//	getUnlabeledPhotos();
 	}
 
@@ -79,6 +80,24 @@ bool db::insertIntoPerson(QString name){
 	}
 }
 
+// bana face id verilcek ben butun tabledan faceidler olan faceidleri ve similarty doncem
+QList<Rank*> db::selectFromEqual(int faceId){
+	 bool a=false;
+	 QList<Rank*> myList ;
+	 QSqlQuery query(database);
+	 query.prepare("SELECT F2id, similar FROM Equal WHERE F1id= :face1 union  SELECT F1id, similar FROM Equal WHERE F2id=:face1");
+	 query.bindValue(":face1", faceId);
+	 a=query.exec();
+	 while(query.next()){
+		Rank *r= new Rank;
+		r->faceId= query.value(0).toInt();
+		r->comp=query.value(1).toDouble();
+		myList.append(r);
+	 }
+
+	 return myList;
+
+}
 bool db::insertIntoPhoto(photo *p){
 	{
 		bool a=false;
@@ -138,7 +157,7 @@ bool db::insertIntoFaces(face* f, int photoId){
 	}
 
 }
-
+//
 bool db::insertIntoHasFaces(int faceId, int personId, int imageId,int Approved){
 	{
 		bool a=false;
@@ -232,6 +251,7 @@ bool db::insertLabel(QString s)
 }
 
 
+//2 faceid aliosun benzerlik orani onu sakliosun
 
 
 int db::getPersonId(QString personName){
@@ -338,7 +358,25 @@ QList<int>* db::selectPersonPhoto(QString personName){
 	return photoIdList;
 	
 }
+//utkucanin istedigi qquery
 
+
+
+//emrenin istedigi person id yi verip butun face idlerini getirme hasface tablosunda
+QList<int>* db::selectAllFacesFromPersonId(int personId){
+	bool a=false;
+//	int personId= getPersonId(personName);
+
+	QSqlQuery query(database);
+	query.prepare("SELECT F1.Fid FROM HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND P1.Pid=:personId");
+	query.bindValue(":personId", personId);
+	a=query.exec();
+	QList<int>* faceIdList = new QList<int>();
+	while(query.next()){
+		faceIdList->append(query.value(0).toInt());
+	}
+	return faceIdList;
+}
 QList<int>* db::selectPersonFace(QString personName,QList<int>*ApprovedList){
 	bool a=false;
 //	int personId= getPersonId(personName);
@@ -503,7 +541,18 @@ void db::getAllPhotos(QList<photo*>* pl,QList<face*>* faceList){
 	}
 }
 
+bool db::insertIntoEqual(int face1, int face2, double sim){
 
+		bool a=false;
+		QSqlQuery query(database);
+		query.prepare("INSERT INTO Equal VALUES(:fid1, :fid2 , :simi)");
+	
+		query.bindValue(":fid1", face1);
+		query.bindValue(":fid2", face2);
+		query.bindValue(":simi", sim);
+		a=query.exec();
+		 return a;
+}
 
 bool db::updateHasFaces(int faceId, QString  s, int imageId,int Approved ){
 
@@ -566,7 +615,7 @@ void db::createTables(){
 	}
 
 
-	const QString	CREATE_TABLE3("CREATE TABLE Faces (Fid  INTEGER PRIMARY KEY,x double ,y double,width double,height double,tw double ,th double );");
+	const QString	CREATE_TABLE3("CREATE TABLE Faces (Fid  INTEGER PRIMARY KEY,x double ,y double,width double,height double,tw double ,th double, feature TEXT );");
 	if(query.exec(CREATE_TABLE3))
 	{
 		qDebug() << "Table created";
@@ -579,6 +628,17 @@ void db::createTables(){
 
 	const QString	CREATE_TABLE4("CREATE TABLE HasFaces (Fid int not null ,Pid int not null,Iid int not null,Approved int not null ,PRIMARY KEY(Fid,Pid,Iid),FOREIGN KEY(Fid) REFERENCES Faces(Fid),FOREIGN KEY(Pid) REFERENCES Person(Pid),FOREIGN KEY(Iid) REFERENCES Images(Iid));");
 	if(query.exec(CREATE_TABLE4))
+	{
+		qDebug() << "Table created";
+	}
+	else
+	{
+		QSqlError e = query.lastError();
+		qDebug() << "Failed to create table:" << query.lastError();
+	}
+
+	const QString	CREATE_TABLE5("CREATE TABLE Equal (F1id int  ,F2id int, similar double ) ;");
+	if(query.exec(CREATE_TABLE5))
 	{
 		qDebug() << "Table created";
 	}
@@ -603,4 +663,48 @@ string db::QStringToString(QString str){
 void db::displayDatabase(){
 	displaydb* disp = new displaydb();
 	disp->show();
+}
+//butun personlar
+
+QList<int>* db::selectAllPerson(){
+
+	bool a=false;
+
+
+	QSqlQuery query(database);
+
+	query.prepare("SELECT Pid From Person");
+	
+	a=query.exec();
+
+	QList<int>* personIdList = new QList<int>();
+	
+	while(query.next()){
+		personIdList->append(query.value(0).toInt());
+		
+	}
+	return personIdList;
+
+}
+int db::selectMaxFaceId(){
+	bool a=false;
+
+	QSqlQuery query(database);
+	query.prepare("SELECT MAX(Fid) FROM Faces");
+	a=query.exec();
+	query.next();
+	int k=query.value(0).toInt();
+	return k+1;
+
+}
+bool db::updateFaceforFeature(int id, QString s){
+
+	bool a=false;
+
+	QSqlQuery query(database);
+	query.prepare("UPDATE Faces SET  feature= :fet WHERE Fid = :fid  ");
+	query.bindValue(":fet", s);
+	query.bindValue(":fid", id);
+	a=query.exec();
+
 }

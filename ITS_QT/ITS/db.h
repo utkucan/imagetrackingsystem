@@ -13,22 +13,28 @@
 #include "face.h"
 #include "displaydb.h"
 
-
+struct Rank{
+	int faceId;
+	double comp;
+};
 class db : public QObject
 {
 public:
 	db(QObject *parent = 0);
 	~db(void);
-	
+	int selectMaxFaceId();
+	bool updateFaceforFeature(int, QString);
+	QList<int>* selectAllFacesFromPersonId(int);
 	bool insertPhoto(photo*);
 	bool insertLabel(QString);
 	bool insertIntoPerson(QString name);
 	bool insertIntoPhoto(photo* p);
 	bool insertIntoFaces(face* f, int);
 	bool insertIntoHasFaces(int faceId, int personId, int imageId,int);
-	
-
-	QList<int>* db::selectPersonsInPhoto(QStringList );
+	bool insertIntoEqual(int, int,double);
+	QList<Rank*> selectFromEqual(int); 
+	QList<int>* selectPersonsInPhoto(QStringList );
+	QList<int>* selectAllPerson();
 	void getAllPhotos(QList<photo*>*,QList<face*>*);
 	QList<int>* selectPersonPhoto(QString personName);
 	QList<int>* selectPersonFace(QString personName,QList<int>*);
