@@ -41,7 +41,7 @@
     </property>
     <column>
      <property name="text">
-      <string>Munu</string>
+      <string>Menu</string>
      </property>
     </column>
    </widget>

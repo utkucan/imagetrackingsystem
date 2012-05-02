@@ -129,7 +129,7 @@ bool db::insertIntoPhoto(photo *p){
 	}
 }
 
-bool db::insertIntoFaces(face* f, int photoId){
+bool db::insertIntoFaces(face* f,int photoId){
 	{
 		bool a=false;
 		QSqlQuery query(database);
@@ -154,6 +154,8 @@ bool db::insertIntoFaces(face* f, int photoId){
 
 		}
 		query.bindValue(":fet",featureStr );
+
+
 		a=query.exec();
 		if(a){
 
