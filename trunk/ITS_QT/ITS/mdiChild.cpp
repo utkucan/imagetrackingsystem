@@ -62,8 +62,8 @@
 	 if(e->type() == QEvent::MouseButtonDblClick){
 		 QImage *img = new QImage ( FaceObject->getPath().c_str() );
 		 
-		 popupDisplay* popup = new popupDisplay(img);
-		 popup->show();
+		// popupDisplay* popup = new popupDisplay(img);
+		// popup->show();
 
 
 
