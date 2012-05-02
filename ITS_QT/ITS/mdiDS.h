@@ -11,6 +11,7 @@
 #include "mdi.h"
 #include "mdiDSChild.h"
 #include "db.h"
+//#include "treeWid.h"
 
 class mdiDS : public QMdiArea
 {
