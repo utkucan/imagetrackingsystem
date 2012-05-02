@@ -29,6 +29,7 @@
 #include "face.h"
 #include "db.h"
 #include "treeWid.h"
+#include "matlab.h"
 
 using namespace std;
 
@@ -62,6 +63,7 @@ private:
 	mdi* mdiArea;
 	mdiDS* mdids;
 	treeWid* treeWidget;
+	matlab* m;
 	/*
 	QTreeWidget* treeWidget;
 	QTreeWidgetItem* unlabeledPhotoItem;
