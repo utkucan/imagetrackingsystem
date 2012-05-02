@@ -4,7 +4,7 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)
 {
 	ui.setupUi(this);
-
+	ip= NULL;
 	database = new db();
 	mdiArea = new mdi(ui.mdiArea,database);
 	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea,database);
@@ -68,6 +68,11 @@ void ITS::on_actionKlasor_triggered(){
 
 
 //	photoPos = photoList->size();
+	if(ip!= NULL){
+		while(!ip->isFinished()){
+					
+		};	
+	}
 	ip = new importPhotos(QDirectory,database,treeWidget->getPhotoList(),treeWidget->getFaceList());
 	ip->start();
 	
