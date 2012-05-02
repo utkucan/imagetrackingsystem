@@ -24,13 +24,14 @@ public:
 	
 //	bool event(QEvent * e);
 	void updateFace();
-
+	void reDisplayLastPhoto();
 private:
 	QImage* IplImage2QImage(const IplImage *iplImage);
 
 	int childPosx,childPosy;
 	QList<mdiFace*> faceWindows;
 	QList<mdiPhoto*> photoWindows;
+	QList<photo*> photolst;
 	QMdiArea* mdiArea;
 	db* database;
 };

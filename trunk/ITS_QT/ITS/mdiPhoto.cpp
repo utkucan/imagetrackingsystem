@@ -13,7 +13,7 @@ mdiPhoto::mdiPhoto(QMdiArea* parent,photo* photoObject,db* database)
 	image->setMouseTracking(true);
 	ld = NULL;
 	p = new QPixmap(photoObject->getPath().c_str());
-
+	closed = false;
 	double ratio = 1;
 	QPixmap* tmp;
 
@@ -132,6 +132,7 @@ mdiPhoto::~mdiPhoto(void)
 						QAction* selectedItem = myMenu.exec(globalPos);
 						if(selectedItem != NULL && selectedItem->text() == "add label"){
 							ld = new labelDialog(widgetadd,Qt::FramelessWindowHint,database);
+							//widgetadd->disac
 							ld->setFacePointer((*faceList)[i]);
 							ld->setPoint(globalPos);
 							ld->setRelativePos(((QMouseEvent*)e)->pos());
@@ -216,6 +217,7 @@ mdiPhoto::~mdiPhoto(void)
 		 }
 		 ld = NULL;
 	 }
+	 closed = true;
  }
 
  void mdiPhoto::setPosition(){

@@ -10,7 +10,7 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea,database);
 	treeWidget = new treeWid(this,database,ui.treeWidget,mdids,mdiArea);
 	m = new matlab();
-	
+
 	
 //	photoList = new QList<photo*>();
 	
@@ -102,6 +102,7 @@ void ITS::controlList(){
 void ITS::updateFace(){
 	mdiArea->updateFace();
 	treeWidget->updateTree();
+	mdiArea->reDisplayLastPhoto();
  //   child->show();
 }
 

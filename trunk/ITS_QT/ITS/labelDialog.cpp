@@ -8,6 +8,7 @@ labelDialog::labelDialog(QWidget *parent, Qt::WFlags flags,db* database): QDialo
 //	setEditable(true);
 //	setGeometry(position.x(),position.y(),100,30);
 //	setAttribute(Qt::WA_DeleteOnClose);
+	par = (QMdiSubWindow*)parent;
 	uiLd.setupUi(this);
 	this->database = database;
 	//Qt::FramelessWindowHint
@@ -29,6 +30,7 @@ void labelDialog::textChanged(){
 	this->fc->setLabel(l);
 	database->updateHasFaces(fc->getID(),lbl,fc->getPhotoId(),1);
 	this->close();
+	par->close();
 }
 
 void labelDialog::setFacePointer(face* fc){

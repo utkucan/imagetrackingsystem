@@ -89,17 +89,36 @@ void mdi::clearPhotos(){
 	mdiArea->closeAllSubWindows();
 }
 
+void mdi::reDisplayLastPhoto(){
+	if(photoWindows.size()>0 ){
+		if(photoWindows[0]->isClosed()){
+			delete photoWindows[0];
+			photoWindows.removeFirst();
+			mdiPhoto *child = new mdiPhoto(mdiArea,photolst[0],database);
+	
+			photoWindows.append(child);
+			child->setSubWinAdd(mdiArea->addSubWindow(child,Qt::FramelessWindowHint));
+			child->setChildGeometry(0,0);
+			child->show();
+		}
+	}
+
+}
+
 void mdi::addMdiPhoto(photo* photoObject){
 	if(photoWindows.size()>0){
 		photoWindows[0]->close();
 		delete photoWindows[0];
 		photoWindows.removeFirst();
 		mdiArea->closeAllSubWindows();
+		photolst[0] = NULL;
+		photolst.clear();
 //		return;
 	}
 	mdiPhoto *child = new mdiPhoto(mdiArea,photoObject,database);
 	
 	photoWindows.append(child);
+	photolst.append(photoObject);
 	child->setSubWinAdd(mdiArea->addSubWindow(child,Qt::FramelessWindowHint));
 	 child->setChildGeometry(0,0);
 	// child'larý array'e koy, arraydaki pozisyonþarýna göre, pasýlacaklarý yeri ayarla panpa

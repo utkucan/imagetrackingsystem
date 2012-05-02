@@ -12,6 +12,7 @@
 class photo
 {
 public:
+	photo(photo*);
 	photo(QString,QList<face*>*);
 	~photo(void);
 	QList<face*>* getFaces();
