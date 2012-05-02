@@ -1,13 +1,14 @@
 #include "analyzer.h"
 
 
-analyzer::analyzer(QList<face*> *faceList,string imagePath)
+analyzer::analyzer(QList<face*> *faceList,string imagePath,matlab* m)
 {	
 
 	this->faceList = faceList;
 	this->imagePath = imagePath;
+	this->m = m;
 	count = 1;
-	m = new matlab();
+//	m = new matlab();
 }
 
 analyzer::~analyzer(void)

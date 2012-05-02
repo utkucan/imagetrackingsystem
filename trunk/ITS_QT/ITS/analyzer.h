@@ -18,7 +18,7 @@
 class analyzer : public QThread
 {
 public:
-	analyzer(QList<face*>*,string);
+	analyzer(QList<face*>*,string,matlab* m);
 	~analyzer(void);
 	void run();
 	QList<face*>* getFaceList(){return faceList;}

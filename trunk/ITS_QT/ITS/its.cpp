@@ -4,12 +4,12 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)
 {
 	ui.setupUi(this);
-	ip= NULL;
+
 	database = new db();
 	mdiArea = new mdi(ui.mdiArea,database);
 	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea,database);
 	treeWidget = new treeWid(this,database,ui.treeWidget,mdids,mdiArea);
-	
+	m = new matlab();
 	
 	
 //	photoList = new QList<photo*>();
@@ -68,12 +68,7 @@ void ITS::on_actionKlasor_triggered(){
 
 
 //	photoPos = photoList->size();
-	if(ip!= NULL){
-		while(!ip->isFinished()){
-					
-		};	
-	}
-	ip = new importPhotos(QDirectory,database,treeWidget->getPhotoList(),treeWidget->getFaceList());
+	ip = new importPhotos(QDirectory,database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m);
 	ip->start();
 	
 	QTimer::singleShot(1000*3, this, SLOT(controlList()));
@@ -123,7 +118,7 @@ void ITS::on_actionSearch_HardDisk_triggered(){
 
 	dialog.exec();
 	QStringList QDirectory = dialog.selectedFiles();
-	ip = new importPhotos(QDirectory[0],database,treeWidget->getPhotoList(),treeWidget->getFaceList());
+	ip = new importPhotos(QDirectory[0],database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m);
 	ip->start();
 	QTimer::singleShot(1000*3, this, SLOT(controlList()));
 }

@@ -1,24 +1,26 @@
 #include "importPhotos.h"
 
-importPhotos::importPhotos(QString dir,db* database,QList<photo*> *photos,QList<face*> *faces){
+importPhotos::importPhotos(QString dir,db* database,QList<photo*> *photos,QList<face*> *faces,matlab* m){
 	this->database = database;
 	this->dir = dir;
 	this->photos = photos;
 	this->faces = faces;
+	this->m = m;
 	QDirectory = new QStringList();
-	m = new QMutex();
+	m1 = new QMutex();
 	maxNumOfThread = 1;
 	flag = true;
 	
 }
 
-importPhotos::importPhotos(QStringList QDirectory,db* database,QList<photo*> *photos,QList<face*> *faces)
+importPhotos::importPhotos(QStringList QDirectory,db* database,QList<photo*> *photos,QList<face*> *faces,matlab* m)
 {
 	this->QDirectory = new QStringList(QDirectory);
 	this->photos = photos;
 	this->database = database;
 	this->faces = faces;
-	m = new QMutex();
+	this->m = m;
+	m1 = new QMutex();
 	maxNumOfThread = 1;//QDirectory->size();
 	flag = false;
 }
@@ -49,7 +51,7 @@ void importPhotos::run(){
 	//		photo* p = new photo((*QDirectory)[j],tmpLst);
 	//		photos->append(p);
 
-			analyzer* imageAnalyzer = new analyzer(tmpLst,filename);
+			analyzer* imageAnalyzer = new analyzer(tmpLst,filename,m);
 			imageAnalyzer->start();
 			threads.append(imageAnalyzer);
 			numOfThread++;
