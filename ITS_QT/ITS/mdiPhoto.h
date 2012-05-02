@@ -28,12 +28,14 @@ public:
 	bool event(QEvent * e);
 	void setChildGeometry(int posX,int posY);
 	void setPosition();
+	bool isClosed(){return closed;}
 protected:
     void closeEvent(QCloseEvent *event);
 private:
 
 	void onFaceRect(int,QPoint);
 
+	bool closed;
 	QMdiArea* prnt;
 	QMdiSubWindow* widgetadd;
 	photo* photoObject;

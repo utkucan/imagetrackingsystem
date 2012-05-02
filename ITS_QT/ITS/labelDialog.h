@@ -2,7 +2,7 @@
 #define lABELDIALOG_H
 
 #include <QtGui\QDialog>
-#include "ui_labelDialog.h"t
+#include "ui_labelDialog.h"
 #include <QtGui>
 //#include <QDialog>
 #include <QWidget>
@@ -11,7 +11,9 @@
 #include <QComboBox>
 #include <QPoint>
 #include <string>
+#include <QMdiSubWindow>
 #include "db.h"
+
 class labelDialog : public QDialog
 {
 	Q_OBJECT
@@ -32,6 +34,7 @@ private:
 
 	string QStringToString(QString);
 
+	QMdiSubWindow* par;
 	face* fc;
 	bool closed;
 	QPoint* rpos;

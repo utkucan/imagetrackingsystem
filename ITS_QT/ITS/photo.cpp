@@ -1,5 +1,10 @@
 #include "photo.h"
 
+photo::photo(photo* p){
+	this->path = p->getPath();//QStringToString(path);
+	this->faceList = p->getFaces();// faces;
+	downSampleImage();
+}
 
 photo::photo(QString path,QList<face*>*faces)
 {
