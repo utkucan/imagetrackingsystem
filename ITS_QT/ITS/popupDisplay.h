@@ -9,21 +9,20 @@
 #include <QSplashScreen>
 #include <QPainter>
 #include <QBitmap>
+#include <qthread.h>
 
-class popupDisplay : public QFrame
+class popupDisplay : public QThread
 {
 public:
-	popupDisplay(/*QFrame* frm,*/QImage* image);
+	popupDisplay(QImage* image);
 	~popupDisplay(void);
-	bool event(QEvent * e);
-protected:
-    void closeEvent(QCloseEvent *event);
+	//bool event(QEvent * e);
+	void run();
+
 private:
 
-//	QSplashScreen* frame;
-	QLabel* lbl;
-	QPixmap* pix;
-	double ratio;
+	QSplashScreen* frame;
+	
 };
 
 #endif

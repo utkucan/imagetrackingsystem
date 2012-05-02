@@ -30,7 +30,7 @@
 #include "db.h"
 #include "treeWid.h"
 #include "matlab.h"
-
+#include "popupDisplay.h"
 using namespace std;
 
 class ITS : public QMainWindow

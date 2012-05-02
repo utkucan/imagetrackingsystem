@@ -3,14 +3,23 @@
 ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)
 {
-	ui.setupUi(this);
+	QPixmap* p = new QPixmap();
+	p->convertFromImage(*(new QImage("LOGO.jpg")),Qt::AutoColor);
+	QSplashScreen* frame= new QSplashScreen(*p);
+	frame->show();
+	
 
 	database = new db();
 	mdiArea = new mdi(ui.mdiArea,database);
 	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea,database);
 	treeWidget = new treeWid(this,database,ui.treeWidget,mdids,mdiArea);
 	m = new matlab();
+	
+	frame->close();
+	delete frame;
 
+
+	ui.setupUi(this);
 	
 //	photoList = new QList<photo*>();
 	
