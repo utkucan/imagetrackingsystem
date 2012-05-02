@@ -15,6 +15,7 @@
 #include "face.h"
 #include "analyzer.h"
 #include "db.h"
+#include "ranking.h"
 
 class importPhotos  : public QThread
 {

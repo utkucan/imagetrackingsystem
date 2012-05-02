@@ -2,10 +2,12 @@
 
 
 analyzer::analyzer(QList<face*> *faceList,string imagePath)
-{
+{	
+
 	this->faceList = faceList;
 	this->imagePath = imagePath;
 	count = 1;
+	m = new matlab();
 }
 
 analyzer::~analyzer(void)
@@ -55,20 +57,53 @@ void analyzer::run(){
  	facedetect f(imagePath);
 	facedetect::List* head = f.getFaceList();
 	facedetect::List* tmp = head;
-
+	double* featureArray;
 	while( tmp !=NULL){
 		QImage* img = IplImage2QImage(tmp->face);
 		img = transformImage(img);
 //		saveface(img);
-		// burada fecial feature hesaplicaz, NULL yazan yere featurelarý verecez, label'ý þimdilik boþ verdik, id'yi its set edicek
-		face* fc = new face(0,imagePath,tmp->x,tmp->y,tmp->width,tmp->height,img->width(),img->height(),NULL,"Unknown");
+		img->save("temp.jpg");
+		saveVJFile("temp.jpg",img);
+		featureArray = m->returnFeatures("temp.jpg");
+		
+		// burada facial feature hesaplicaz, NULL yazan yere featurelarý verecez, label'ý þimdilik boþ verdik, id'yi its set edicek
+		
+		face* fc = new face(0,imagePath,tmp->x,tmp->y,tmp->width,tmp->height,img->width(),img->height(),featureArray,"Unknown");
 		faceList->append(fc);
+		
+		
+		
+		// asdklþasdklþklþasdfjjkþasflaþsfklsfkþlafkþslffþasklsfklþlþasfkklþasfþklasfþasfklþklasfþklasfþklasfklþasfkþlasfklþasfklþ
+		/*ranking* r = new ranking(dbObj);
+		for(int i = 0 ; i<faceList->size()-1;i++){
+			r->compareFaces(fc,faceList->at(i));
+		}*/
+		
+			
 //		mdiArea->addMdiChild(fc);
 		tmp= tmp->next;
 	}
 	f.clearList();
 }
 
+
+void analyzer::saveVJFile(QString path, QImage* img){
+		QString s ;
+		path = path.append(".vj");
+		QByteArray ba = path.toLocal8Bit();
+		const char *c_str2 = ba.data();
+
+		ofstream myfile;
+		myfile.open (c_str2);
+		myfile << "1\n";
+
+		s = QString("0 %1 0 %2").arg(img->width()).arg(img->height());
+		//  s = "0 "+ img->width() + " 0 " + img->height() + "\n";
+		ba = s.toLocal8Bit();
+		c_str2 = ba.data();
+		myfile << c_str2;
+		myfile.close();
+}
 void  analyzer::saveface(QImage* image){
 	char* no = new char[1];
 	itoa(count,no,10);

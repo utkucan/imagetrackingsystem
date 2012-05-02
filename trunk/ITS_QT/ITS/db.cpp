@@ -1,6 +1,7 @@
 #include "db.h"
 #include <QSqlDatabase>
 #include "photo.h"
+
 db::db(QObject *parent){
 	if(openDB()){
 
@@ -9,8 +10,8 @@ db::db(QObject *parent){
 
 		createTables();
 		insertIntoPerson("Unknown");
-		
-	//	getUnlabeledPhotos();
+
+		//	getUnlabeledPhotos();
 	}
 
 }
@@ -18,54 +19,54 @@ db::db(QObject *parent){
 db::~db(void){
 	deleteDB();
 }
-	  
+
 bool db::openDB()
-    {
-    // Find QSLite driver
-    database = QSqlDatabase::addDatabase("QSQLITE");
- 
-    #ifdef Q_OS_LINUX
-    // NOTE: We have to store database file into user home folder in Linux
-    QString path(QDir::home().path());
-    path.append(QDir::separator()).append("my.db.sqlite");
-    path = QDir::toNativeSeparators(path);
-    db.setDatabaseName(path);
-    #else
-    // NOTE: File exists in the application private folder, in Symbian Qt implementation
-    database.setDatabaseName("./db/my.db.sqlite");
-    #endif
- 
-    // Open databasee
+{
+	// Find QSLite driver
+	database = QSqlDatabase::addDatabase("QSQLITE");
+
+#ifdef Q_OS_LINUX
+	// NOTE: We have to store database file into user home folder in Linux
+	QString path(QDir::home().path());
+	path.append(QDir::separator()).append("my.db.sqlite");
+	path = QDir::toNativeSeparators(path);
+	db.setDatabaseName(path);
+#else
+	// NOTE: File exists in the application private folder, in Symbian Qt implementation
+	database.setDatabaseName("./db/my.db.sqlite");
+#endif
+
+	// Open databasee
 	if(database.open())
 		return true;
 	return false;
-//    return database.open();
-    }
- 
+	//    return database.open();
+}
+
 QSqlError db::lastError()
-    {
-    // If opening database has failed user can ask 
-    // error description by QSqlError::text()
-    return database.lastError();
-    }
- 
+{
+	// If opening database has failed user can ask 
+	// error description by QSqlError::text()
+	return database.lastError();
+}
+
 bool db::deleteDB()
-    {
-    // Close database
-    database.close();
- 
-    #ifdef Q_OS_LINUX
-    // NOTE: We have to store database file into user home folder in Linux
-    QString path(QDir::home().path());
-    path.append(QDir::separator()).append("my.db.sqlite");
-    path = QDir::toNativeSeparators(path);
-    return QFile::remove(path);
-    #else
- 
-    // Remove created database binary file
-    return QFile::remove("my.db.sqlite");
-    #endif
-    }
+{
+	// Close database
+	database.close();
+
+#ifdef Q_OS_LINUX
+	// NOTE: We have to store database file into user home folder in Linux
+	QString path(QDir::home().path());
+	path.append(QDir::separator()).append("my.db.sqlite");
+	path = QDir::toNativeSeparators(path);
+	return QFile::remove(path);
+#else
+
+	// Remove created database binary file
+	return QFile::remove("my.db.sqlite");
+#endif
+}
 
 bool db::insertIntoPerson(QString name){
 	{
@@ -82,20 +83,19 @@ bool db::insertIntoPerson(QString name){
 
 // bana face id verilcek ben butun tabledan faceidler olan faceidleri ve similarty doncem
 QList<Rank*> db::selectFromEqual(int faceId){
-	 bool a=false;
-	 QList<Rank*> myList ;
-	 QSqlQuery query(database);
-	 query.prepare("SELECT F2id, similar FROM Equal WHERE F1id= :face1 union  SELECT F1id, similar FROM Equal WHERE F2id=:face1");
-	 query.bindValue(":face1", faceId);
-	 a=query.exec();
-	 while(query.next()){
-		Rank *r= new Rank;
-		r->faceId= query.value(0).toInt();
-		r->comp=query.value(1).toDouble();
-		myList.append(r);
-	 }
+	bool a=false;
+	QList<Rank*> myList ;
+	QSqlQuery query(database);
+	query.prepare("SELECT F2id, similar FROM Equal WHERE F1id= :face1 union  SELECT F1id, similar FROM Equal WHERE F2id=:face1");
+	query.bindValue(":face1", faceId);
+	a=query.exec();
+	while(query.next()){
+		Rank *r= new Rank(query.value(0).toInt(), query.value(1).toDouble());
 
-	 return myList;
+		myList.append(r);
+	}
+
+	return myList;
 
 }
 bool db::insertIntoPhoto(photo *p){
@@ -111,7 +111,7 @@ bool db::insertIntoPhoto(photo *p){
 
 			query.prepare("SELECT MAX(Iid) FROM Images");
 			a=query.exec();	
-			
+
 			query.next();
 			k=query.value(0).toInt();
 			p->setID(k);
@@ -121,6 +121,7 @@ bool db::insertIntoPhoto(photo *p){
 				insertIntoFaces(p->getFaces()->at(i),k);
 
 			}
+
 
 		}
 
@@ -139,19 +140,18 @@ bool db::insertIntoFaces(face* f, int photoId){
 		query.bindValue(":height", f->getHeight());
 		query.bindValue(":tw", f->getTransformedWidth());
 		query.bindValue(":th", f->getTransformedHeight());
-		
+
 		double *fl=f->getFecialFeatures();
 		QString featureStr = "";
 		QString temp;
 		char buffer [50];
 		for(int i = 0 ; i<1937; i++){
-
-			sprintf(buffer,"%d",fl[i]);
+			sprintf(buffer,"%f",fl[i]);
 			featureStr.append(buffer);
 			if(i!=1936){
 				featureStr.append("#");
 			}
-			
+
 		}
 		query.bindValue(":fet",featureStr );
 		a=query.exec();
@@ -163,8 +163,6 @@ bool db::insertIntoFaces(face* f, int photoId){
 			query.next();
 			k=query.value(0).toInt();
 			f->setID(k);
-	
-
 			insertIntoHasFaces(k,1,photoId,0);
 		}
 
@@ -232,8 +230,9 @@ face* db::getFace(int faceId){
 	double height=query.value(4).toDouble();
 	double tw=query.value(5).toDouble(); 
 	double th=query.value(6).toDouble();
-
-	return new face(faceId,"",x,y,width,height,tw,th,NULL,"");
+	QString featStr = query.value(7).toString();
+	double* featList = returnFacialFeatures(featStr);
+	return new face(faceId,"",x,y,width,height,tw,th,featList,"");
 }
 
 photo* db::getImage(int imageId){
@@ -268,20 +267,20 @@ QList<int>* db::selectPersonsInPhoto(QStringList personName){
 		if(i!=personName.count()-1)
 			s=s+" INTERSECT ";
 	}
-	
-	
+
+
 	query.prepare(s);
 	a=query.exec();
 	QList<int>* integer = new QList<int>();
 	while(query.next()){
 
 		integer->append(query.value(0).toInt());
-	
+
 	}
 	return integer;
 }
 QList<int>* db::selectPersonPhoto(QString personName){
-	
+
 	bool a=false;
 	QSqlQuery query(database);
 
@@ -294,7 +293,7 @@ QList<int>* db::selectPersonPhoto(QString personName){
 		photoIdList->append(query.value(0).toInt());
 	}
 	return photoIdList;
-	
+
 }
 //utkucanin istedigi qquery
 
@@ -303,7 +302,7 @@ QList<int>* db::selectPersonPhoto(QString personName){
 //emrenin istedigi person id yi verip butun face idlerini getirme hasface tablosunda
 QList<int>* db::selectAllFacesFromPersonId(int personId){
 	bool a=false;
-//	int personId= getPersonId(personName);
+	//	int personId= getPersonId(personName);
 
 	QSqlQuery query(database);
 	query.prepare("SELECT F1.Fid FROM HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND P1.Pid=:personId");
@@ -317,7 +316,7 @@ QList<int>* db::selectAllFacesFromPersonId(int personId){
 }
 QList<int>* db::selectPersonFace(QString personName,QList<int>*ApprovedList){
 	bool a=false;
-//	int personId= getPersonId(personName);
+	//	int personId= getPersonId(personName);
 
 	QSqlQuery query(database);
 
@@ -357,11 +356,11 @@ QList<photo*>* db::getUnlabeledPhotos(){
 	QSqlQuery query(database);
 	query.prepare("SELECT DISTINCT Iid FROM HasFaces WHERE Pid = 1 ");
 	a=query.exec();
-//	QList<int> photoId;
+	//	QList<int> photoId;
 	QList<photo*>* pl = new QList<photo*>();
 	while(query.next()){
 		int imageId=query.value(0).toInt();
-//		photoId.append(imageId);
+		//		photoId.append(imageId);
 		QList<face*>* fl = new QList<face*>();
 
 		QSqlQuery query4(database);
@@ -385,35 +384,44 @@ QList<photo*>* db::getUnlabeledPhotos(){
 			bool k3=query3.exec();
 			//facelist olcak
 			while(query3.next()){
-				 double x=query3.value(1).toDouble();
-				 double y=query3.value(2).toDouble();
-				 double width=query3.value(3).toDouble();
-				 double height=query3.value(4).toDouble();
-				 double tw=query3.value(5).toDouble(); 
-				 double th=query3.value(6).toDouble();
-
-				
+				double x=query3.value(1).toDouble();
+				double y=query3.value(2).toDouble();
+				double width=query3.value(3).toDouble();
+				double height=query3.value(4).toDouble();
+				double tw=query3.value(5).toDouble(); 
+				double th=query3.value(6).toDouble();
+				QString featureListStr = query3.value(7).toString();
 
 				QSqlQuery query5(database);
 				query5.prepare("SELECT name FROM Person WHERE Pid = :PId ");
 				query5.bindValue(":PId", personId);
 				bool k5=query5.exec();
-				 query5.next();
-				 QString lbl(query5.value(0).toString());
+				query5.next();
+				QString lbl(query5.value(0).toString());
 
+				double* featureList = returnFacialFeatures(featureListStr);
 
-				 face* f = new face(faceId,QStringToString(imagePath),x,y,width,height,tw,th,NULL,QStringToString(lbl));
-				 f->setPhotoID(imageId);
-				 fl->append(f);
+				face* f = new face(faceId,QStringToString(imagePath),x,y,width,height,tw,th,featureList,QStringToString(lbl));
+				f->setPhotoID(imageId);
+				fl->append(f);
 			}
 		}
 		photo* p = new photo(imagePath,fl);
 		p->setID(imageId);
 		pl->append(p);
 	}
-	
+
 
 	return pl;
+}
+
+double* db::returnFacialFeatures(QString str){
+	QList<QString> fList = str.split("#");
+	double* ff = new double[fList.size()];
+	for(int p = 0 ; p<fList.size() ; p++ ){
+		ff[p] = fList.at(p).toDouble();
+	}
+	return ff;
 }
 
 QStringList db::getAllPerson(){
@@ -432,8 +440,8 @@ void db::getAllPhotos(QList<photo*>* pl,QList<face*>* faceList){
 	bool a=false;
 	QSqlQuery query(database);
 	// "SELECT DISTINCT F.Fid,I.Iid,F.x,F.y,F.width,F.height,F.tw,F.th,I.path,P.name FROM Faces F,HasFaces H,Images I,Person P WHERE F.Fid=H.Fid AND P.Pid=H.Pid AND H.Iid=I.Iid AND I.Iid IN (SELECT I1.Iid FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid AND P1.name=:personName)");
-	query.prepare("SELECT DISTINCT F.Fid,I.Iid,F.x,F.y,F.width,F.height,F.tw,F.th,I.path,P.name FROM Faces F,HasFaces H,Images I,Person P WHERE F.Fid=H.Fid AND P.Pid=H.Pid AND H.Iid=I.Iid AND I.Iid IN (SELECT I1.Iid FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid )");
-//	query.bindValue(":personName", personName);
+	query.prepare("SELECT DISTINCT F.Fid,I.Iid,F.x,F.y,F.width,F.height,F.tw,F.th,I.path,P.name,F.feature FROM Faces F,HasFaces H,Images I,Person P WHERE F.Fid=H.Fid AND P.Pid=H.Pid AND H.Iid=I.Iid AND I.Iid IN (SELECT I1.Iid FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid )");
+	//	query.bindValue(":personName", personName);
 	a=query.exec();
 
 	QList<face*> fl;
@@ -451,19 +459,19 @@ void db::getAllPhotos(QList<photo*>* pl,QList<face*>* faceList){
 		double th=query.value(7).toDouble();
 		QString path = query.value(8).toString();
 		QString name = query.value(9).toString();
-
+		QString featStr = query.value(10).toString();
 		if(!imageIdList.contains(imageId)){
 			imageIdList.append(imageId);
 			pathList.append(path);
 		}
-		
-		face* f = new face(faceId,QStringToString(path),x,y,width,height,tw,th,NULL,QStringToString(name));
+		double* flist = returnFacialFeatures(featStr);
+		face* f = new face(faceId,QStringToString(path),x,y,width,height,tw,th,flist,QStringToString(name));
 		f->setPhotoID(imageId);
 
 		fl.append(f);
 		faceList->append(f);
 	}
-//	QList<photo*>* pl = new QList<photo*>();
+	//	QList<photo*>* pl = new QList<photo*>();
 	for(int i = 0; i<imageIdList.size();i++){
 		QList<face*> *pfl = new QList<face*>(); 
 		for(int j = 0; j<fl.size();j++){
@@ -481,15 +489,15 @@ void db::getAllPhotos(QList<photo*>* pl,QList<face*>* faceList){
 
 bool db::insertIntoEqual(int face1, int face2, double sim){
 
-		bool a=false;
-		QSqlQuery query(database);
-		query.prepare("INSERT INTO Equal VALUES(:fid1, :fid2 , :simi)");
-	
-		query.bindValue(":fid1", face1);
-		query.bindValue(":fid2", face2);
-		query.bindValue(":simi", sim);
-		a=query.exec();
-		 return a;
+	bool a=false;
+	QSqlQuery query(database);
+	query.prepare("INSERT INTO Equal VALUES(:fid1, :fid2 , :simi)");
+
+	query.bindValue(":fid1", face1);
+	query.bindValue(":fid2", face2);
+	query.bindValue(":simi", sim);
+	a=query.exec();
+	return a;
 }
 
 bool db::updateHasFaces(int faceId, QString  s, int imageId,int Approved ){
@@ -501,7 +509,7 @@ bool db::updateHasFaces(int faceId, QString  s, int imageId,int Approved ){
 		query.next();
 		int personId=query.value(0).toInt();
 		if(personId == 0 ){
-		
+
 			insertIntoPerson(s);
 			bool k=false;
 			query.prepare("SELECT MAX(Pid) FROM Person");
@@ -511,7 +519,7 @@ bool db::updateHasFaces(int faceId, QString  s, int imageId,int Approved ){
 			}else
 				return false;
 		}
-	
+
 		query.prepare( "UPDATE HasFaces SET Pid = :pid, Approved = :A  WHERE Fid = :fid  AND Iid= :iid" );
 		query.bindValue(":fid", faceId);
 		query.bindValue(":pid", personId);
@@ -530,7 +538,7 @@ bool db::updateHasFaces(int faceId, QString  s, int imageId,int Approved ){
 void db::createTables(){
 	const QString	CREATE_TABLE("CREATE TABLE Images (Iid  INTEGER PRIMARY KEY,path TEXT UNIQUE);");
 	QSqlQuery	query(database);
-			
+
 	if(query.exec(CREATE_TABLE))
 	{
 		qDebug() << "Table created";
@@ -612,18 +620,37 @@ QList<int>* db::selectAllPerson(){
 	QSqlQuery query(database);
 
 	query.prepare("SELECT Pid From Person");
-	
+
 	a=query.exec();
 
 	QList<int>* personIdList = new QList<int>();
-	
+
 	while(query.next()){
 		personIdList->append(query.value(0).toInt());
-		
+
 	}
 	return personIdList;
 
 }
+
+QList<int>* db::getAllUnknownFaceIDs(){
+	bool a=false;
+
+	QSqlQuery query(database);
+
+	query.prepare("Select Fid From HasFaces WHERE Approved=0");
+
+	a=query.exec();
+
+	QList<int>* unknownPersonIdList = new QList<int>();
+
+	while(query.next()){
+		unknownPersonIdList->append(query.value(0).toInt());
+	}
+	return unknownPersonIdList;
+
+}
+
 int db::selectMaxFaceId(){
 	bool a=false;
 
