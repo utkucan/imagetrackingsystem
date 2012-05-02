@@ -3,6 +3,7 @@
 ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)
 {
+	ui.setupUi(this);
 	QPixmap* p = new QPixmap();
 	p->convertFromImage(*(new QImage("LOGO.jpg")),Qt::AutoColor);
 	QSplashScreen* frame= new QSplashScreen(*p);
@@ -19,7 +20,7 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	delete frame;
 
 
-	ui.setupUi(this);
+//	ui.setupUi(this);
 	
 //	photoList = new QList<photo*>();
 	
