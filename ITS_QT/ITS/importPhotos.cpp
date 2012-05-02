@@ -37,7 +37,7 @@ importPhotos::~importPhotos(void)
 void importPhotos::run(){
 	if(flag)
 		findImage(dir);
-
+	ranking *r = new ranking(database);
 	QList<analyzer*> threads;
 	int numOfThread = 0;
 //	QList<photo*> *photos;
@@ -63,6 +63,12 @@ void importPhotos::run(){
 							faces->append(*(threads[i]->getFaceList()));
 							photos->append(p);
 							database->insertIntoPhoto(p);
+							
+							for(int j = 0 ; j<(*(threads[i]->getFaceList())).size(); j++){
+								for(int k = 0 ;k<faces->size();k++)
+									r->compareFaces((*(threads[i]->getFaceList())).at(j),faces->at(k));
+							}
+
 						}
 					//	int pos = photos->size() - threads.size() + i;
 					//	database->insertIntoPhoto((*photos)[pos]);
@@ -73,6 +79,7 @@ void importPhotos::run(){
 					}
 				}
 			}
+
 		}
 	}
 
@@ -81,6 +88,14 @@ void importPhotos::run(){
 		delete threads[i];
 	}
 	threads.clear();
+
+	/*
+	for(int k = 0 ; k < (*(threads[i]->getFaceList())).size() ;k++){
+		for(int j = 0 ; j < faces->size() ; j++){
+			r->compareFaces((*(threads[i]->getFaceList())).at(k),faces->at(j));
+		}							
+	}
+	*/
 }
 
 string importPhotos::QStringToString(QString str){

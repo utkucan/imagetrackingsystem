@@ -9,17 +9,16 @@
 #include <QDebug>
 #include <QString>
 
+#include "Rank.h"
 #include "photo.h"
 #include "face.h"
 #include "displaydb.h"
 
-struct Rank{
-	int faceId;
-	double comp;
-};
+
 class db : public QObject
 {
 public:
+	
 	db(QObject *parent = 0);
 	~db(void);
 	int selectMaxFaceId();
@@ -29,7 +28,7 @@ public:
 	bool insertLabel(QString);
 	bool insertIntoPerson(QString name);
 	bool insertIntoPhoto(photo* p);
-	bool insertIntoFaces(face* f);
+	bool insertIntoFaces(face* f, int);
 	bool insertIntoHasFaces(int faceId, int personId, int imageId,int);
 	bool insertIntoEqual(int, int,double);
 	void storeFeatureList(double *);
@@ -41,7 +40,7 @@ public:
 	QList<int>* selectPersonFace(QString personName,QList<int>*);
 	bool photoExist(QString path);
 	bool selectPerson();
-	
+	double* returnFacialFeatures(QString);
 	
 	QList<photo*>* getUnlabeledPhotos();
 
@@ -53,7 +52,7 @@ public:
 	QString getImagePath(int imageID);
 	photo* getImage(int imageId);
 	face* getFace(int faceId);
-
+	QList<int>* getAllUnknownFaceIDs();
 	bool updateHasFaces(int faceId, QString s, int imageId,int Approved);
 
 private:

@@ -12,6 +12,8 @@
 #include "facedetect.h"
 #include "mdi.h"
 #include "face.h"
+#include "matlab.h"
+#include "ranking.h"
 
 class analyzer : public QThread
 {
@@ -22,12 +24,20 @@ public:
 	QList<face*>* getFaceList(){return faceList;}
 	string getFileName(){return imagePath;}
 //	void analyz(string imagePath);
+
+	/*  new part start*/
+
+	void saveVJFile(QString, QImage*);
+	void storeFeatureList(double*,int);
+	int returnNewFaceID();
+
+	/* part end */
 private:
 
 	QImage* transformImage(QImage*);
 	QImage* IplImage2QImage(const IplImage *iplImage);
 	void saveface(QImage*);
-
+	matlab* m;
 	QList<face*> *faceList;
 	string imagePath;
 	int count;
