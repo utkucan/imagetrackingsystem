@@ -14,11 +14,11 @@ public:
 	db* dbObj;
 	double compareFaces(face* , face*);
 	void rankCompare(int);
-	void kNN();
-	QList<int>* getUnknownFaceIDs();
+	void kNN(QList<face*>*);
+	QList<int>* getUnknownFaceIDs(QList<face*>*);
 	QList<int>* getfaceIDsFromLabelId(int );
 	double getSimilarity(int , int );
-	int findDominantId(Rank*,int,int);
+	int findDominantId(QList<Rank*>,int,int);
 	char* getLabelString(int);
 
 	int bordoranking(int unknownFaceId);
