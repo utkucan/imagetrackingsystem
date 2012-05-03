@@ -58,7 +58,7 @@ public:
 	void InsertNonProcessedPhotoPaths(QStringList);
 	void DeleteNonProcessedPhotoPaths(QString);
 	QStringList GetNonProcessedPhotoPaths();
-
+	QString GetFirstNonProcessedPhotoPaths();
 private:
 	string QStringToString(QString str);
 	void displayDatabase();

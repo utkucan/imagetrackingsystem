@@ -43,7 +43,7 @@ public:
 private slots:;
 	void on_actionKlasor_triggered();
 	void on_actionSearch_HardDisk_triggered();
-	void controlList();
+	void controlList(importPhotos* ip);
 	void treeWidgetSelectionChange();
 	void updateFace();
 private:
@@ -57,7 +57,7 @@ private:
 
 //	int faceCount;
 //	int photoPos;
-	importPhotos* ip;
+	//importPhotos* ip;
 	db *database;
 //	QList<photo*> *photoList;
 	mdi* mdiArea;

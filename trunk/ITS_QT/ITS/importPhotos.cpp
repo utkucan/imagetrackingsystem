@@ -37,18 +37,23 @@ importPhotos::~importPhotos(void)
 }
 
 void importPhotos::run(){
+	QString s = database->GetFirstNonProcessedPhotoPaths();
 	if(flag)
 		findImage(dir);
-	database->InsertNonProcessedPhotoPaths(*QDirectory);
-	QDirectory->clear();
-	QDirectory = new QStringList(database->GetNonProcessedPhotoPaths());
+	if(QDirectory->size() > 0){
+		database->InsertNonProcessedPhotoPaths(*QDirectory);
+		QDirectory->clear();
+	}
+//	QDirectory = new QStringList(database->GetNonProcessedPhotoPaths());
 	ranking *r = new ranking(database);
 	QList<analyzer*> threads;
 	int numOfThread = 0;
 //	QList<photo*> *photos;
-	for(int j = 0 ; j< QDirectory->count(); j++){
-		if(!database->photoExist((*QDirectory)[j])){
-			string filename = QStringToString((*QDirectory)[j]);
+	//for(int j = 0 ; j< QDirectory->count(); j++){
+	QString d = database->GetFirstNonProcessedPhotoPaths();
+	while(d != ""){
+		if(!database->photoExist(d)){
+			string filename = QStringToString(d);
 			QList<face*> *tmpLst = new QList<face*>();
 
 	//		photo* p = new photo((*QDirectory)[j],tmpLst);
@@ -77,16 +82,21 @@ void importPhotos::run(){
 						}
 					//	int pos = photos->size() - threads.size() + i;
 					//	database->insertIntoPhoto((*photos)[pos]);
+
+		//				database->DeleteNonProcessedPhotoPaths(QString(threads[i]->getFileName().c_str()));
 						numOfThread--;
 						delete threads[i];
 						threads.removeAt(i);
-						database->DeleteNonProcessedPhotoPaths(QString(threads[i]->getFileName().c_str()));
 						break;
 					}
 				}
 			}
 
 		}
+		else{
+			database->DeleteNonProcessedPhotoPaths(d);
+		}
+		d = database->GetFirstNonProcessedPhotoPaths();
 	}
 
 	for(int i = 0; i< threads.size(); i++){

@@ -17,6 +17,12 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	m = new matlab();
 	
 	frame->close();
+
+	importPhotos* ip = new importPhotos(QStringList(),database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m);
+	ip->start();
+	
+	QTimer::singleShot(1000*3, this, SLOT(controlList(ip)));
+
 	delete frame;
 
 
@@ -78,10 +84,10 @@ void ITS::on_actionKlasor_triggered(){
 
 	
 //	photoPos = photoList->size();
-	ip = new importPhotos(QDirectory,database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m);
+	importPhotos* ip = new importPhotos(QDirectory,database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m);
 	ip->start();
 	
-	QTimer::singleShot(1000*3, this, SLOT(controlList()));
+	QTimer::singleShot(1000*3, this, SLOT(controlList(ip)));
 
 /*	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(controlList()));
@@ -97,7 +103,7 @@ void ITS::on_actionKlasor_triggered(){
 	
 }
 
-void ITS::controlList(){
+void ITS::controlList(importPhotos* ip){
 	if(!ip->isFinished()){
 		ip->lockProcess();
 //		displayPhoto(photoPos);
@@ -105,7 +111,7 @@ void ITS::controlList(){
 //		photoPos = photoList->size();
 		treeWidget->reDoLastOperation();
 		ip->wakeProcess();
-		QTimer::singleShot(1000*3, this, SLOT(controlList()));			
+		QTimer::singleShot(1000*3, this, SLOT(controlList(ip)));			
 	}
 }
 
@@ -129,9 +135,9 @@ void ITS::on_actionSearch_HardDisk_triggered(){
 
 	dialog.exec();
 	QStringList QDirectory = dialog.selectedFiles();
-	ip = new importPhotos(QDirectory[0],database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m);
+	importPhotos* ip = new importPhotos(QDirectory[0],database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m);
 	ip->start();
-	QTimer::singleShot(1000*3, this, SLOT(controlList()));
+	QTimer::singleShot(1000*3, this, SLOT(controlList(ip)));
 }
 /*
 void ITS::findImage(QString inp,QStringList* allImagesList){
