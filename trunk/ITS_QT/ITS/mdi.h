@@ -25,6 +25,8 @@ public:
 //	bool event(QEvent * e);
 	void updateFace();
 	void reDisplayLastPhoto();
+	void faceDisplayGeomety();
+	void photoDisplayGeomety();
 private:
 	QImage* IplImage2QImage(const IplImage *iplImage);
 

@@ -31,12 +31,20 @@ void mdi::updateFace(){
 	if(cursize != tmpList.size()){
 		childPosx = 0;
 		childPosy = 0;
+		QScrollBar* scroll = mdiArea->verticalScrollBar();
+		int cury = scroll->value();
+		scroll->setValue(0);
 		for(int i = 0; i<tmpList.size();i++){
-			tmpList[i]->setChildGeometry(childPosx+5,childPosy+5);
+				
+				int y = scroll->value();
+				int cpy = childPosy - y;
+				tmpList[i]->setChildGeometry(childPosx+5,cpy+5);
+			//tmpList[i]->setChildGeometry(childPosx+5,childPosy+5);
 			childPosx = (childPosx+130)%650;
 			if(childPosx == 0)
 				childPosy += 130;
 		}
+		scroll->setValue(cury);
 		faceWindows.clear();
 		faceWindows = tmpList;
 	}else
@@ -151,13 +159,21 @@ void mdi::addMdiFace(face* faceObject){
 	faceWindows.append(child);
 	child->setSubWinAdd(mdiArea->addSubWindow(child,Qt::FramelessWindowHint));
 
-	child->setChildGeometry(childPosx+5,childPosy+5);
+	QScrollBar* scroll = mdiArea->verticalScrollBar();
+	int y = scroll->value();
+	int cpy = childPosy - y;
+	child->setChildGeometry(childPosx+5,cpy+5);
 	// child'larý array'e koy, arraydaki pozisyonþarýna göre, pasýlacaklarý yeri ayarla panpa
 	// ekrana bastýðýn yüzleri ayný zamanda bir file'a kaydet, tekrar iþlem yapmak zorunda kalma
 	childPosx = (childPosx+130)%650;
 	if(childPosx == 0)
 		childPosy += 130;
+	
     child->show();
+
+	
+
+
 //	child->showNormal();
 //	child->showMaximized();
 //	child->showMinimized();
@@ -195,4 +211,17 @@ void mdi::setPosition(){
 		photoWindows[i]->setPosition();
 	}
 
+}
+
+void mdi::faceDisplayGeomety(){
+	QRect r = mdiArea->geometry();
+	mdiArea->setGeometry(190,10,700,510);
+	QRect r1 = mdiArea->geometry();
+	int a = 5;
+}
+void mdi::photoDisplayGeomety(){
+	QRect r = mdiArea->geometry();
+	mdiArea->setGeometry(190,10,700,400);
+	QRect r1 = mdiArea->geometry();
+	int a = 5;
 }

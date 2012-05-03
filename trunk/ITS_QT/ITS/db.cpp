@@ -595,9 +595,46 @@ void db::createTables(){
 		QSqlError e = query.lastError();
 		qDebug() << "Failed to create table:" << query.lastError();
 	}
+
+	const QString	CREATE_TABLE6("CREATE TABLE NonProcessed (nid INTEGER PRIMARY KEY,path TEXT) ;");
+	if(query.exec(CREATE_TABLE6))
+	{
+		qDebug() << "Table created";
+	}
+	else
+	{
+		QSqlError e = query.lastError();
+		qDebug() << "Failed to create table:" << query.lastError();
+	}
 }
 
 
+void db::InsertNonProcessedPhotoPaths(QStringList lst){
+	for(int i = 0; i<lst.size(); i++){
+		QSqlQuery query(database);
+		query.prepare("INSERT INTO NonProcessed(NULL,:path)");
+		query.bindValue(":path", lst[i]);
+		query.exec();
+	}
+}
+
+void db::DeleteNonProcessedPhotoPaths(QString pth){
+	QSqlQuery query(database);
+	query.prepare("DELETE FROM NonProcessed WHERE path=:path");
+	query.bindValue(":path", pth);
+	query.exec();
+}
+
+QStringList db::GetNonProcessedPhotoPaths(){
+	QSqlQuery query(database);
+	query.prepare("SELECT * FROM NonProcessed");
+	query.exec();
+	QStringList lst;
+	while(query.next()){
+		lst.append(query.value(0).toString());
+	}
+	return lst;
+}
 
 string db::QStringToString(QString str){
 	string filename ="";

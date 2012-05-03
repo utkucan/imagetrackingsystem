@@ -39,6 +39,9 @@ importPhotos::~importPhotos(void)
 void importPhotos::run(){
 	if(flag)
 		findImage(dir);
+	database->InsertNonProcessedPhotoPaths(*QDirectory);
+	QDirectory->clear();
+	QDirectory = new QStringList(database->GetNonProcessedPhotoPaths());
 	ranking *r = new ranking(database);
 	QList<analyzer*> threads;
 	int numOfThread = 0;
@@ -77,6 +80,7 @@ void importPhotos::run(){
 						numOfThread--;
 						delete threads[i];
 						threads.removeAt(i);
+						database->DeleteNonProcessedPhotoPaths(QString(threads[i]->getFileName().c_str()));
 						break;
 					}
 				}
