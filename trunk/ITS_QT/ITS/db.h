@@ -59,6 +59,8 @@ public:
 	void DeleteNonProcessedPhotoPaths(QString);
 	QStringList GetNonProcessedPhotoPaths();
 	QString GetFirstNonProcessedPhotoPaths();
+
+	QList<int> getNonApprovedFace();
 private:
 	string QStringToString(QString str);
 	void displayDatabase();

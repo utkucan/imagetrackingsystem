@@ -286,7 +286,7 @@ QList<int>* db::selectPersonPhoto(QString personName){
 	bool a=false;
 	QSqlQuery query(database);
 
-	query.prepare("SELECT DISTINCT I.Iid FROM Faces F,HasFaces H,Images I,Person P WHERE F.Fid=H.Fid AND P.Pid=H.Pid AND H.Iid=I.Iid AND I.Iid IN (SELECT I1.Iid FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid AND P1.name=:personName)");
+	query.prepare("SELECT DISTINCT I.Iid FROM Faces F,HasFaces H,Images I,Person P WHERE H.Approved = 1 AND F.Fid=H.Fid AND P.Pid=H.Pid AND H.Iid=I.Iid AND I.Iid IN (SELECT I1.Iid FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid AND P1.name=:personName)");
 	query.bindValue(":personName", personName);
 	a=query.exec();
 	QList<int>* photoIdList = new QList<int>();
@@ -723,4 +723,16 @@ bool db::updateFaceforFeature(int id, QString s){
 	query.bindValue(":fid", id);
 	a=query.exec();
 	return a;
+}
+
+QList<int> db::getNonApprovedFace(){
+	QSqlQuery query(database);
+	query.prepare("SELECT H.Fid FROM HasFaces H WHERE H.Approved = 0");
+	query.exec();
+	QList<int> fid;
+	while(query.next()){
+		fid.append(query.value(0).toInt());
+	}
+	
+	return fid;
 }

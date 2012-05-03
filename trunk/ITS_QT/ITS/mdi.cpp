@@ -153,7 +153,7 @@ void mdi::addMdiPhoto(photo* photoObject){
 }
 */
 void mdi::addMdiFace(face* faceObject){
-
+	QMdiSubWindow* activeWindow = mdiArea->activeSubWindow();
 	mdiFace *child = new mdiFace(mdiArea,faceObject,database);
 
 	faceWindows.append(child);
@@ -170,8 +170,9 @@ void mdi::addMdiFace(face* faceObject){
 		childPosy += 130;
 	
     child->show();
-
-	
+	if(activeWindow != NULL){
+		mdiArea->setActiveSubWindow(activeWindow);
+	}
 
 
 //	child->showNormal();
