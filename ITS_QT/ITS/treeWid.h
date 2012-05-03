@@ -9,6 +9,7 @@
 #include "db.h"
 #include "mdiDS.h"
 #include "mdi.h"
+#include "ranking.h"
 
 class treeWid :public QTreeWidget
 {
@@ -32,6 +33,7 @@ private:
 	void buildTree(QStringList personList);
 	void buildSearchTree(QStringList personList);
 	void buildLists();
+	string QStringToString(QString str);
 
 	int lastOperation;
 	QString personName;
@@ -43,6 +45,7 @@ private:
 	QList<photo*> *photoList;
 	QList<face*> *faceList;
 
+	//ranking* r;
 	db* database;
 	QTreeWidget* treeWidget;
 	QTreeWidgetItem* itemSearch;

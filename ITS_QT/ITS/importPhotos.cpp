@@ -45,7 +45,7 @@ void importPhotos::run(){
 		QDirectory->clear();
 	}
 //	QDirectory = new QStringList(database->GetNonProcessedPhotoPaths());
-	ranking *r = new ranking(database);
+	ranking *r = new ranking(database,faces);
 	QList<analyzer*> threads;
 	int numOfThread = 0;
 //	QList<photo*> *photos;
@@ -79,6 +79,16 @@ void importPhotos::run(){
 									r->compareFaces((*(threads[i]->getFaceList())).at(j),faces->at(k));
 							}
 
+							
+							for(int j = 0 ; j<(*(threads[i]->getFaceList())).size(); j++){
+								int recLblId = r->bordoranking((*(threads[i]->getFaceList()))[j]->getID());
+								if(recLblId != -1){
+									QString lbl = database->getPersonName(recLblId);
+									(*(threads[i]->getFaceList()))[j]->setLabel(QStringToString(lbl));
+									database->updateHasFaces((*(threads[i]->getFaceList()))[j]->getID(),lbl,(*(threads[i]->getFaceList()))[j]->getPhotoId(),0);
+								}
+							}
+							
 						}
 					//	int pos = photos->size() - threads.size() + i;
 					//	database->insertIntoPhoto((*photos)[pos]);

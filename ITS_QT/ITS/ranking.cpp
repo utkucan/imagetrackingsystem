@@ -2,9 +2,10 @@
 
 
 
-ranking::ranking(db* d)
+ranking::ranking(db* d,QList<face*> *faceList)
 {
 	dbObj = d;
+	this->faceList = faceList;
 }
 
 
@@ -148,8 +149,24 @@ double ranking::getSimilarity(int faceID1 , int faceID2){
 	return r;
 }
 
-int ranking::bordoranking(int unknownFaceId){ //en cok benzeyen kisinin labelIdsini don
+void ranking::run(){
+
+	QList<int> fid = dbObj->getNonApprovedFace();
 	
+	for(int j = 0 ; j<fid.size(); j++){
+		int recLblId = bordoranking(fid[j]);
+		if(recLblId != -1){
+			QString lbl = dbObj->getPersonName(recLblId);
+			(*faceList)[fid[j]-1]->setLabel(QStringToString(lbl));
+			dbObj->updateHasFaces(fid[j],lbl,(*faceList)[fid[j]-1]->getPhotoId(),0);
+		}
+		
+	}
+
+}
+
+int ranking::bordoranking(int unknownFaceId){ //en cok benzeyen kisinin labelIdsini don
+
 	QList<int>* persons = dbObj->selectAllPerson(); //butun labelId'ler
 	int labelsLength = persons->size();
 	int minIndex = 1;
@@ -196,4 +213,13 @@ int ranking::getPosition(QList<Rank*> ranks, int size, int controlId){
 			ctr++;
 	}
 	return ctr;
+}
+
+string ranking::QStringToString(QString str){
+	string filename ="";
+	for(int i = 0; i<str.size();i++){
+		char c = (str[i].toAscii());
+		filename += c;
+	}
+	return filename;
 }

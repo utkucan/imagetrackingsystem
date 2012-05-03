@@ -7,6 +7,7 @@ treeWid::treeWid(QWidget* prnt,db* database,QTreeWidget* treeWidge,mdiDS* mdids,
 	this->treeWidget = treeWidge;
 	this->mdids = mdids;
 	this->mdiArea = mdiArea;
+	
 	SearchItemList = new QList<QTreeWidgetItem*>();
 	lastOperation = -1;
 	listPos = 0;
@@ -19,6 +20,7 @@ treeWid::treeWid(QWidget* prnt,db* database,QTreeWidget* treeWidge,mdiDS* mdids,
 	buildSearchTree(personList);
 	buildTree(personList);
 	buildLists();
+	
 
 	/*
 	for( int i = 0; i<QDirectory.size(); i++){
@@ -51,7 +53,7 @@ void treeWid::updateTree(){
 			
 
 			QTreeWidgetItem *subPhotoItem = new QTreeWidgetItem();
-			subPhotoItem->setText(0,"Labeled Photos");
+			subPhotoItem->setText(0,"Photos");
 			item->addChild(subPhotoItem);
 
 			QTreeWidgetItem *subFaceItem = new QTreeWidgetItem();
@@ -63,6 +65,21 @@ void treeWid::updateTree(){
 //			itemList->append(item);
 		}
 		size = personList.size();
+
+		/*
+		for(int j = 0 ; j<faceList->size(); j++){
+			if((*faceList)[j]->getLabel() == "Unknown"){
+				int recLblId = r->bordoranking((*faceList)[j]->getID());
+				if(recLblId != -1){
+					QString lbl = database->getPersonName(recLblId);
+					(*faceList)[j]->setLabel(QStringToString(lbl));
+					database->updateHasFaces((*faceList)[j]->getID(),lbl,(*faceList)[j]->getPhotoId(),0);
+				}
+			}
+		}
+		*/
+		ranking* r = new ranking(database,faceList);
+		r->start();
 	}
 
 }
@@ -184,10 +201,10 @@ void treeWid::reDoLastOperation(){
 			QList<int>* faceIdList = database->selectPersonFace(personName,ApprovedList);
 			displayFace(faceIdList,ApprovedList);
 		}else if(lastOperation == operation::SearchOperation){
-			/*
-			QList<int>* photoIdList = database->selectPersonsPhoto(SearchPersonList);
+			
+			QList<int>* photoIdList = database->selectPersonsInPhoto(SearchPersonList);
 			displayPhoto(photoIdList);
-			*/
+			
 		}
 
 	}
@@ -213,9 +230,19 @@ void treeWid::displayFace(QList<int>* faceIdList,QList<int>*ApprovedList){
 		mdids->clearMdiDS();
 		listPos = 0;
 	}
+
 	for(int i = listPos; i< faceIdList->size(); i++){
-	//	if((*ApprovedList)[i] == 0)
+		if((*ApprovedList)[i] == 0)
 			mdiArea->addMdiFace((*faceList)[(*faceIdList)[i]-1]);
 	}
 	listPos = faceIdList->size();
+}
+
+string treeWid::QStringToString(QString str){
+	string filename ="";
+	for(int i = 0; i<str.size();i++){
+		char c = (str[i].toAscii());
+		filename += c;
+	}
+	return filename;
 }
