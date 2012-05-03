@@ -7,7 +7,7 @@ treeWid::treeWid(QWidget* prnt,db* database,QTreeWidget* treeWidge,mdiDS* mdids,
 	this->treeWidget = treeWidge;
 	this->mdids = mdids;
 	this->mdiArea = mdiArea;
-	FilterItemList = new QList<QTreeWidgetItem*>();
+	SearchItemList = new QList<QTreeWidgetItem*>();
 	lastOperation = -1;
 	listPos = 0;
 	reDoFlag = false;
@@ -16,7 +16,7 @@ treeWid::treeWid(QWidget* prnt,db* database,QTreeWidget* treeWidge,mdiDS* mdids,
 	faceList = new QList<face*>();
 
 	QStringList personList = database->getAllPerson();
-	buildFilterTree(personList);
+	buildSearchTree(personList);
 	buildTree(personList);
 	buildLists();
 
@@ -40,10 +40,10 @@ void treeWid::updateTree(){
 	QStringList personList = database->getAllPerson();
 	if(size < personList.size()){
 		for( int i = size; i<personList.size();i++){
-			QTreeWidgetItem* FilterItem = new QTreeWidgetItem(itemFilter);
-			FilterItem->setText(0,personList[i]);
-			FilterItem->setCheckState(0,Qt::Unchecked);
-			FilterItemList->append(FilterItem);
+			QTreeWidgetItem* SearchItem = new QTreeWidgetItem(itemSearch);
+			SearchItem->setText(0,personList[i]);
+			SearchItem->setCheckState(0,Qt::Unchecked);
+			SearchItemList->append(SearchItem);
 
 			QTreeWidgetItem* item = new QTreeWidgetItem();
 			item->setText(0,personList[i]);
@@ -71,7 +71,7 @@ void treeWid::buildTree(QStringList personList){
 
 	
 	itemPhotos = new QTreeWidgetItem(treeWidget);
-	itemPhotos->setText(0,"Photos");
+	itemPhotos->setText(0,"People");
 
 	
 	size = personList.size();
@@ -81,7 +81,7 @@ void treeWid::buildTree(QStringList personList){
 		//item->setCheckState(0,Qt::Unchecked);
 
 		QTreeWidgetItem *subPhotoItem = new QTreeWidgetItem();
-		subPhotoItem->setText(0,"Labeled Photos");
+		subPhotoItem->setText(0,"Photos");
 		item->addChild(subPhotoItem);
 
 		QTreeWidgetItem *subFaceItem = new QTreeWidgetItem();
@@ -97,15 +97,15 @@ void treeWid::buildTree(QStringList personList){
 
 }
 
-void treeWid::buildFilterTree(QStringList personList){
-	itemFilter = new QTreeWidgetItem(treeWidget);
-	itemFilter->setText(0,"Filter");
+void treeWid::buildSearchTree(QStringList personList){
+	itemSearch = new QTreeWidgetItem(treeWidget);
+	itemSearch->setText(0,"Search");
 
 	for( int i = 1; i<personList.size();i++){
-		QTreeWidgetItem* item = new QTreeWidgetItem(itemFilter);
+		QTreeWidgetItem* item = new QTreeWidgetItem(itemSearch);
 		item->setCheckState(0,Qt::Unchecked);
 		item->setText(0,personList[i]);
-		FilterItemList->append(item);
+		SearchItemList->append(item);
 	}
 
 }
@@ -116,11 +116,11 @@ void treeWid::buildLists(){
 
 void treeWid::selectedItemChange(){
 	QString selection(treeWidget->currentItem()->text(0));
-	if(selection == "Labeled Photos" || selection == "Faces"){
+	if(selection == "Photos" || selection == "Faces"){
 		reDoFlag = false;
 		personName = treeWidget->currentItem()->parent()->text(0);
 		QApplication::setOverrideCursor(Qt::WaitCursor);
-		if(selection == "Labeled Photos" ){
+		if(selection == "Photos" ){
 			lastOperation = operation::photoOperation;
 			QList<int>* photoIDList = database->selectPersonPhoto(personName);
 			displayPhoto(photoIDList);	
@@ -132,28 +132,28 @@ void treeWid::selectedItemChange(){
 		}
 		QApplication::restoreOverrideCursor();
 	}else{
-		if(treeWidget->currentItem()->text(0) == "Photos" || treeWidget->currentItem()->text(0) == "Filter"){
+		if(treeWidget->currentItem()->text(0) == "People" || treeWidget->currentItem()->text(0) == "Search"){
 			if(treeWidget->currentItem()->isExpanded())
 				treeWidget->collapse(treeWidget->currentIndex());
 			else
 				treeWidget->expand(treeWidget->currentIndex());
-			for(int i = 0; i< FilterItemList->size(); i++){
-				(*FilterItemList)[i]->setCheckState(0,Qt::Unchecked);
+			for(int i = 0; i< SearchItemList->size(); i++){
+				(*SearchItemList)[i]->setCheckState(0,Qt::Unchecked);
 			}
 		}else{
-			if(treeWidget->currentItem()->parent()->text(0) == "Filter"){
-				filterPersonList.clear();
-				for(int i = 0; i< FilterItemList->size(); i++){
-					if((*FilterItemList)[i]->checkState(0) == Qt::Checked)
-						filterPersonList.append((*FilterItemList)[i]->text(0));
+			if(treeWidget->currentItem()->parent()->text(0) == "Search"){
+				SearchPersonList.clear();
+				for(int i = 0; i< SearchItemList->size(); i++){
+					if((*SearchItemList)[i]->checkState(0) == Qt::Checked)
+						SearchPersonList.append((*SearchItemList)[i]->text(0));
 				}
 				int a = 5;
 				// databaseden photolarý çek
 				// db nin içine selectPersonsPhoto diye bir method yaz, QStringList alsýn
 				// listenin içindeki labellarýn ortak fotolarýný bulsun gelsin felan
 				
-				lastOperation = operation::filterOperation;
-				QList<int>* photoIDList = database->selectPersonsInPhoto(filterPersonList);
+				lastOperation = operation::SearchOperation;
+				QList<int>* photoIDList = database->selectPersonsInPhoto(SearchPersonList);
 				displayPhoto(photoIDList);	
 				
 			}else{
@@ -183,9 +183,9 @@ void treeWid::reDoLastOperation(){
 			QList<int>*ApprovedList = new QList<int>();
 			QList<int>* faceIdList = database->selectPersonFace(personName,ApprovedList);
 			displayFace(faceIdList,ApprovedList);
-		}else if(lastOperation == operation::filterOperation){
+		}else if(lastOperation == operation::SearchOperation){
 			/*
-			QList<int>* photoIdList = database->selectPersonsPhoto(filterPersonList);
+			QList<int>* photoIdList = database->selectPersonsPhoto(SearchPersonList);
 			displayPhoto(photoIdList);
 			*/
 		}
@@ -194,6 +194,8 @@ void treeWid::reDoLastOperation(){
 }
 
 void treeWid::displayPhoto(QList<int>* photoIdList){
+	mdiArea->photoDisplayGeomety();
+	mdids->setvisible(true);
 	if(!reDoFlag){
 		mdids->clearMdiDS();
 		listPos = 0;
@@ -205,6 +207,8 @@ void treeWid::displayPhoto(QList<int>* photoIdList){
 }
 
 void treeWid::displayFace(QList<int>* faceIdList,QList<int>*ApprovedList){
+	mdiArea->faceDisplayGeomety();
+	mdids->setvisible(false);
 	if(!reDoFlag){
 		mdids->clearMdiDS();
 		listPos = 0;

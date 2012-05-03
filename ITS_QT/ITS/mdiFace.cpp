@@ -17,14 +17,25 @@
 
 	 if(FaceObject->getLabel() == "Unknown"){
 		 labelComboBox = new QComboBox(this);
-		 labelComboBox->setGeometry(0,h,w-20,20);
+		 labelComboBox->setGeometry(0,h,w-40,20);
 		 labelComboBox->setEditable(true);
+		 
+		 QIcon* accaptIcon = new QIcon("check.png");
+		 accaptButton = new QPushButton(*accaptIcon,"",this);
+		 accaptButton->setGeometry(w-40,h,20,20);
+		 connect(accaptButton,SIGNAL(clicked()),this,SLOT(textChanged()));
 
+		 QIcon* rejectIcon = new QIcon("cross.png");
+		 rejectButton = new QPushButton(*rejectIcon,"",this);
+		 rejectButton->setGeometry(w-20,h,20,20);
+		 connect(rejectButton,SIGNAL(clicked()),this,SLOT(accaptButtonClicked()));
+
+		 /*
 		 labelPushButton = new QPushButton(this);
 		 labelPushButton->setGeometry(w-20,h,20,20);
 		 labelPushButton->setText("ok");
-
-		 connect(labelPushButton,SIGNAL(clicked()),this,SLOT(textChanged()));
+		 */
+		// connect(labelPushButton,SIGNAL(clicked()),this,SLOT(textChanged()));
 		 /*
 		labelTextEdit = new QLineEdit(this);
 		labelTextEdit->setGeometry(0,h,w,20);

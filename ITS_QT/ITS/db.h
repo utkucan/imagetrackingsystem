@@ -54,6 +54,10 @@ public:
 	face* getFace(int faceId);
 	QList<int>* getAllUnknownFaceIDs();
 	bool updateHasFaces(int faceId, QString s, int imageId,int Approved);
+	
+	void InsertNonProcessedPhotoPaths(QStringList);
+	void DeleteNonProcessedPhotoPaths(QString);
+	QStringList GetNonProcessedPhotoPaths();
 
 private:
 	string QStringToString(QString str);

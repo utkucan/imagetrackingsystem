@@ -24,18 +24,18 @@ public:
 private slots:;
 	
 private:
-	enum operation{photoOperation,faceOperation,filterOperation};
+	enum operation{photoOperation,faceOperation,SearchOperation};
 	
 	void displayPhoto(QList<int>*);
 	void displayFace(QList<int>*,QList<int>*);
 	
 	void buildTree(QStringList personList);
-	void buildFilterTree(QStringList personList);
+	void buildSearchTree(QStringList personList);
 	void buildLists();
 
 	int lastOperation;
 	QString personName;
-	QStringList filterPersonList;
+	QStringList SearchPersonList;
 	bool reDoFlag;
 	int listPos;
 	int size;
@@ -45,9 +45,9 @@ private:
 
 	db* database;
 	QTreeWidget* treeWidget;
-	QTreeWidgetItem* itemFilter;
+	QTreeWidgetItem* itemSearch;
 	QTreeWidgetItem* itemPhotos;
-	QList<QTreeWidgetItem*>* FilterItemList;
+	QList<QTreeWidgetItem*>* SearchItemList;
 	mdiDS* mdids;
 	mdi* mdiArea;
 };

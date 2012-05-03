@@ -76,7 +76,7 @@ void ITS::on_actionKlasor_triggered(){
                          "",
                          "Images (*.jpg)");
 
-
+	
 //	photoPos = photoList->size();
 	ip = new importPhotos(QDirectory,database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m);
 	ip->start();

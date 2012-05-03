@@ -21,6 +21,7 @@ public:
 	void addMdiDSChild(photo* photoObject);
 	bool event(QEvent * e);
 	void clearMdiDS();
+	void setvisible(bool flag){mdids->setVisible(flag);}
 private:
 	int childPosx,childPosy;
 	QList<mdiDSChild*> photoWindows;
