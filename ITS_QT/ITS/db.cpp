@@ -596,7 +596,7 @@ void db::createTables(){
 		qDebug() << "Failed to create table:" << query.lastError();
 	}
 
-	const QString	CREATE_TABLE6("CREATE TABLE NonProcessed (nid INTEGER PRIMARY KEY,path TEXT) ;");
+	const QString	CREATE_TABLE6("CREATE TABLE NonProcessed (nid INTEGER PRIMARY KEY,path TEXT UNIQUE) ;");
 	if(query.exec(CREATE_TABLE6))
 	{
 		qDebug() << "Table created";
@@ -612,9 +612,10 @@ void db::createTables(){
 void db::InsertNonProcessedPhotoPaths(QStringList lst){
 	for(int i = 0; i<lst.size(); i++){
 		QSqlQuery query(database);
-		query.prepare("INSERT INTO NonProcessed(NULL,:path)");
+		query.prepare("INSERT INTO NonProcessed VALUES(NULL,:path)");
 		query.bindValue(":path", lst[i]);
-		query.exec();
+		bool a = query.exec();
+		int b = 5;
 	}
 }
 
@@ -631,10 +632,21 @@ QStringList db::GetNonProcessedPhotoPaths(){
 	query.exec();
 	QStringList lst;
 	while(query.next()){
-		lst.append(query.value(0).toString());
+		lst.append(query.value(1).toString());
 	}
 	return lst;
 }
+
+QString db::GetFirstNonProcessedPhotoPaths(){
+	QSqlQuery query(database);
+	query.prepare("SELECT P.path FROM NonProcessed P WHERE P.nid IN(SELECT MIN(nid) FROM NonProcessed)");
+	query.exec();
+	query.next();
+	QString s = query.value(0).toString();
+	DeleteNonProcessedPhotoPaths(s);
+	return s;
+}
+
 
 string db::QStringToString(QString str){
 	string filename ="";
