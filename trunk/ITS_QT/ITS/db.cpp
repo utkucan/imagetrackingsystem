@@ -103,6 +103,20 @@ QList<Rank*> db::selectFaceEqual(int faceId){
 	return myList;
 }
 
+QList<int> db::getNonEqual(int fid){
+	QSqlQuery query(database);
+	query.prepare("SELECT P.Pid FROM Person P, NonEqual N WHERE N.Fid=:fid AND P.Pid=N.Pid");
+	query.bindValue(":fid", fid);
+	query.exec();
+	QList<int> fids;
+	while(query.next()){
+		int nonEqulaPid = query.value(0).toInt();
+		if(nonEqulaPid != 0)
+			fids.append(nonEqulaPid);
+	}
+	return fids;
+}
+
 QList<Rank*> db::selectFromEqual(int faceId){
 	//SELECT DISTINCT H.Fid FROM HasFaces H,Person P WHERE  P.Pid=H.Pid AND H.Approved=1  AND P.name NOT IN (SELECT P1.name FROM HasFaces H1,Person P1 WHERE  P1.Pid=H1.Pid  AND P1.name='Unknown') ");
 	bool a=false;
@@ -112,12 +126,15 @@ QList<Rank*> db::selectFromEqual(int faceId){
 		//union  SELECT F1id, similar FROM Equal WHERE F2id=:face1");
 	query.bindValue(":face1", faceId);
 	a=query.exec();
+	QList<int> NonEqPids = getNonEqual(faceId);
 	while(query.next()){
 		int fid=query.value(0).toInt();
 		int lblId = getLabelId(fid);
-		Rank *r= new Rank(lblId, query.value(1).toDouble());
+		if(!NonEqPids.contains(lblId)){
+			Rank *r= new Rank(lblId, query.value(1).toDouble());
 
-		myList.append(r);
+			myList.append(r);
+		}
 	}
 
 	return myList;
@@ -631,6 +648,17 @@ void db::createTables(){
 		QSqlError e = query.lastError();
 		qDebug() << "Failed to create table:" << query.lastError();
 	}
+
+	const QString	CREATE_TABLE7("CREATE TABLE NonEqual(Fid int,Pid int,PRIMARY KEY(Fid,Pid));");
+	if(query.exec(CREATE_TABLE7))
+	{
+		qDebug() << "Table created";
+	}
+	else
+	{
+		QSqlError e = query.lastError();
+		qDebug() << "Failed to create table:" << query.lastError();
+	}
 }
 
 
@@ -787,4 +815,15 @@ int db::getLabelId(int faceId){
 	query.exec();
 	query.next();
 	return query.value(0).toInt();
+}
+
+void db::insertNonEqual(int fid, QString lbl){
+	int pid = getPersonId(lbl);
+	bool a=false;
+	QSqlQuery query(database);
+	query.prepare("INSERT INTO NonEqual VALUES(:fid,:pid);");
+	query.bindValue(":fid", fid);
+	query.bindValue(":pid", pid);
+	a=query.exec();
+
 }

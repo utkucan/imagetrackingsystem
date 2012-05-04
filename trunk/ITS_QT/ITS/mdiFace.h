@@ -15,14 +15,13 @@
 #include <QPushButton>
 #include "db.h"
 #include "face.h"
-#include "ranking.h"
-
+#include "rankingThread.h"
 class mdiFace : public QWidget
 {
 	Q_OBJECT
 
 public:
-	mdiFace(QMdiArea*,face*,db* database,QList<face*> *faceList);
+	mdiFace(QMdiArea*,face*,db* database,QList<face*> *faceList,rankingThread*);
 	~mdiFace(void);
 
 	 void setSubWinAdd(QMdiSubWindow* );
@@ -56,6 +55,7 @@ private:
 	 QPushButton* rejectButton;
 	 db* database;
 	 QList<face*> *faceList;
+	 rankingThread* rt;
 };
 
  #endif

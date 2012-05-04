@@ -17,12 +17,13 @@
 #include "db.h"
 #include "ranking.h"
 #include "matlab.h"
-
+#include "ranking.h"
+#include "rankingThread.h"
 class importPhotos  : public QThread
 {
 public:
-	importPhotos(QString,db*,QList<photo*> *photos,QList<face*> *faces,matlab* m);
-	importPhotos(QStringList,db*,QList<photo*> *photos,QList<face*> *faces,matlab* m);
+	importPhotos(QString,db*,QList<photo*> *photos,QList<face*> *faces,matlab* m,rankingThread* rt);
+	importPhotos(QStringList,db*,QList<photo*> *photos,QList<face*> *faces,matlab* m,rankingThread* rt);
 	~importPhotos(void);
 	
 	void run();
@@ -45,5 +46,6 @@ private:
 	int maxNumOfThread;
 	db* database;
 	matlab* m;
+	rankingThread* rt;
 };
 #endif

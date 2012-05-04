@@ -17,13 +17,13 @@
 #include "photo.h"
 #include "labelDialog.h"
 #include "db.h"
-#include "ranking.h"
+#include "rankingThread.h"
 class mdiPhoto : public QWidget
 {
 	Q_OBJECT
 
 public:
-	mdiPhoto(QMdiArea*,photo*,db* database,QList<face*> *faceList);
+	mdiPhoto(QMdiArea*,photo*,db* database,QList<face*> *faceList,rankingThread*);
 	~mdiPhoto(void);
 	void setSubWinAdd(QMdiSubWindow* );
 	bool event(QEvent * e);
@@ -50,6 +50,7 @@ private:
 	labelDialog* ld;
 	db* database;
 	QList<face*> *faceList;
+	rankingThread* rt;
 };
 
  #endif

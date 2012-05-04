@@ -1,7 +1,7 @@
 #include "mdiPhoto.h"
 
 
-mdiPhoto::mdiPhoto(QMdiArea* parent,photo* photoObject,db* database,QList<face*> *faceList2)
+mdiPhoto::mdiPhoto(QMdiArea* parent,photo* photoObject,db* database,QList<face*> *faceList2,rankingThread* rt)
 {
 	prnt = parent;
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -9,6 +9,7 @@ mdiPhoto::mdiPhoto(QMdiArea* parent,photo* photoObject,db* database,QList<face*>
 	this->photoObject = photoObject;
 	this->database = database;
 	this->faceList2 = faceList;
+	this->rt =rt;
 	image = new QLabel(this);
 	image->setScaledContents(true);
 	image->setMouseTracking(true);
