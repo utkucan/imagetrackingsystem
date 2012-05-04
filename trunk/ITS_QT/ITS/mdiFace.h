@@ -15,13 +15,14 @@
 #include <QPushButton>
 #include "db.h"
 #include "face.h"
+#include "ranking.h"
 
 class mdiFace : public QWidget
 {
 	Q_OBJECT
 
 public:
-	mdiFace(QMdiArea*,face*,db* database);
+	mdiFace(QMdiArea*,face*,db* database,QList<face*> *faceList);
 	~mdiFace(void);
 
 	 void setSubWinAdd(QMdiSubWindow* );
@@ -29,6 +30,7 @@ public:
 	 void setChildGeometry(int posX,int posY);
 	 bool isClosed(){return closed;}
 	 QMdiSubWindow* getWidgetaddr(){return widgetadd;}
+
 protected:
      void closeEvent(QCloseEvent *event);
 private slots:;
@@ -53,6 +55,7 @@ private:
 	 QPushButton* accaptButton;
 	 QPushButton* rejectButton;
 	 db* database;
+	 QList<face*> *faceList;
 };
 
  #endif

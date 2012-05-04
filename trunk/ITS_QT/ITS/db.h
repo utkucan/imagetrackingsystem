@@ -61,6 +61,8 @@ public:
 	QString GetFirstNonProcessedPhotoPaths();
 
 	QList<int> getNonApprovedFace();
+	QList<int>* selectLabelledPerson();
+	int getLabelId(int);
 private:
 	string QStringToString(QString str);
 	void displayDatabase();
