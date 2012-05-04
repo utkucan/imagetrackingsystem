@@ -81,12 +81,18 @@ void importPhotos::run(){
 
 							
 							for(int j = 0 ; j<(*(threads[i]->getFaceList())).size(); j++){
+								r->setFaceId((*(threads[i]->getFaceList()))[j]->getID());
+								r->start();
+							//	while(!r->isFinished());
+								/*
 								int recLblId = r->bordoranking((*(threads[i]->getFaceList()))[j]->getID());
+								
 								if(recLblId != -1){
 									QString lbl = database->getPersonName(recLblId);
 									(*(threads[i]->getFaceList()))[j]->setLabel(QStringToString(lbl));
 									database->updateHasFaces((*(threads[i]->getFaceList()))[j]->getID(),lbl,(*(threads[i]->getFaceList()))[j]->getPhotoId(),0);
 								}
+								*/
 							}
 							
 						}

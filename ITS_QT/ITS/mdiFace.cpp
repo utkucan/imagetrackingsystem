@@ -1,12 +1,13 @@
 #include "mdiFace.h"
 
- mdiFace::mdiFace(QMdiArea* parent,face* FaceObject,db* database)
+ mdiFace::mdiFace(QMdiArea* parent,face* FaceObject,db* database,QList<face*> *faceList)
  {
 	 prnt = parent;
 	 h = 0;
      setAttribute(Qt::WA_DeleteOnClose);
 	 this->FaceObject = FaceObject;
 	 this->database = database;
+	 this->faceList =faceList;
 	 closed = false;
 
 	 image = new QLabel(this);
@@ -122,12 +123,18 @@ void mdiFace::closeEvent(QCloseEvent *event)
 void mdiFace::accaptButtonClicked(){
 
 	database->updateHasFaces(FaceObject->getID(),QString(FaceObject->getLabel().c_str()),FaceObject->getPhotoId(),1);
+	ranking* r = new ranking(database,faceList);
+	r->setFaceId(0);
+	r->start();
 	this->close();
 }
 void mdiFace::rejectButtonClicked(){
 	// reject edince nolcak??????
 	FaceObject->setLabel("Unknown");
 	database->updateHasFaces(FaceObject->getID(),"Unknown",FaceObject->getPhotoId(),0);
+	ranking* r = new ranking(database,faceList);
+	r->setFaceId(FaceObject->getID());
+	r->start();
 	this->close();
 }
 
@@ -138,6 +145,9 @@ void mdiFace::rejectButtonClicked(){
 	string l = QStringToString(lbl);
 	FaceObject->setLabel(l);
 	database->updateHasFaces(FaceObject->getID(),lbl,FaceObject->getPhotoId(),1);
+	ranking* r = new ranking(database,faceList);
+	r->setFaceId(0);
+	r->start();
 	this->close();
 }
 
