@@ -82,6 +82,27 @@ bool db::insertIntoPerson(QString name){
 }
 
 // bana face id verilcek ben butun tabledan faceidler olan faceidleri ve similarty doncem
+
+QList<Rank*> db::selectFaceEqual(int faceId){
+	bool a=false;
+	QList<Rank*> myList ;
+	QSqlQuery query(database);
+	query.prepare("SELECT F2id, similar FROM Equal WHERE F1id= :face1 ");// union  SELECT F1id, similar FROM Equal WHERE F2id=:face1");//AND F2id IN (SELECT DISTINCT H.Fid FROM HasFaces H,Person P WHERE  P.Pid=H.Pid AND H.Approved=1  AND P.name NOT IN (SELECT P1.name FROM HasFaces H1,Person P1 WHERE  P1.Pid=H1.Pid  AND P1.name='Unknown'))");
+		//union  SELECT F1id, similar FROM Equal WHERE F2id=:face1");
+	query.bindValue(":face1", faceId);
+	a=query.exec();
+
+	while(query.next()){
+		int fid=query.value(0).toInt();
+	//	int lblId = getLabelId(fid);
+		Rank *r= new Rank(fid, query.value(1).toDouble());
+
+		myList.append(r);
+	}
+
+	return myList;
+}
+
 QList<Rank*> db::selectFromEqual(int faceId){
 	//SELECT DISTINCT H.Fid FROM HasFaces H,Person P WHERE  P.Pid=H.Pid AND H.Approved=1  AND P.name NOT IN (SELECT P1.name FROM HasFaces H1,Person P1 WHERE  P1.Pid=H1.Pid  AND P1.name='Unknown') ");
 	bool a=false;
