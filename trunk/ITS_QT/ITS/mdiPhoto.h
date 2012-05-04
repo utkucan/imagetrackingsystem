@@ -17,12 +17,13 @@
 #include "photo.h"
 #include "labelDialog.h"
 #include "db.h"
+#include "ranking.h"
 class mdiPhoto : public QWidget
 {
 	Q_OBJECT
 
 public:
-	mdiPhoto(QMdiArea*,photo*,db* database);
+	mdiPhoto(QMdiArea*,photo*,db* database,QList<face*> *faceList);
 	~mdiPhoto(void);
 	void setSubWinAdd(QMdiSubWindow* );
 	bool event(QEvent * e);
