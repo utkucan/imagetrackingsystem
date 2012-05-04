@@ -20,7 +20,8 @@ treeWid::treeWid(QWidget* prnt,db* database,QTreeWidget* treeWidge,mdiDS* mdids,
 	buildSearchTree(personList);
 	buildTree(personList);
 	buildLists();
-	
+
+	this->mdiArea->setFaceList(faceList);
 
 	/*
 	for( int i = 0; i<QDirectory.size(); i++){
@@ -78,8 +79,10 @@ void treeWid::updateTree(){
 			}
 		}
 		*/
+		/*
 		ranking* r = new ranking(database,faceList);
 		r->start();
+		*/
 	}
 
 }

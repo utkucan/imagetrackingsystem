@@ -102,7 +102,7 @@ void mdi::reDisplayLastPhoto(){
 		if(photoWindows[0]->isClosed()){
 			delete photoWindows[0];
 			photoWindows.removeFirst();
-			mdiPhoto *child = new mdiPhoto(mdiArea,photolst[0],database);
+			mdiPhoto *child = new mdiPhoto(mdiArea,photolst[0],database,faceList);
 	
 			photoWindows.append(child);
 			child->setSubWinAdd(mdiArea->addSubWindow(child,Qt::FramelessWindowHint));
@@ -123,7 +123,7 @@ void mdi::addMdiPhoto(photo* photoObject){
 		photolst.clear();
 //		return;
 	}
-	mdiPhoto *child = new mdiPhoto(mdiArea,photoObject,database);
+	mdiPhoto *child = new mdiPhoto(mdiArea,photoObject,database,faceList);
 	
 	photoWindows.append(child);
 	photolst.append(photoObject);
@@ -154,7 +154,7 @@ void mdi::addMdiPhoto(photo* photoObject){
 */
 void mdi::addMdiFace(face* faceObject){
 	QMdiSubWindow* activeWindow = mdiArea->activeSubWindow();
-	mdiFace *child = new mdiFace(mdiArea,faceObject,database);
+	mdiFace *child = new mdiFace(mdiArea,faceObject,database,faceList);
 
 	faceWindows.append(child);
 	child->setSubWinAdd(mdiArea->addSubWindow(child,Qt::FramelessWindowHint));
