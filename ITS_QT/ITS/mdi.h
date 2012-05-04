@@ -17,6 +17,7 @@ class mdi : public QMdiArea
 public:
 	mdi(QMdiArea*,db* database);
 	~mdi(void);
+	void setFaceList(QList<face*> *faceList){this->faceList = faceList;}
 	void addMdiFace(face*);
 	void addMdiPhoto(photo*);
 	void setPosition();
@@ -34,6 +35,7 @@ private:
 	QList<mdiFace*> faceWindows;
 	QList<mdiPhoto*> photoWindows;
 	QList<photo*> photolst;
+	QList<face*> *faceList; 
 	QMdiArea* mdiArea;
 	db* database;
 };

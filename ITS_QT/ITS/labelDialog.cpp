@@ -1,7 +1,7 @@
 #include "labelDialog.h"
 
 
-labelDialog::labelDialog(QWidget *parent, Qt::WFlags flags,db* database): QDialog(parent, flags)
+labelDialog::labelDialog(QWidget *parent, Qt::WFlags flags,db* database,QList<face*> *faceList): QDialog(parent, flags)
 {
 //	setParent(parent);
 //	setWindowFlags(Qt::FramelessWindowHint);
@@ -11,6 +11,7 @@ labelDialog::labelDialog(QWidget *parent, Qt::WFlags flags,db* database): QDialo
 	par = (QMdiSubWindow*)parent;
 	uiLd.setupUi(this);
 	this->database = database;
+	this->faceList = faceList;
 	//Qt::FramelessWindowHint
 	closed = false;
 	rpos = new QPoint();
@@ -26,10 +27,15 @@ void labelDialog::setPoint(QPoint position){
 
 void labelDialog::textChanged(){
 	QString lbl = uiLd.comboBox->currentText();
+	if(lbl == "" || lbl == QString(fc->getLabel().c_str()))
+		return;
 	string l = QStringToString(lbl);
 	this->fc->setLabel(l);
 	database->updateHasFaces(fc->getID(),lbl,fc->getPhotoId(),1);
 	this->close();
+	ranking* r = new ranking(database,faceList);
+	r->setFaceId(0);
+	r->start();
 	par->close();
 }
 
