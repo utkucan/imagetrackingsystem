@@ -1,6 +1,6 @@
 #include "mdiFace.h"
 
- mdiFace::mdiFace(QMdiArea* parent,face* FaceObject,db* database,QList<face*> *faceList)
+ mdiFace::mdiFace(QMdiArea* parent,face* FaceObject,db* database,QList<face*> *faceList,rankingThread* rt)
  {
 	 prnt = parent;
 	 h = 0;
@@ -8,6 +8,7 @@
 	 this->FaceObject = FaceObject;
 	 this->database = database;
 	 this->faceList =faceList;
+	 this->rt =rt;
 	 closed = false;
 
 	 image = new QLabel(this);
@@ -123,18 +124,27 @@ void mdiFace::closeEvent(QCloseEvent *event)
 void mdiFace::accaptButtonClicked(){
 
 	database->updateHasFaces(FaceObject->getID(),QString(FaceObject->getLabel().c_str()),FaceObject->getPhotoId(),1);
+	rt->start();
+	/*
 	ranking* r = new ranking(database,faceList);
 	r->setFaceId(0);
 	r->start();
+	*/
 	this->close();
 }
 void mdiFace::rejectButtonClicked(){
 	// reject edince nolcak??????
+	
+	database->insertNonEqual(FaceObject->getID(),QString(FaceObject->getLabel().c_str()));
 	FaceObject->setLabel("Unknown");
 	database->updateHasFaces(FaceObject->getID(),"Unknown",FaceObject->getPhotoId(),0);
+	
+	rt->start();
+	/*
 	ranking* r = new ranking(database,faceList);
 	r->setFaceId(FaceObject->getID());
 	r->start();
+	*/
 	this->close();
 }
 
@@ -145,9 +155,12 @@ void mdiFace::rejectButtonClicked(){
 	string l = QStringToString(lbl);
 	FaceObject->setLabel(l);
 	database->updateHasFaces(FaceObject->getID(),lbl,FaceObject->getPhotoId(),1);
+	rt->start();
+	/*
 	ranking* r = new ranking(database,faceList);
 	r->setFaceId(0);
 	r->start();
+	*/
 	this->close();
 }
 

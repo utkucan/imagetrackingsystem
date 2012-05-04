@@ -64,6 +64,8 @@ public:
 	QList<int>* selectLabelledPerson();
 	int getLabelId(int);
 	QList<Rank*> selectFaceEqual(int faceId);
+	void insertNonEqual(int fid, QString lbl);
+	QList<int> getNonEqual(int fid);
 private:
 	string QStringToString(QString str);
 	void displayDatabase();

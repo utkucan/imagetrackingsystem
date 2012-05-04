@@ -1,11 +1,12 @@
 #include "importPhotos.h"
 
-importPhotos::importPhotos(QString dir,db* database,QList<photo*> *photos,QList<face*> *faces,matlab* m){
+importPhotos::importPhotos(QString dir,db* database,QList<photo*> *photos,QList<face*> *faces,matlab* m,rankingThread* rt){
 	this->database = database;
 	this->dir = dir;
 	this->photos = photos;
 	this->faces = faces;
 	this->m = m;
+	this->rt =rt;
 	QDirectory = new QStringList();
 	m1 = new QMutex();
 	maxNumOfThread = 1;
@@ -13,13 +14,14 @@ importPhotos::importPhotos(QString dir,db* database,QList<photo*> *photos,QList<
 	
 }
 
-importPhotos::importPhotos(QStringList QDirectory,db* database,QList<photo*> *photos,QList<face*> *faces,matlab* m)
+importPhotos::importPhotos(QStringList QDirectory,db* database,QList<photo*> *photos,QList<face*> *faces,matlab* m,rankingThread* rt)
 {
 	this->QDirectory = new QStringList(QDirectory);
 	this->photos = photos;
 	this->database = database;
 	this->faces = faces;
 	this->m = m;
+	this->rt =rt;
 	m1 = new QMutex();
 	maxNumOfThread = 1;//QDirectory->size();
 	flag = false;
@@ -79,10 +81,10 @@ void importPhotos::run(){
 									r->compareFaces((*(threads[i]->getFaceList())).at(j),faces->at(k));
 							}
 
-							
-							for(int j = 0 ; j<(*(threads[i]->getFaceList())).size(); j++){
-								r->setFaceId((*(threads[i]->getFaceList()))[j]->getID());
-								r->start();
+							rt->start();
+					//		for(int j = 0 ; j<(*(threads[i]->getFaceList())).size(); j++){
+					//			r->setFaceId((*(threads[i]->getFaceList()))[j]->getID());
+					//			r->start();
 							//	while(!r->isFinished());
 								/*
 								int recLblId = r->bordoranking((*(threads[i]->getFaceList()))[j]->getID());
@@ -93,7 +95,7 @@ void importPhotos::run(){
 									database->updateHasFaces((*(threads[i]->getFaceList()))[j]->getID(),lbl,(*(threads[i]->getFaceList()))[j]->getPhotoId(),0);
 								}
 								*/
-							}
+						//	}
 							
 						}
 					//	int pos = photos->size() - threads.size() + i;

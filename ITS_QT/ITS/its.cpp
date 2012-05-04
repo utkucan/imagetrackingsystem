@@ -11,14 +11,16 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	
 
 	database = new db();
-	mdiArea = new mdi(ui.mdiArea,database);
+	rt = new rankingThread();
+	mdiArea = new mdi(ui.mdiArea,database,rt);
 	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea,database);
 	treeWidget = new treeWid(this,database,ui.treeWidget,mdids,mdiArea);
 	m = new matlab();
+	rt->initRanking(database,treeWidget->getFaceList());
 	
 	frame->close();
 
-	importPhotos* ip = new importPhotos(QStringList(),database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m);
+	importPhotos* ip = new importPhotos(QStringList(),database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m,rt);
 	ip->start();
 	
 	QTimer::singleShot(1000*3, this, SLOT(controlList(ip)));
@@ -84,7 +86,7 @@ void ITS::on_actionKlasor_triggered(){
 
 	
 //	photoPos = photoList->size();
-	importPhotos* ip = new importPhotos(QDirectory,database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m);
+	importPhotos* ip = new importPhotos(QDirectory,database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m,rt);
 	ip->start();
 	
 	QTimer::singleShot(1000*3, this, SLOT(controlList(ip)));
@@ -141,7 +143,7 @@ void ITS::on_actionSearch_HardDisk_triggered(){
 	dialog.exec();
 	QStringList QDirectory = dialog.selectedFiles();
 	if(QDirectory.size()>0){
-		importPhotos* ip = new importPhotos(QDirectory[0],database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m);
+		importPhotos* ip = new importPhotos(QDirectory[0],database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m,rt);
 		ip->start();
 		QTimer::singleShot(1000*3, this, SLOT(controlList(ip)));
 	}

@@ -31,6 +31,7 @@
 #include "treeWid.h"
 #include "matlab.h"
 #include "popupDisplay.h"
+#include "rankingThread.h"
 using namespace std;
 
 class ITS : public QMainWindow
@@ -64,6 +65,7 @@ private:
 	mdiDS* mdids;
 	treeWid* treeWidget;
 	matlab* m;
+	rankingThread* rt;
 	/*
 	QTreeWidget* treeWidget;
 	QTreeWidgetItem* unlabeledPhotoItem;

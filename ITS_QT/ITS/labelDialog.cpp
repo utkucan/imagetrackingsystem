@@ -1,7 +1,7 @@
 #include "labelDialog.h"
 
 
-labelDialog::labelDialog(QWidget *parent, Qt::WFlags flags,db* database,QList<face*> *faceList): QDialog(parent, flags)
+labelDialog::labelDialog(QWidget *parent, Qt::WFlags flags,db* database,QList<face*> *faceList,rankingThread* rt): QDialog(parent, flags)
 {
 //	setParent(parent);
 //	setWindowFlags(Qt::FramelessWindowHint);
@@ -12,6 +12,7 @@ labelDialog::labelDialog(QWidget *parent, Qt::WFlags flags,db* database,QList<fa
 	uiLd.setupUi(this);
 	this->database = database;
 	this->faceList = faceList;
+	this->rt = rt;
 	//Qt::FramelessWindowHint
 	closed = false;
 	rpos = new QPoint();
@@ -33,9 +34,12 @@ void labelDialog::textChanged(){
 	this->fc->setLabel(l);
 	database->updateHasFaces(fc->getID(),lbl,fc->getPhotoId(),1);
 	this->close();
+	rt->start();
+	/*
 	ranking* r = new ranking(database,faceList);
 	r->setFaceId(0);
 	r->start();
+	*/
 	par->close();
 }
 

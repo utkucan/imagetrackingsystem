@@ -12,10 +12,11 @@
 #include "mdiPhoto.h"
 #include "face.h"
 #include "db.h"
+#include "rankingThread.h"
 class mdi : public QMdiArea
 {
 public:
-	mdi(QMdiArea*,db* database);
+	mdi(QMdiArea*,db* database,rankingThread*);
 	~mdi(void);
 	void setFaceList(QList<face*> *faceList){this->faceList = faceList;}
 	void addMdiFace(face*);
@@ -38,6 +39,7 @@ private:
 	QList<face*> *faceList; 
 	QMdiArea* mdiArea;
 	db* database;
+	rankingThread* rt;
 };
 
  #endif
