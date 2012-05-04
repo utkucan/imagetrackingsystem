@@ -134,7 +134,7 @@ mdiPhoto::~mdiPhoto(void)
 						myMenu.addAction("add label");
 						QAction* selectedItem = myMenu.exec(globalPos);
 						if(selectedItem != NULL && selectedItem->text() == "add label"){
-							ld = new labelDialog(widgetadd,Qt::FramelessWindowHint,database,faceList2);
+							ld = new labelDialog(widgetadd,Qt::FramelessWindowHint,database,faceList2,rt);
 							//widgetadd->disac
 							ld->setFacePointer((*faceList)[i]);
 							ld->setPoint(globalPos);
@@ -145,7 +145,7 @@ mdiPhoto::~mdiPhoto(void)
 						myMenu.addAction("change label");
 						QAction* selectedItem = myMenu.exec(globalPos);
 						if(selectedItem != NULL && selectedItem->text() == "change label"){
-							ld = new labelDialog(widgetadd,Qt::FramelessWindowHint,database,faceList2);
+							ld = new labelDialog(widgetadd,Qt::FramelessWindowHint,database,faceList2,rt);
 							ld->setFacePointer((*faceList)[i]);
 							ld->setPoint(globalPos);
 							ld->setRelativePos(((QMouseEvent*)e)->pos());
