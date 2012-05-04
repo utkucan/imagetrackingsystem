@@ -63,6 +63,7 @@ public:
 	QList<int> getNonApprovedFace();
 	QList<int>* selectLabelledPerson();
 	int getLabelId(int);
+	QList<Rank*> selectFaceEqual(int faceId);
 private:
 	string QStringToString(QString str);
 	void displayDatabase();
