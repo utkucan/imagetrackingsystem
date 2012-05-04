@@ -116,9 +116,14 @@ void ITS::controlList(importPhotos* ip){
 }
 
 void ITS::updateFace(){
+	/*
+	ranking* r = new ranking(database,treeWidget->getFaceList());
+	r->start();
+	*/
 	mdiArea->updateFace();
 	treeWidget->updateTree();
 	mdiArea->reDisplayLastPhoto();
+	//treeWidget->reDoLastOperation();
  //   child->show();
 }
 
@@ -135,9 +140,11 @@ void ITS::on_actionSearch_HardDisk_triggered(){
 
 	dialog.exec();
 	QStringList QDirectory = dialog.selectedFiles();
-	importPhotos* ip = new importPhotos(QDirectory[0],database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m);
-	ip->start();
-	QTimer::singleShot(1000*3, this, SLOT(controlList(ip)));
+	if(QDirectory.size()>0){
+		importPhotos* ip = new importPhotos(QDirectory[0],database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m);
+		ip->start();
+		QTimer::singleShot(1000*3, this, SLOT(controlList(ip)));
+	}
 }
 /*
 void ITS::findImage(QString inp,QStringList* allImagesList){
