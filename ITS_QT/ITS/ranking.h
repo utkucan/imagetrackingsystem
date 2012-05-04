@@ -20,6 +20,9 @@ public:
 	void kNN();
 	void setStop(bool flag){close = flag;}
 
+	int anotherranking(int unknownFaceId);
+	double getAverageSim(int labelId, int unknownId);	
+
 	QList<int>* getUnknownFaceIDs(QList<face*>*);
 	QList<int>* getfaceIDsFromLabelId(int );
 
@@ -36,6 +39,7 @@ public:
 	string QStringToString(QString);
 	int unknownFaceId;
 	bool close;
+	int count;
 };
 
 #endif

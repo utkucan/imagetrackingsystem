@@ -7,6 +7,7 @@ ranking::ranking(db* d,QList<face*> *faceList)
 	dbObj = d;
 	this->faceList = faceList;
 	close = false;
+	count = 0;
 }
 
 
@@ -32,6 +33,7 @@ double ranking::compareFaces(face* f1 , face* f2){
 	}
 
 	dbObj->insertIntoEqual(f1->getID(),f2->getID(),sum/13);
+	dbObj->insertIntoEqual(f2->getID(),f1->getID(),sum/13);
 	/*
 	if(f1->getID() >f2->getID()){
 		dbObj->insertIntoEqual(f1->getID(),f2->getID(),sum/13);
@@ -188,51 +190,78 @@ void ranking::kNN(){
 	QList<int>* unknownFaceList = dbObj->getAllUnknownFaceIDs();//getUnknownFaceIDs(fl);	// bütün labelsýz yüzlerin idlerini aldýk
 
 	int unknownFaceNum = unknownFaceList->size();
-
-	for(int k = 0 ; k < unknownFaceNum; k++){ // her bilinmeyen yüz için
-		if(close)
-			break;
-		//int x = bordoranking(unknownFaceList->at(k));
-		QList<Rank*> rankList = dbObj->selectFromEqual(unknownFaceList->at(k));//= new Rank[fl->size()]; // rank listesi oluþtur
-		Rank* rl = new Rank[rankList.size()];
-		for(int p = 0 ; p < rankList.size(); p++){
-			rl[p].similarityRate = rankList[p]->similarityRate;
-			rl[p].faceID = rankList[p]->faceID;
-		}
-		//QList<int>* persons = dbObj->selectLabelledPerson();
-		int size = 0;
-		/*
-		QList<Rank*> labelledList;
-		for(int p = 0 ; p < rankList.size(); p++){
-			if(persons->contains(rankList.at(p)->faceID)){
-				labelledList.append(rankList.at(p));
+	bool found = false;
+	count = 0;
+	while(!found && count <2){
+		for(int k = 0 ; k < unknownFaceNum; k++){ // her bilinmeyen yüz için
+			if(close)
+				break;
+			//int x = bordoranking(unknownFaceList->at(k));
+			QList<Rank*> rankList = dbObj->selectFromEqual(unknownFaceList->at(k));//= new Rank[fl->size()]; // rank listesi oluþtur
+			Rank* rl = new Rank[rankList.size()];
+			for(int p = 0 ; p < rankList.size(); p++){
+				rl[p].similarityRate = rankList[p]->similarityRate;
+				rl[p].faceID = rankList[p]->faceID;
 			}
-		}
+			//QList<int>* persons = dbObj->selectLabelledPerson();
+			int size = 0;
+			/*
+			QList<Rank*> labelledList;
+			for(int p = 0 ; p < rankList.size(); p++){
+				if(persons->contains(rankList.at(p)->faceID)){
+					labelledList.append(rankList.at(p));
+				}
+			}
 		
-		for(int p = 0 ; p<labelledList.size();p++){
-				rl[p].similarityRate = labelledList.at(p)->similarityRate;
-				rl[p].faceID = labelledList.at(p)->faceID;
-		}
-		*/
-		int recLblId = findDominantId(rl, rankList.size(),3);
+			for(int p = 0 ; p<labelledList.size();p++){
+					rl[p].similarityRate = labelledList.at(p)->similarityRate;
+					rl[p].faceID = labelledList.at(p)->faceID;
+			}
+			*/
+			int recLblId = findDominantId(rl, rankList.size(),5);
 
-		int recLblId2 = bordoranking((*unknownFaceList)[k]);
-		/*
-		if(recLblId != -1){
-			QString lbl = dbObj->getPersonName(recLblId);
-			(*faceList)[unknownFaceId-1]->setLabel(QStringToString(lbl));
-			dbObj->updateHasFaces(unknownFaceId,lbl,(*faceList)[unknownFaceId-1]->getPhotoId(),0);
-		}
-		*/
-		if(recLblId != -1 && recLblId2 != -1 && recLblId2 == recLblId){
-			QString lbl = dbObj->getPersonName(recLblId);
-			face* fc = (*faceList)[(*unknownFaceList)[k]-1];
-			fc->setLabel(QStringToString(lbl));
-			dbObj->updateHasFaces(fc->getID(),lbl,fc->getPhotoId(),0);
-		}
+			int recLblId2 = bordoranking((*unknownFaceList)[k]);
+
+			int recLblId3 = anotherranking((*unknownFaceList)[k]);
+			/*
+			if(recLblId != -1){
+				QString lbl = dbObj->getPersonName(recLblId);
+				(*faceList)[unknownFaceId-1]->setLabel(QStringToString(lbl));
+				dbObj->updateHasFaces(unknownFaceId,lbl,(*faceList)[unknownFaceId-1]->getPhotoId(),0);
+			}
+			*/
+			if(count >= 1){
+				//count = 0;
+				if(recLblId != -1 && recLblId2 != -1 && (recLblId2 == recLblId3 ||recLblId2 == recLblId || recLblId == recLblId3)){
+					QString lbl = dbObj->getPersonName(recLblId);
+					face* fc = (*faceList)[(*unknownFaceList)[k]-1];
+					fc->setLabel(QStringToString(lbl));
+					dbObj->updateHasFaces(fc->getID(),lbl,fc->getPhotoId(),0);
+					found = true;
+				}
+			}else{
+				if(recLblId != -1 && recLblId2 != -1 && (recLblId2 == recLblId || recLblId == recLblId3)){
+					QString lbl = dbObj->getPersonName(recLblId);
+					face* fc = (*faceList)[(*unknownFaceList)[k]-1];
+					fc->setLabel(QStringToString(lbl));
+					dbObj->updateHasFaces(fc->getID(),lbl,fc->getPhotoId(),0);
+					found = true;
+				}
+			}
 	
-	//	labelSuggest(dbObj->getPersonName(recLblId));//,getLabelString(unknownFaceList->at(k))); //fl->at(k)->
+		//	labelSuggest(dbObj->getPersonName(recLblId));//,getLabelString(unknownFaceList->at(k))); //fl->at(k)->
+		}
+		count++;
 	}
+	/*
+	if(!found){
+		
+	}
+	if(count >= 10)
+		count = 0;
+	if(!close && !found)
+		count++;
+		*/
 	int a = 5;
 		/*
 		//for(int i = 0 ; i<faceNum;i++){ // bütün yüzlerle karþýlaþtýr
@@ -284,4 +313,32 @@ int ranking::findDominantId(Rank* rl,int size, int range){
 		return dominantLabel;
 	}else
 		return -1;
+}
+
+double ranking::getAverageSim(int labelId, int unknownId){
+	QList<int>*  faceId = dbObj->selectAllFacesFromPersonId(labelId); //labelId si labelId olan tum faceId'ler
+	int faceSize = faceId->size();
+	double pos = 0;
+	for(int i = 0 ; i < faceSize ; i++){
+		QList<Rank*> ranks = dbObj->selectFaceEqual(faceId->at(i)); // similarity tablosunda bir faceIdsi faceId[i] olan tum faceIdler ve similiratileri 
+		int ranksLength  = ranks.size();
+		pos = pos + getCompValue(ranks,ranksLength , unknownId);
+	}
+	return pos/faceId->size();
+}
+int ranking::anotherranking(int unknownFaceId){
+	QList<int>* persons = dbObj->selectAllPerson(); //butun labelId'ler
+	int labelsLength = persons->size();
+	int minIndex = 1;
+	if(labelsLength<2)
+		return -1;
+	double min = getAverageSim(persons->at(1),unknownFaceId);
+	for(int i = 2 ; i < labelsLength ; i++){
+		double rnk = getAverageSim(persons->at(i),unknownFaceId);
+		if(rnk < min){
+			min = rnk;
+			minIndex = i;
+		}
+	}
+	return persons->at(minIndex);
 }
