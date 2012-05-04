@@ -44,11 +44,12 @@ private:
 	QEvent *e;
 	int posX, posY, w, h;
 	QList<QRect*> *faceRects;
-	QList<face*> *faceList;
+	QList<face*> *faceList2;
 //	QList<QString*> *labelList;
 	QPixmap* p;
 	labelDialog* ld;
 	db* database;
+	QList<face*> *faceList;
 };
 
  #endif

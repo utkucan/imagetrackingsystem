@@ -83,14 +83,18 @@ bool db::insertIntoPerson(QString name){
 
 // bana face id verilcek ben butun tabledan faceidler olan faceidleri ve similarty doncem
 QList<Rank*> db::selectFromEqual(int faceId){
+	//SELECT DISTINCT H.Fid FROM HasFaces H,Person P WHERE  P.Pid=H.Pid AND H.Approved=1  AND P.name NOT IN (SELECT P1.name FROM HasFaces H1,Person P1 WHERE  P1.Pid=H1.Pid  AND P1.name='Unknown') ");
 	bool a=false;
 	QList<Rank*> myList ;
 	QSqlQuery query(database);
-	query.prepare("SELECT F2id, similar FROM Equal WHERE F1id= :face1 union  SELECT F1id, similar FROM Equal WHERE F2id=:face1");
+	query.prepare("SELECT F2id, similar FROM Equal WHERE F1id= :face1 AND F2id IN (SELECT DISTINCT H.Fid FROM HasFaces H,Person P WHERE  P.Pid=H.Pid AND H.Approved=1  AND P.name NOT IN (SELECT P1.name FROM HasFaces H1,Person P1 WHERE  P1.Pid=H1.Pid  AND P1.name='Unknown'))");
+		//union  SELECT F1id, similar FROM Equal WHERE F2id=:face1");
 	query.bindValue(":face1", faceId);
 	a=query.exec();
 	while(query.next()){
-		Rank *r= new Rank(query.value(0).toInt(), query.value(1).toDouble());
+		int fid=query.value(0).toInt();
+		int lblId = getLabelId(fid);
+		Rank *r= new Rank(lblId, query.value(1).toDouble());
 
 		myList.append(r);
 	}
@@ -307,7 +311,7 @@ QList<int>* db::selectAllFacesFromPersonId(int personId){
 	//	int personId= getPersonId(personName);
 
 	QSqlQuery query(database);
-	query.prepare("SELECT F1.Fid FROM HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND P1.Pid=:personId");
+	query.prepare("SELECT F1.Fid FROM HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND H1.Approved = 1 AND P1.Pid=H1.Pid AND P1.Pid=:personId");
 	query.bindValue(":personId", personId);
 	a=query.exec();
 	QList<int>* faceIdList = new QList<int>();
@@ -585,7 +589,7 @@ void db::createTables(){
 		qDebug() << "Failed to create table:" << query.lastError();
 	}
 
-	const QString	CREATE_TABLE5("CREATE TABLE Equal (F1id int  ,F2id int, similar double ) ;");
+	const QString	CREATE_TABLE5("CREATE TABLE Equal (F1id int  ,F2id int, similar double,PRIMARY KEY(F1id,F2id) ) ;");
 	if(query.exec(CREATE_TABLE5))
 	{
 		qDebug() << "Table created";
@@ -735,4 +739,31 @@ QList<int> db::getNonApprovedFace(){
 	}
 	
 	return fid;
+}
+
+QList<int>* db::selectLabelledPerson(){
+
+	bool a=false;
+	QSqlQuery query(database);
+
+	query.prepare("SELECT DISTINCT H.Fid FROM HasFaces H,Person P WHERE  P.Pid=H.Pid AND H.Approved=1  AND P.name NOT IN (SELECT P1.name FROM HasFaces H1,Person P1 WHERE  P1.Pid=H1.Pid  AND P1.name='Unknown') ");
+	
+	a=query.exec();
+	QList<int>* personIdList = new QList<int>();
+
+	while(query.next()){
+		personIdList->append(query.value(0).toInt());
+	}
+
+	return personIdList;
+
+}
+
+int db::getLabelId(int faceId){
+	QSqlQuery query(database);
+	query.prepare("SELECT P.Pid FROM Person P, HasFaces H, Faces F WHERE P.Pid = H.Pid AND H.Fid = F.Fid AND F.Fid = :faceId");
+	query.bindValue(":faceId", faceId);
+	query.exec();
+	query.next();
+	return query.value(0).toInt();
 }
