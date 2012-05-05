@@ -41,8 +41,10 @@ public:
 	bool photoExist(QString path);
 	bool selectPerson();
 	double* returnFacialFeatures(QString);
-	
+	bool insertIntoSuggested(int,int, double);
 	QList<photo*>* getUnlabeledPhotos();
+
+
 
 	QStringList getAllPerson();
 	
