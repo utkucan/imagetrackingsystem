@@ -153,9 +153,9 @@ void mdi::addMdiPhoto(photo* photoObject){
     child->show();
 }
 */
-void mdi::addMdiFace(face* faceObject){
+void mdi::addMdiFace(face* faceObject,int approved){
 	QMdiSubWindow* activeWindow = mdiArea->activeSubWindow();
-	mdiFace *child = new mdiFace(mdiArea,faceObject,database,faceList,rt);
+	mdiFace *child = new mdiFace(mdiArea,faceObject,database,faceList,rt,approved);
 
 	faceWindows.append(child);
 	child->setSubWinAdd(mdiArea->addSubWindow(child,Qt::FramelessWindowHint));

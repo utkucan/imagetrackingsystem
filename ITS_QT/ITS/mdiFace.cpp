@@ -1,6 +1,6 @@
 #include "mdiFace.h"
 
- mdiFace::mdiFace(QMdiArea* parent,face* FaceObject,db* database,QList<face*> *faceList,rankingThread* rt)
+ mdiFace::mdiFace(QMdiArea* parent,face* FaceObject,db* database,QList<face*> *faceList,rankingThread* rt,int approved)
  {
 	 prnt = parent;
 	 h = 0;
@@ -17,16 +17,21 @@
 	 image->setPixmap(*transformImage());
 	 image->setGeometry(0,0,w,h);
 
-	 if(FaceObject->getLabel() == "Unknown"){
+	 if(approved == 0){//if(FaceObject->getLabel() == "Unknown"){
 		 labelComboBox = new QComboBox(this);
 		 labelComboBox->setGeometry(0,h,w-40,20);
 		 labelComboBox->setEditable(true);
 		 
+		 labelComboBox->addItems(database->getSuggested(FaceObject->getID()));
+		 
+		 labelComboBox->setCurrentIndex(-1);
+	//	 connect(labelComboBox,SIGNAL(keyPressEvent(QKeyEvent*)),this,SLOT(textChanged()));
+
 		 QIcon* accaptIcon = new QIcon("check.png");
 		 accaptButton = new QPushButton(*accaptIcon,"",this);
 		 accaptButton->setGeometry(w-40,h,20,20);
 		 connect(accaptButton,SIGNAL(clicked()),this,SLOT(textChanged()));
-
+		
 		 QIcon* rejectIcon = new QIcon("cross.png");
 		 rejectButton = new QPushButton(*rejectIcon,"",this);
 		 rejectButton->setGeometry(w-20,h,20,20);
@@ -73,7 +78,12 @@
  }
 
  bool mdiFace::event ( QEvent * e ){
-
+	 if(e->type() == QEvent::KeyPress){
+		 int key = ((QKeyEvent*)e)->key();
+		 if(key == 16777220){
+			textChanged();
+		 }
+	 }
 	 /*
 	 if(e->type() == QEvent::MouseButtonPress){
 		 if( ((QMouseEvent*)e)->button() == Qt::RightButton){
@@ -124,6 +134,7 @@ void mdiFace::closeEvent(QCloseEvent *event)
 void mdiFace::accaptButtonClicked(){
 
 	database->updateHasFaces(FaceObject->getID(),QString(FaceObject->getLabel().c_str()),FaceObject->getPhotoId(),1);
+	database->deleteFromSuggested(FaceObject->getID());
 	rt->start();
 	/*
 	ranking* r = new ranking(database,faceList);
@@ -138,7 +149,7 @@ void mdiFace::rejectButtonClicked(){
 	database->insertNonEqual(FaceObject->getID(),QString(FaceObject->getLabel().c_str()));
 	FaceObject->setLabel("Unknown");
 	database->updateHasFaces(FaceObject->getID(),"Unknown",FaceObject->getPhotoId(),0);
-	
+	database->deleteFromSuggested(FaceObject->getID());
 	rt->start();
 	/*
 	ranking* r = new ranking(database,faceList);
@@ -152,9 +163,11 @@ void mdiFace::rejectButtonClicked(){
 	QString lbl = labelComboBox->currentText();
 	if(lbl == "")
 		return;
+	lbl = lbl.lower();
 	string l = QStringToString(lbl);
 	FaceObject->setLabel(l);
 	database->updateHasFaces(FaceObject->getID(),lbl,FaceObject->getPhotoId(),1);
+	database->deleteFromSuggested(FaceObject->getID());
 	rt->start();
 	/*
 	ranking* r = new ranking(database,faceList);

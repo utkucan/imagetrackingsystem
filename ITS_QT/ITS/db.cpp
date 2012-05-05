@@ -329,12 +329,28 @@ bool db::deleteFromSuggested(int fid){
 	query.bindValue(":fid", fid);
 	return query.exec();
 }
+
+QStringList db::getSuggested(int fid){
+	QSqlQuery query(database);
+	query.prepare("Select P.name FROM Person P,Suggested S WHERE S.Fid=:fid AND S.Pid = P.Pid ORDER BY S.ratio ASC");
+	query.bindValue(":fid", fid);
+	query.exec();
+	QStringList suggestedPersons;
+	//suggestedPersons.append("");
+	while(query.next()){
+		suggestedPersons.append(query.value(0).toString());
+	}
+	return suggestedPersons;
+}
+
 QList<int>* db::selectPersonPhoto(QString personName){
 
 	bool a=false;
 	QSqlQuery query(database);
-
-	query.prepare("SELECT DISTINCT I.Iid FROM Faces F,HasFaces H,Images I,Person P WHERE H.Approved = 1 AND F.Fid=H.Fid AND P.Pid=H.Pid AND H.Iid=I.Iid AND I.Iid IN (SELECT I1.Iid FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid AND P1.name=:personName)");
+	if(personName != "Unknown")
+		query.prepare("SELECT DISTINCT I.Iid FROM Faces F,HasFaces H,Images I,Person P WHERE H.Approved = 1 AND F.Fid=H.Fid AND P.Pid=H.Pid AND H.Iid=I.Iid AND I.Iid IN (SELECT I1.Iid FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid AND P1.name=:personName)");
+	else
+		query.prepare("SELECT DISTINCT I.Iid FROM Faces F,HasFaces H,Images I,Person P WHERE F.Fid=H.Fid AND P.Pid=H.Pid AND H.Iid=I.Iid AND I.Iid IN (SELECT I1.Iid FROM Images I1,HasFaces H1,Faces F1,Person P1 WHERE F1.Fid=H1.Fid AND P1.Pid=H1.Pid AND H1.Iid=I1.Iid AND P1.name=:personName)");
 	query.bindValue(":personName", personName);
 	a=query.exec();
 	QList<int>* photoIdList = new QList<int>();
@@ -666,7 +682,7 @@ void db::createTables(){
 		qDebug() << "Failed to create table:" << query.lastError();
 	}
 
-	const QString	CREATE_TABLE8("CREATE TABLE Suggested(Fid int, Pid int, ratio double );");
+	const QString	CREATE_TABLE8("CREATE TABLE Suggested(Fid int, Pid int, ratio double,PRIMARY KEY(Fid,Pid) );");
 	if(query.exec(CREATE_TABLE8))
 	{
 		qDebug() << "Table created";
@@ -848,13 +864,42 @@ void db::insertNonEqual(int fid, QString lbl){
 
 }
 bool db::insertIntoSuggested(int faceId, int labelId, double ratio){
+	//UPDATE HasFaces SET Pid = :pid, Approved = :A  WHERE Fid = :fid  AND Iid= :iid
 	bool a=false;
 	QSqlQuery query(database);
-	query.prepare("INSERT INTO Suggested VALUES(:fid,:pid,:ratio);");
+	query.prepare("INSERT INTO Suggested VALUES(:fid,:pid,:ratio);");//query.prepare("UPDATE Suggested SET ratio = :ratio WHERE Fid = :fid  AND Pid = :pid");
 	query.bindValue(":fid", faceId);
 	query.bindValue(":pid", labelId);
 	query.bindValue(":ratio",ratio);
 	a=query.exec();
+	if(a == false){
+		//QSqlQuery query(database);
+		query.prepare("UPDATE Suggested SET ratio = :ratio WHERE Fid = :fid  AND Pid = :pid");//query.prepare("INSERT INTO Suggested VALUES(:fid,:pid,:ratio);");
+		query.bindValue(":fid", faceId);
+		query.bindValue(":pid", labelId);
+		query.bindValue(":ratio",ratio);
+		a=query.exec();
+	}
 	return a;
 
 }
+
+void db::DeletePersonHasNoFace(){
+	QSqlQuery query(database);
+	query.prepare("DELETE FROM Person WHERE Pid NOT IN ( SELECT DISTINCT Pid FROM HasFaces )");
+	query.exec();
+}
+
+void db::numOfPersonsRecognizedFace(QList<QString>* lbls,QList<int>* counts){
+	QSqlQuery query(database);
+	query.prepare("Select P.name, COUNT(Fid) FROM HasFaces H, Person P WHERE P.Pid = H.Pid AND H.Approved = 0 GROUP BY H.Pid");
+	query.exec();
+	while(query.next()){
+		lbls->append(query.value(0).toString());
+		counts->append(query.value(1).toInt());
+	}
+}
+
+/*
+
+*/

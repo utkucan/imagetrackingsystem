@@ -7,6 +7,7 @@ ranking::ranking(db* d,QList<face*> *faceList)
 	dbObj = d;
 	this->faceList = faceList;
 	close = false;
+	found = false;
 	count = 0;
 }
 
@@ -90,7 +91,6 @@ double ranking::getSimilarity(int faceID1 , int faceID2){
 
 void ranking::run(){
 	kNN();
-
 	/*
 	if(unknownFaceId != 0){
 		int recLblId = bordoranking(unknownFaceId);
@@ -132,11 +132,12 @@ void ranking::bordoranking(int unknownFaceId,int& l1,int& l2){ //en cok benzeyen
 	double min;
 	double min2; 
 	getRank(persons->at(1),unknownFaceId,min,min2);
+	dbObj->insertIntoSuggested(unknownFaceId,persons->at(1),min2);
 	for(int i = 2 ; i < labelsLength ; i++){
 		double rnk;
 		double sim;
 		getRank(persons->at(i),unknownFaceId,rnk,sim);
-		
+		dbObj->insertIntoSuggested(unknownFaceId,persons->at(i),sim);
 		if(rnk < min){
 			min = rnk;
 			minIndex = i;
@@ -209,7 +210,7 @@ void ranking::kNN(){
 	QList<int>* unknownFaceList = dbObj->getAllUnknownFaceIDs();//getUnknownFaceIDs(fl);	// bütün labelsýz yüzlerin idlerini aldýk
 
 	int unknownFaceNum = unknownFaceList->size();
-	bool found = false;
+	found = false;
 	count = 0;
 	while(!found && count <2){
 		for(int k = 0 ; k < unknownFaceNum; k++){ // her bilinmeyen yüz için
@@ -238,7 +239,7 @@ void ranking::kNN(){
 			}
 			*/
 			int recLblId = findDominantId(rl, rankList.size(),3);
-			if(recLblId != -1){
+			//digerine girme if(recLblId != -1){
 				int recLblId2; 
 
 				int recLblId3;
@@ -259,6 +260,15 @@ void ranking::kNN(){
 						fc->setLabel(QStringToString(lbl));
 						dbObj->updateHasFaces(fc->getID(),lbl,fc->getPhotoId(),0);
 						found = true;
+					}else{
+						/*
+						if(recLblId != -1)
+							dbObj->insertIntoSuggested((*unknownFaceList)[k],recLblId,0);
+						if(recLblId2 != -1)
+							dbObj->insertIntoSuggested((*unknownFaceList)[k],recLblId2,0);
+						if(recLblId3 != -1)
+							dbObj->insertIntoSuggested((*unknownFaceList)[k],recLblId3,0);
+							*/
 					}
 				}else{
 					if(recLblId != -1 && recLblId2 != -1 && (recLblId2 == recLblId || recLblId == recLblId3)){
@@ -267,9 +277,18 @@ void ranking::kNN(){
 						fc->setLabel(QStringToString(lbl));
 						dbObj->updateHasFaces(fc->getID(),lbl,fc->getPhotoId(),0);
 						found = true;
+					}else{
+						/*
+						if(recLblId != -1)
+							dbObj->insertIntoSuggested((*unknownFaceList)[k],recLblId,0);
+						if(recLblId2 != -1)
+							dbObj->insertIntoSuggested((*unknownFaceList)[k],recLblId2,0);
+						if(recLblId3 != -1)
+							dbObj->insertIntoSuggested((*unknownFaceList)[k],recLblId3,0);
+							*/
 					}
 				}
-			}
+			//digerine girme}
 	
 		//	labelSuggest(dbObj->getPersonName(recLblId));//,getLabelString(unknownFaceList->at(k))); //fl->at(k)->
 		}

@@ -19,7 +19,7 @@ public:
 	mdi(QMdiArea*,db* database,rankingThread*);
 	~mdi(void);
 	void setFaceList(QList<face*> *faceList){this->faceList = faceList;}
-	void addMdiFace(face*);
+	void addMdiFace(face*,int approved);
 	void addMdiPhoto(photo*);
 	void setPosition();
 	void clearPhotos();
@@ -40,6 +40,7 @@ private:
 	QMdiArea* mdiArea;
 	db* database;
 	rankingThread* rt;
+	int approved;
 };
 
  #endif

@@ -30,9 +30,11 @@ void labelDialog::textChanged(){
 	QString lbl = uiLd.comboBox->currentText();
 	if(lbl == "" || lbl == QString(fc->getLabel().c_str()))
 		return;
+	lbl = lbl.lower();
 	string l = QStringToString(lbl);
 	this->fc->setLabel(l);
 	database->updateHasFaces(fc->getID(),lbl,fc->getPhotoId(),1);
+	database->DeletePersonHasNoFace();
 	this->close();
 	rt->start();
 	/*
@@ -45,8 +47,11 @@ void labelDialog::textChanged(){
 
 void labelDialog::setFacePointer(face* fc){
 	this->fc = fc;
-	QString lbl(fc->getLabel().c_str());
-	uiLd.comboBox->addItem(lbl);
+	uiLd.comboBox->addItems((QStringList)(database->getSuggested(fc->getID())));
+	if(fc->getLabel() != "Unknown")
+		uiLd.comboBox->setCurrentText(QString(fc->getLabel().c_str()));
+	else
+		uiLd.comboBox->setCurrentIndex(-1);
 }
 string labelDialog::QStringToString(QString str){
 	string filename ="";

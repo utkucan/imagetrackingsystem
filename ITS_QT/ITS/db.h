@@ -68,6 +68,10 @@ public:
 	QList<Rank*> selectFaceEqual(int faceId);
 	void insertNonEqual(int fid, QString lbl);
 	QList<int> getNonEqual(int fid);
+	void DeletePersonHasNoFace();
+	void numOfPersonsRecognizedFace(QList<QString>*,QList<int>*);
+	QStringList getSuggested(int fid);
+	//void deletePersonFromSuggested(int fid, int Pid);
 private:
 	string QStringToString(QString str);
 	void displayDatabase();

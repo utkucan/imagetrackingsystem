@@ -48,6 +48,7 @@ private slots:;
 	void treeWidgetSelectionChange();
 	void updateFace();
 	void showAbout();
+	void checkRecognizedFaces();
 private:
 	
 //	void displayFace(int);

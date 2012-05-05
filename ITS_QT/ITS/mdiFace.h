@@ -21,7 +21,7 @@ class mdiFace : public QWidget
 	Q_OBJECT
 
 public:
-	mdiFace(QMdiArea*,face*,db* database,QList<face*> *faceList,rankingThread*);
+	mdiFace(QMdiArea*,face*,db* database,QList<face*> *faceList,rankingThread*,int approved);
 	~mdiFace(void);
 
 	 void setSubWinAdd(QMdiSubWindow* );
