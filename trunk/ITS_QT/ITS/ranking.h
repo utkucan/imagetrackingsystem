@@ -1,7 +1,6 @@
 #ifndef RANKING_H
 #define RANKING_H
 
-#include "face.h"
 #include "Rank.h"
 #include "db.h"
 #include <QThread>
@@ -40,6 +39,7 @@ public:
 	int unknownFaceId;
 	bool close;
 	int count;
+	bool found;
 };
 
 #endif

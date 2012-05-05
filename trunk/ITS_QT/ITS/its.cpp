@@ -170,8 +170,19 @@ void ITS::updateFace(){
 	mdiArea->updateFace();
 	treeWidget->updateTree();
 	mdiArea->reDisplayLastPhoto();
+	checkRecognizedFaces();
 	//treeWidget->reDoLastOperation();
  //   child->show();
+}
+
+void ITS::checkRecognizedFaces(){
+	if(!treeWidget->getReDoFlag()){
+		treeWidget->checkRecognizedFaces();
+		//treeWidget->reDoLastOperation();
+		if(rt->rankingRunning()){
+			QTimer::singleShot(1000, this, SLOT(checkRecognizedFaces()));
+		}
+	}
 }
 
 bool ITS::event ( QEvent * e ){

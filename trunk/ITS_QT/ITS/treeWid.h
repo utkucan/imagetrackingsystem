@@ -9,7 +9,7 @@
 #include "db.h"
 #include "mdiDS.h"
 #include "mdi.h"
-#include "ranking.h"
+
 
 class treeWid :public QTreeWidget
 {
@@ -22,6 +22,8 @@ public:
 	void reDoLastOperation();
 	QList<face*>* getFaceList(){return faceList;}
 	QList<photo*>* getPhotoList(){return photoList;}
+	void checkRecognizedFaces();
+	bool getReDoFlag(){return reDoRunning;}
 private slots:;
 	
 private:
@@ -39,6 +41,7 @@ private:
 	QString personName;
 	QStringList SearchPersonList;
 	bool reDoFlag;
+	bool reDoRunning;
 	int listPos;
 	int size;
 
@@ -51,6 +54,8 @@ private:
 	QTreeWidgetItem* itemSearch;
 	QTreeWidgetItem* itemPhotos;
 	QList<QTreeWidgetItem*>* SearchItemList;
+	QList<int> personNonApprovedFaceCount;
+	QStringList personPosList;
 	mdiDS* mdids;
 	mdi* mdiArea;
 };
