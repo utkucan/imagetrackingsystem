@@ -81,7 +81,14 @@
     </widget>
     <addaction name="menuImport_Photos"/>
    </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout_ITS"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -121,6 +128,11 @@
   <action name="actionSearch_HardDisk">
    <property name="text">
     <string>Search HardDisk</string>
+   </property>
+  </action>
+  <action name="actionAbout_ITS">
+   <property name="text">
+    <string>About ITS</string>
    </property>
   </action>
  </widget>

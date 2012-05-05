@@ -3,7 +3,10 @@
 
 treeWid::treeWid(QWidget* prnt,db* database,QTreeWidget* treeWidge,mdiDS* mdids,mdi* mdiArea)
 {
+
+	
 	this->database = database;
+	
 	this->treeWidget = treeWidge;
 	this->mdids = mdids;
 	this->mdiArea = mdiArea;
