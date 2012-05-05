@@ -140,13 +140,15 @@ void ITS::controlList(){
 			ipList.removeAt(count);
 		}
 	}
-	treeWidget->reDoLastOperation();
-	count = 0;
-	while(count<ipList.size()){
-		ipList[count]->wakeProcess();
-		count++;
+	if(ipList.size() == 0){
+		treeWidget->reDoLastOperation();
+		count = 0;
+		while(count<ipList.size()){
+			ipList[count]->wakeProcess();
+			count++;
+		}
+		QTimer::singleShot(1000*3, this, SLOT(controlList()));
 	}
-	QTimer::singleShot(1000*3, this, SLOT(controlList()));
 	/*
 	if(!ip->isFinished()){
 		ip->lockProcess();
