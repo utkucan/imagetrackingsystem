@@ -140,7 +140,7 @@ void ITS::controlList(){
 			ipList.removeAt(count);
 		}
 	}
-	if(ipList.size() == 0){
+	if(ipList.size() != 0){
 		treeWidget->reDoLastOperation();
 		count = 0;
 		while(count<ipList.size()){
