@@ -52,6 +52,7 @@ void labelDialog::setFacePointer(face* fc){
 		uiLd.comboBox->setCurrentText(QString(fc->getLabel().c_str()));
 	else
 		uiLd.comboBox->setCurrentIndex(-1);
+	uiLd.comboBox->setMaxCount(3);
 }
 string labelDialog::QStringToString(QString str){
 	string filename ="";

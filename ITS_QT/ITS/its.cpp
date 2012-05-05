@@ -39,7 +39,7 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	importPhotos* ip = new importPhotos(QStringList(),database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m,rt);
 	ip->start();
 	
-	QTimer::singleShot(1000*3, this, SLOT(controlList(ip)));
+	QTimer::singleShot(1000*10, this, SLOT(controlList(ip)));
 
 	delete frame;
 
@@ -109,7 +109,7 @@ void ITS::on_actionKlasor_triggered(){
 	ipList.append(ip);
 	ip->start();
 	
-	QTimer::singleShot(1000*3,this , SLOT(controlList()));
+	QTimer::singleShot(1000*10,this , SLOT(controlList()));
 
 /*	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(controlList()));
@@ -147,7 +147,7 @@ void ITS::controlList(){
 			ipList[count]->wakeProcess();
 			count++;
 		}
-		QTimer::singleShot(1000*3, this, SLOT(controlList()));
+		QTimer::singleShot(1000*10, this, SLOT(controlList()));
 	}
 	/*
 	if(!ip->isFinished()){
@@ -180,9 +180,10 @@ void ITS::checkRecognizedFaces(){
 		treeWidget->checkRecognizedFaces();
 		//treeWidget->reDoLastOperation();
 		if(rt->rankingRunning()){
-			QTimer::singleShot(1000, this, SLOT(checkRecognizedFaces()));
+			QTimer::singleShot(1000*10, this, SLOT(checkRecognizedFaces()));
 		}
-	}
+	}else
+		QTimer::singleShot(1000*10, this, SLOT(checkRecognizedFaces()));
 }
 
 bool ITS::event ( QEvent * e ){
@@ -202,7 +203,7 @@ void ITS::on_actionSearch_HardDisk_triggered(){
 		importPhotos* ip = new importPhotos(QDirectory[0],database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m,rt);
 		ipList.append(ip);
 		ip->start();
-		QTimer::singleShot(1000*3, this, SLOT(controlList()));
+		QTimer::singleShot(1000*10, this, SLOT(controlList()));
 	}
 }
 /*

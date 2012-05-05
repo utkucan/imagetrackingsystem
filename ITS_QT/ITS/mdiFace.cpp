@@ -19,22 +19,27 @@
 
 	 if(approved == 0){//if(FaceObject->getLabel() == "Unknown"){
 		 labelComboBox = new QComboBox(this);
-		 labelComboBox->setGeometry(0,h,w-40,20);
+		 labelComboBox->setGeometry(0,h,w-20,20);
+		 //labelComboBox->setGeometry(0,h,w-40,20);
 		 labelComboBox->setEditable(true);
 		 
 		 labelComboBox->addItems(database->getSuggested(FaceObject->getID()));
 		 
 		 labelComboBox->setCurrentIndex(-1);
+		// labelComboBox->setMaxCount(3);
+		 labelComboBox->setMaxVisibleItems(3);
+		 //labelComboBox->setMaximumHeight(40);
 	//	 connect(labelComboBox,SIGNAL(keyPressEvent(QKeyEvent*)),this,SLOT(textChanged()));
-
+		
 		 QIcon* accaptIcon = new QIcon("check.png");
 		 accaptButton = new QPushButton(*accaptIcon,"",this);
-		 accaptButton->setGeometry(w-40,h,20,20);
+		 accaptButton->setGeometry(w-20,h,20,20);
 		 connect(accaptButton,SIGNAL(clicked()),this,SLOT(textChanged()));
 		
 		 QIcon* rejectIcon = new QIcon("cross.png");
 		 rejectButton = new QPushButton(*rejectIcon,"",this);
-		 rejectButton->setGeometry(w-20,h,20,20);
+		 rejectButton->setGeometry(w-20,0,20,20);
+		// rejectButton->setGeometry(w-20,h,20,20);
 		 connect(rejectButton,SIGNAL(clicked()),this,SLOT(accaptButtonClicked()));
 
 		 /*
@@ -80,7 +85,7 @@
  bool mdiFace::event ( QEvent * e ){
 	 if(e->type() == QEvent::KeyPress){
 		 int key = ((QKeyEvent*)e)->key();
-		 if(key == 16777220){
+		 if(key == 16777220 || key == 16777221){
 			textChanged();
 		 }
 	 }
