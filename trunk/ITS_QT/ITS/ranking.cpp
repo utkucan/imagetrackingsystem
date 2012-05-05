@@ -132,12 +132,12 @@ void ranking::bordoranking(int unknownFaceId,int& l1,int& l2){ //en cok benzeyen
 	double min;
 	double min2; 
 	getRank(persons->at(1),unknownFaceId,min,min2);
-	dbObj->insertIntoSuggested(unknownFaceId,persons->at(1),min2);
+	dbObj->insertIntoSuggested(unknownFaceId,persons->at(1),min2+1);
 	for(int i = 2 ; i < labelsLength ; i++){
 		double rnk;
 		double sim;
 		getRank(persons->at(i),unknownFaceId,rnk,sim);
-		dbObj->insertIntoSuggested(unknownFaceId,persons->at(i),sim);
+		dbObj->insertIntoSuggested(unknownFaceId,persons->at(i),sim+1);
 		if(rnk < min){
 			min = rnk;
 			minIndex = i;
@@ -244,6 +244,10 @@ void ranking::kNN(){
 
 				int recLblId3;
 				bordoranking((*unknownFaceList)[k],recLblId2,recLblId3);
+				if(recLblId != -1)
+					dbObj->insertIntoSuggested((*unknownFaceList)[k],recLblId,0.01);
+				if(recLblId2 != -1)
+					dbObj->insertIntoSuggested((*unknownFaceList)[k],recLblId2,0.02);
 				// anotherranking((*unknownFaceList)[k]);
 				/*
 				if(recLblId != -1){

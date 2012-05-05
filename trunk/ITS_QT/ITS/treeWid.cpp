@@ -62,7 +62,9 @@ void treeWid::checkRecognizedFaces(){
 					itemPhotos->child(i)->setTextColor(0,QColor(255,0,0,255));
 				else{
 					reDoRunning = true;
+					QApplication::setOverrideCursor(Qt::WaitCursor);
 					reDoLastOperation();
+					QApplication::restoreOverrideCursor();
 				}
 				personNonApprovedFaceCount[i] = (*counts)[pos];
 			}
