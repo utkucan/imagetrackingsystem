@@ -3,22 +3,38 @@
 ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)
 {
+
 	ui.setupUi(this);
+	QPixmap* icon = new QPixmap();
+	icon->convertFromImage(*(new QImage("icon.png")));
+	this->setWindowIcon(*icon);
+
 	QPixmap* p = new QPixmap();
-	p->convertFromImage(*(new QImage("LOGO.jpg")),Qt::AutoColor);
+	p->convertFromImage(*(new QImage("LOGO2.jpg")),Qt::AutoColor);
 	QSplashScreen* frame= new QSplashScreen(*p);
 	frame->show();
 	
-
+	
 	database = new db();
 	rt = new rankingThread();
+	
+
+	
+
 	mdiArea = new mdi(ui.mdiArea,database,rt);
+
 	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea,database);
+
+
+
 	treeWidget = new treeWid(this,database,ui.treeWidget,mdids,mdiArea);
+
+
 	m = new matlab();
 	rt->initRanking(database,treeWidget->getFaceList());
 	
 	frame->close();
+	
 
 	importPhotos* ip = new importPhotos(QStringList(),database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m,rt);
 	ip->start();
@@ -84,12 +100,16 @@ void ITS::on_actionKlasor_triggered(){
                          "",
                          "Images (*.jpg)");
 
+	if(QDirectory.size()==0){
+		return;
 	
+	}
 //	photoPos = photoList->size();
 	importPhotos* ip = new importPhotos(QDirectory,database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m,rt);
+	ipList.append(ip);
 	ip->start();
 	
-	QTimer::singleShot(1000*3, this, SLOT(controlList(ip)));
+	QTimer::singleShot(1000*3,this , SLOT(controlList()));
 
 /*	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(controlList()));
@@ -105,7 +125,29 @@ void ITS::on_actionKlasor_triggered(){
 	
 }
 
-void ITS::controlList(importPhotos* ip){
+void ITS::controlList(){
+	int count = 0;
+	while(count<ipList.size()){
+		if(ipList[count]->isRunning()){
+			ipList[count]->lockProcess();
+	//		displayPhoto(photoPos);
+			//displayFace(photoPos);
+	//		photoPos = photoList->size();
+	//		treeWidget->reDoLastOperation();
+	//		ipList[count]->wakeProcess();
+			count++;
+		}else{
+			ipList.removeAt(count);
+		}
+	}
+	treeWidget->reDoLastOperation();
+	count = 0;
+	while(count<ipList.size()){
+		ipList[count]->wakeProcess();
+		count++;
+	}
+	QTimer::singleShot(1000*3, this, SLOT(controlList()));
+	/*
 	if(!ip->isFinished()){
 		ip->lockProcess();
 //		displayPhoto(photoPos);
@@ -115,6 +157,7 @@ void ITS::controlList(importPhotos* ip){
 		ip->wakeProcess();
 		QTimer::singleShot(1000*3, this, SLOT(controlList(ip)));			
 	}
+	*/
 }
 
 void ITS::updateFace(){
@@ -144,8 +187,9 @@ void ITS::on_actionSearch_HardDisk_triggered(){
 	QStringList QDirectory = dialog.selectedFiles();
 	if(QDirectory.size()>0){
 		importPhotos* ip = new importPhotos(QDirectory[0],database,treeWidget->getPhotoList(),treeWidget->getFaceList(),m,rt);
+		ipList.append(ip);
 		ip->start();
-		QTimer::singleShot(1000*3, this, SLOT(controlList(ip)));
+		QTimer::singleShot(1000*3, this, SLOT(controlList()));
 	}
 }
 /*
@@ -177,5 +221,12 @@ void ITS::findImage(QString inp,QStringList* allImagesList){
 */
 void ITS::treeWidgetSelectionChange(){
 	treeWidget->selectedItemChange();
+	
+
+}
+void ITS::showAbout(){
+	QString str ="Contact Info:\nBurak Uzun\tburak.1251@gmail.com\nEmre Sener\temre_sener@hotmail.com\nSercan Aksoy\tsrcnaks@gmail.com\nUtku Can Yucel\tutkucanyucel@gmail.com\nIbrahim Buyukgebiz\tibgebiz@gmail.com\n";
+    QMessageBox::information(this,"About",str);
+	
 
 }

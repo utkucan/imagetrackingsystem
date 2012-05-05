@@ -44,9 +44,10 @@ public:
 private slots:;
 	void on_actionKlasor_triggered();
 	void on_actionSearch_HardDisk_triggered();
-	void controlList(importPhotos* ip);
+	void controlList();
 	void treeWidgetSelectionChange();
 	void updateFace();
+	void showAbout();
 private:
 	
 //	void displayFace(int);
@@ -55,7 +56,7 @@ private:
 //	void findImage(QString inp,QStringList*);
 	bool event(QEvent * e);
 
-
+	
 //	int faceCount;
 //	int photoPos;
 	//importPhotos* ip;
@@ -66,6 +67,7 @@ private:
 	treeWid* treeWidget;
 	matlab* m;
 	rankingThread* rt;
+	
 	/*
 	QTreeWidget* treeWidget;
 	QTreeWidgetItem* unlabeledPhotoItem;
@@ -74,6 +76,7 @@ private:
 //	QList<QString>* allImagesList;
 //	analyzer* imageAnalyzer;
 	Ui::ITSClass ui;
+	QList<importPhotos*> ipList;
 };
 
 #endif // ITS_H
