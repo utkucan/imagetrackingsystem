@@ -43,7 +43,7 @@ public:
 	double* returnFacialFeatures(QString);
 	bool insertIntoSuggested(int,int, double);
 	QList<photo*>* getUnlabeledPhotos();
-
+	bool deleteFromSuggested(int fid);
 
 
 	QStringList getAllPerson();
