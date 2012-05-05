@@ -323,6 +323,12 @@ QList<int>* db::selectPersonsInPhoto(QStringList personName){
 	}
 	return integer;
 }
+bool db::deleteFromSuggested(int fid){
+	QSqlQuery query(database);
+	query.prepare("DELETE FROM Suggested WHERE Fid=:fid");
+	query.bindValue(":fid", fid);
+	return query.exec();
+}
 QList<int>* db::selectPersonPhoto(QString personName){
 
 	bool a=false;
@@ -818,6 +824,9 @@ QList<int>* db::selectLabelledPerson(){
 	return personIdList;
 
 }
+
+
+
 
 int db::getLabelId(int faceId){
 	QSqlQuery query(database);
