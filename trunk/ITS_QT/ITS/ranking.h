@@ -20,9 +20,7 @@ public:
 	void kNN();
 	void setStop(bool flag){close = flag;}
 
-	int anotherranking(int unknownFaceId);
-	double getAverageSim(int labelId, int unknownId);	
-
+	
 	QList<int>* getUnknownFaceIDs(QList<face*>*);
 	QList<int>* getfaceIDsFromLabelId(int );
 
@@ -31,8 +29,10 @@ public:
 	double getSimilarity(int , int );
 	int findDominantId(Rank*,int,int);
 
-	int bordoranking(int unknownFaceId);
-	double getRank(int labelId, int unknownId);
+	void bordoranking(int unknownFaceId,int& l1,int& l2);
+	
+	void getRank(int labelId, int unknownId, double& r1, double& r2);
+	
 	double getCompValue(QList<Rank*> rank,int size,int id);
 	int getPosition(QList<Rank*> ranks, int size, int controlId);
 	QList<face*> *faceList;
