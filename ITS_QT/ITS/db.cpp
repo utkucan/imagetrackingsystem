@@ -659,6 +659,17 @@ void db::createTables(){
 		QSqlError e = query.lastError();
 		qDebug() << "Failed to create table:" << query.lastError();
 	}
+
+	const QString	CREATE_TABLE8("CREATE TABLE Suggested(Fid int, Pid int, ratio double );");
+	if(query.exec(CREATE_TABLE8))
+	{
+		qDebug() << "Table created";
+	}
+	else
+	{
+		QSqlError e = query.lastError();
+		qDebug() << "Failed to create table:" << query.lastError();
+	}
 }
 
 
@@ -825,5 +836,16 @@ void db::insertNonEqual(int fid, QString lbl){
 	query.bindValue(":fid", fid);
 	query.bindValue(":pid", pid);
 	a=query.exec();
+
+}
+bool db::insertIntoSuggested(int faceId, int labelId, double ratio){
+	bool a=false;
+	QSqlQuery query(database);
+	query.prepare("INSERT INTO Suggested VALUES(:fid,:pid,:ratio);");
+	query.bindValue(":fid", faceId);
+	query.bindValue(":pid", labelId);
+	query.bindValue(":ratio",ratio);
+	a=query.exec();
+	return a;
 
 }
