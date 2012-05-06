@@ -6,7 +6,7 @@ treeWid::treeWid(QWidget* prnt,db* database,QTreeWidget* treeWidge,mdiDS* mdids,
 
 	
 	this->database = database;
-	
+	treeWidge->setFont(QFont("Fantasy", 10, QFont::Bold));
 	this->treeWidget = treeWidge;
 	this->mdids = mdids;
 	this->mdiArea = mdiArea;

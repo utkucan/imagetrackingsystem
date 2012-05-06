@@ -2,6 +2,7 @@
 
  mdiFace::mdiFace(QMdiArea* parent,face* FaceObject,db* database,QList<face*> *faceList,rankingThread* rt,int approved)
  {
+	parent->setFont(QFont("Fantasy", 10, QFont::Bold));
 	 prnt = parent;
 	 h = 0;
      setAttribute(Qt::WA_DeleteOnClose);

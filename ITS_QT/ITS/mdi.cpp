@@ -3,6 +3,7 @@
 
 mdi::mdi(QMdiArea* mdiArea,db* database,rankingThread*rt)
 {
+	mdiArea->setFont(QFont("Fantasy", 10, QFont::Bold));
 	this->mdiArea = mdiArea;
 	this->database = database;
 	this->rt = rt;
