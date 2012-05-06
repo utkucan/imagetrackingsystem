@@ -26,9 +26,10 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	mdids = new mdiDS(ui.mdiDownSapmle, mdiArea,database);
 
 
-
 	treeWidget = new treeWid(this,database,ui.treeWidget,mdids,mdiArea);
 
+	
+	
 
 	m = new matlab();
 	rt->initRanking(database,treeWidget->getFaceList());
