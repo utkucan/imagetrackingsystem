@@ -18,7 +18,7 @@ public:
 	void rankCompare(int);
 	void kNN();
 	void setStop(bool flag){close = flag;}
-
+	bool getFound(){return found;}
 	
 	QList<int>* getUnknownFaceIDs(QList<face*>*);
 	QList<int>* getfaceIDsFromLabelId(int );

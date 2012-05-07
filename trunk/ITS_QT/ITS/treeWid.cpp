@@ -4,13 +4,13 @@
 treeWid::treeWid(QWidget* prnt,db* database,QTreeWidget* treeWidge,mdiDS* mdids,mdi* mdiArea)
 {
 
-	
+	personName = "";
 	this->database = database;
 	treeWidge->setFont(QFont("Fantasy", 10, QFont::Bold));
 	this->treeWidget = treeWidge;
 	this->mdids = mdids;
 	this->mdiArea = mdiArea;
-	
+	preDisplayedFaces = new QList<int>();
 	SearchItemList = new QList<QTreeWidgetItem*>();
 	lastOperation = -1;
 	listPos = 0;
@@ -57,14 +57,16 @@ void treeWid::checkRecognizedFaces(){
 		}else{
 			int pos = lbls->indexOf(personPosList[i]);
 			if(personNonApprovedFaceCount[i] != (*counts)[pos]){
-				itemPhotos->child(i)->setText(0,QString("%1 (%2)").arg(personPosList[i]).arg((*counts)[pos]));
-				if(personName != personPosList[i])
+			//	itemPhotos->child(i)->setText(0,QString("%1 (%2)").arg(personPosList[i]).arg((*counts)[pos]));
+				if(personName != personPosList[i]){
 					itemPhotos->child(i)->setTextColor(0,QColor(255,0,0,255));
-				else{
+					itemPhotos->child(i)->setText(0,QString("%1 (%2)").arg(personPosList[i]).arg((*counts)[pos]));
+				}else{
 					reDoRunning = true;
-					QApplication::setOverrideCursor(Qt::WaitCursor);
+		//			QApplication::setOverrideCursor(Qt::WaitCursor);
 					reDoLastOperation();
-					QApplication::restoreOverrideCursor();
+					itemPhotos->child(i)->setText(0,QString("%1 (%2)").arg(personPosList[i]).arg(preDisplayedFaces->size()));
+		//			QApplication::restoreOverrideCursor();
 				}
 				personNonApprovedFaceCount[i] = (*counts)[pos];
 			}
@@ -201,6 +203,10 @@ void treeWid::selectedItemChange(){
 	personName = "";
 	if(selection == "Photos" || selection == "Faces"){
 		reDoFlag = false;
+		/*
+		if(personName != treeWidget->currentItem()->parent()->text(0))
+			mdids->clearMdiDS();
+		*/
 		personName = treeWidget->currentItem()->parent()->text(0);
 		int p = personName.indexOf(" (");
 		if(p>0)
@@ -311,13 +317,17 @@ void treeWid::reDoLastOperation(){
 void treeWid::displayPhoto(QList<int>* photoIdList){
 	mdiArea->photoDisplayGeomety();
 	mdids->setvisible(true);
+	updateFaces = true;
 	if(!reDoFlag){
 		mdids->clearMdiDS();
 		listPos = 0;
 	}
 	for(int i = listPos; i< photoIdList->size(); i++){
+		if(i == photoIdList->size()-1)
+			updateFaces = false;
 		mdids->addMdiDSChild((*photoList)[(*photoIdList)[i]-1]);
 	}
+	updateFaces = false;
 	listPos = photoIdList->size();
 }
 
@@ -328,9 +338,29 @@ void treeWid::displayFace(QList<int>* faceIdList,QList<int>*ApprovedList){
 	if(!reDoFlag){
 		mdids->clearMdiDS();
 		listPos = 0;
+		preDisplayedFaces->clear();
 	}else if(reDoRunning){
+	//	if(preDisplayedFaces->size() != 0){
+		for(int i = 0; i<preDisplayedFaces->size(); i++){
+			if(!faceIdList->contains((*preDisplayedFaces)[i])){
+				preDisplayedFaces->removeAt(i);
+				i--;
+			}
+		}
+		for(int i = 0; i<faceIdList->size(); i++){
+			if(preDisplayedFaces->contains((*faceIdList)[i])){
+				faceIdList->removeAt(i);
+				i--;
+			}else{
+				preDisplayedFaces->append((*faceIdList)[i]);
+			}
+		}
+		listPos = 0;
+	//	}
+		/*
 		mdiArea->clearPhotos();
 		listPos = 0;
+		*/
 	}
 	for(int i = listPos; i< faceIdList->size(); i++){
 		if(i == faceIdList->size()-1)

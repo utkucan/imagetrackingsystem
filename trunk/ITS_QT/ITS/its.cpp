@@ -8,7 +8,7 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	QPixmap* icon = new QPixmap();
 	icon->convertFromImage(*(new QImage("icon.png")));
 	this->setWindowIcon(*icon);
-
+	recognizedTimer = new QTimer();
 	QPixmap* p = new QPixmap();
 	p->convertFromImage(*(new QImage("LOGO2.jpg")),Qt::AutoColor);
 	QSplashScreen* frame= new QSplashScreen(*p);
@@ -201,6 +201,9 @@ void ITS::updateFace(){
 		treeWidget->updateTree();
 		mdiArea->reDisplayLastPhoto();
 		checkRecognizedFaces();
+		treeWidget->checkRecognizedFaces();
+		if(rt->getFound() && !recognizedTimer->isActive() )//!recognizedTimer->isActive())
+			checkRecognizedFaces();
 	}
 	
 	//treeWidget->reDoLastOperation();
@@ -209,13 +212,16 @@ void ITS::updateFace(){
 
 void ITS::checkRecognizedFaces(){
 	if(!treeWidget->getReDoFlag()){
-		treeWidget->checkRecognizedFaces();
+		/*
+		if(rt->getFound())
+			treeWidget->checkRecognizedFaces();
+		*/
 		//treeWidget->reDoLastOperation();
 		if(rt->rankingRunning()){
-			QTimer::singleShot(1000*10, this, SLOT(checkRecognizedFaces()));
+			recognizedTimer->singleShot(1000*10, this, SLOT(checkRecognizedFaces()));
 		}
 	}else
-		QTimer::singleShot(1000*10, this, SLOT(checkRecognizedFaces()));
+		recognizedTimer->singleShot(1000*10, this, SLOT(checkRecognizedFaces()));
 }
 
 bool ITS::event ( QEvent * e ){
