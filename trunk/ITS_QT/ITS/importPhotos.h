@@ -33,10 +33,11 @@ public:
 	void wakeProcess(){
 		m1->unlock();
 	}
+	void setStop(bool flag){stopFlag = flag;}
 private:
 	void findImage(QString inp);
 	string QStringToString(QString);
-
+	bool stopFlag;
 	bool flag;
 	QMutex* m1;
 	QStringList* QDirectory;

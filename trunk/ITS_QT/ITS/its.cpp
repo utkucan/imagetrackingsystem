@@ -165,6 +165,15 @@ void ITS::controlList(){
 
 void ITS::closeEvent(QCloseEvent *event){
 	rt->stopThread();
+	while(ipList.size()>0){
+		if(ipList[0]->isRunning()){
+			ipList[0]->setStop(true);
+			while(ipList[0]->isRunning());
+			ipList.removeAt(0);
+		}else{
+			ipList.removeAt(0);
+		}
+	}
 	/*
 	while(count<ipList.size()){
 		if(ipList[count]->isRunning()){
