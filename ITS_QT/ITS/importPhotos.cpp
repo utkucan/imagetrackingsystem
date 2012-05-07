@@ -88,7 +88,7 @@ void importPhotos::run(){
 									r->compareFaces((*(threads[i]->getFaceList())).at(j),faces->at(k));
 							}
 
-							rt->start();
+							//rt->start();
 					//		for(int j = 0 ; j<(*(threads[i]->getFaceList())).size(); j++){
 					//			r->setFaceId((*(threads[i]->getFaceList()))[j]->getID());
 					//			r->start();
