@@ -168,10 +168,13 @@ void ITS::updateFace(){
 	ranking* r = new ranking(database,treeWidget->getFaceList());
 	r->start();
 	*/
-	mdiArea->updateFace();
-	treeWidget->updateTree();
-	mdiArea->reDisplayLastPhoto();
-	checkRecognizedFaces();
+	if(!treeWidget->getUpdateFaces()){
+		mdiArea->updateFace();
+		treeWidget->updateTree();
+		mdiArea->reDisplayLastPhoto();
+		checkRecognizedFaces();
+	}
+	
 	//treeWidget->reDoLastOperation();
  //   child->show();
 }
