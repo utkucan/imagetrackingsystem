@@ -6,7 +6,8 @@ importPhotos::importPhotos(QString dir,db* database,QList<photo*> *photos,QList<
 	this->photos = photos;
 	this->faces = faces;
 	this->m = m;
-	this->rt =rt;
+	this->rt = rt;
+	stopFlag = false;
 	QDirectory = new QStringList();
 	m1 = new QMutex();
 	maxNumOfThread = 1;
@@ -54,6 +55,8 @@ void importPhotos::run(){
 	//for(int j = 0 ; j< QDirectory->count(); j++){
 	QString d = database->GetFirstNonProcessedPhotoPaths();
 	while(d != ""){
+		if(stopFlag == true)
+			break;
 		if(!database->photoExist(d)){
 			string filename = QStringToString(d);
 			QList<face*> *tmpLst = new QList<face*>();
