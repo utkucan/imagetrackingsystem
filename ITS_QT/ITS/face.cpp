@@ -32,19 +32,24 @@ face::~face(void)
 }
 
 void face::loadFaceImage(){
-	IplImage* img = cvLoadImage(imagePath.c_str());
-	if(!img){
-		//errmsg = "Can not load image " + imagename;
+	try{
+		IplImage* img = cvLoadImage(imagePath.c_str());
+		if(!img){
+			//errmsg = "Can not load image " + imagename;
+			return;// false;
+		}
+		IplImage* temp = cvCreateImage( cvSize( width, height), img->depth, img->nChannels );
+		cvSetImageROI(img,cvRect( x, y, width, height));
+		cvCopy( img, temp ); 
+		cvResetImageROI( img );
+
+		faceImage = IplImage2QImage(temp);
+		cvReleaseImage(&img);
+		cvReleaseImage(&temp);
+	}catch(exception e){
+		//errmsg = e.what();
 		return;// false;
 	}
-	IplImage* temp = cvCreateImage( cvSize( width, height), img->depth, img->nChannels );
-	cvSetImageROI(img,cvRect( x, y, width, height));
-	cvCopy( img, temp ); 
-	cvResetImageROI( img );
-
-	faceImage = IplImage2QImage(temp);
-	cvReleaseImage(&img);
-	cvReleaseImage(&temp);
 }
 
 int face::getID(){return id;}
