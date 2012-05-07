@@ -23,7 +23,8 @@ public:
 	void addMdiPhoto(photo*);
 	void setPosition();
 	void clearPhotos();
-	
+	int getFaceCount(){return faceWindows.size();}
+	QList<int> displayedFaces();
 //	bool event(QEvent * e);
 	void updateFace();
 	void reDisplayLastPhoto();
