@@ -71,10 +71,14 @@ void importPhotos::run(){
 					if(threads[i]->isFinished()){
 					//	QList<face*> *tmpLst = threads[i]->getFaceList();
 						if(threads[i]->getFaceList()->size()>0){
-							photo* p = new photo( QString( threads[i]->getFileName().c_str()),threads[i]->getFaceList());
+							QString path = QString( threads[i]->getFileName().c_str());
+							photo* p = new photo( path,threads[i]->getFaceList());
 							faces->append(*(threads[i]->getFaceList()));
 							photos->append(p);
-							database->insertIntoPhoto(p);
+							QFileInfo* fileInf = new QFileInfo(path);
+							QDateTime dt = fileInf->created();
+							QString date = dt.toString("dd.MM.yyyy h:m:s ap");
+							database->insertIntoPhoto(p,date);
 							
 							for(int j = 0 ; j<(*(threads[i]->getFaceList())).size(); j++){
 								for(int k = 0 ;k<faces->size();k++)

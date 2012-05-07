@@ -27,7 +27,7 @@ public:
 	bool insertPhoto(photo*);
 	bool insertLabel(QString);
 	bool insertIntoPerson(QString name);
-	bool insertIntoPhoto(photo* p);
+	bool insertIntoPhoto(photo* p, QString date);
 	bool insertIntoFaces(face* f, int);
 	bool insertIntoHasFaces(int faceId, int personId, int imageId,int);
 	bool insertIntoEqual(int, int,double);
