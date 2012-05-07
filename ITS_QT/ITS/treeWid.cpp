@@ -16,6 +16,7 @@ treeWid::treeWid(QWidget* prnt,db* database,QTreeWidget* treeWidge,mdiDS* mdids,
 	listPos = 0;
 	reDoFlag = false;
 	reDoRunning = false;
+	updateFaces = false;
 	personName = "";
 
 	photoList = new QList<photo*>();
@@ -323,6 +324,7 @@ void treeWid::displayPhoto(QList<int>* photoIdList){
 void treeWid::displayFace(QList<int>* faceIdList,QList<int>*ApprovedList){
 	mdiArea->faceDisplayGeomety();
 	mdids->setvisible(false);
+	updateFaces = true;
 	if(!reDoFlag){
 		mdids->clearMdiDS();
 		listPos = 0;
@@ -331,6 +333,8 @@ void treeWid::displayFace(QList<int>* faceIdList,QList<int>*ApprovedList){
 		listPos = 0;
 	}
 	for(int i = listPos; i< faceIdList->size(); i++){
+		if(i == faceIdList->size()-1)
+			updateFaces = false;
 		if(personName == "Unknown"){
 			face* fc = (*faceList)[(*faceIdList)[i]-1];
 			mdiArea->addMdiFace(fc,0);

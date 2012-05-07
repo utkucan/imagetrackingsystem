@@ -24,6 +24,7 @@ public:
 	QList<photo*>* getPhotoList(){return photoList;}
 	void checkRecognizedFaces();
 	bool getReDoFlag(){return reDoRunning;}
+	bool getUpdateFaces(){return updateFaces;}
 private slots:;
 	
 private:
@@ -42,6 +43,7 @@ private:
 	QStringList SearchPersonList;
 	bool reDoFlag;
 	bool reDoRunning;
+	bool updateFaces;
 	int listPos;
 	int size;
 
