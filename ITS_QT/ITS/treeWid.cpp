@@ -26,7 +26,6 @@ treeWid::treeWid(QWidget* prnt,db* database,QTreeWidget* treeWidge,mdiDS* mdids,
 	buildSearchTree(personList);
 	buildTree(personList);
 	buildLists();
-
 	this->mdiArea->setFaceList(faceList);
 	checkRecognizedFaces();
 	/*
@@ -210,6 +209,8 @@ void treeWid::selectedItemChange(){
 			lastOperation = operation::photoOperation;
 			QList<int>* photoIDList = database->selectPersonPhoto(personName);
 			displayPhoto(photoIDList);	
+			photoIDList->clear();
+			delete photoIDList;
 		}else{
 			int pos = personPosList.indexOf(personName);
 			itemPhotos->child(pos)->setTextColor(0,QColor(0,0,0,255));
@@ -221,6 +222,10 @@ void treeWid::selectedItemChange(){
 			else
 				faceIdList = database->selectPersonFace(personName,ApprovedList);
 			displayFace(faceIdList,ApprovedList);
+			faceIdList->clear();
+			ApprovedList->clear();
+			delete faceIdList;
+			delete ApprovedList;
 		}
 		QApplication::restoreOverrideCursor();
 	}else{
@@ -247,6 +252,8 @@ void treeWid::selectedItemChange(){
 				lastOperation = operation::SearchOperation;
 				QList<int>* photoIDList = database->selectPersonsInPhoto(SearchPersonList);
 				displayPhoto(photoIDList);	
+				photoIDList->clear();
+				delete photoIDList;
 				
 			}else{
 				if(treeWidget->currentItem()->isExpanded())
@@ -271,6 +278,8 @@ void treeWid::reDoLastOperation(){
 		if(lastOperation == operation::photoOperation){
 			QList<int>* photoIdList = database->selectPersonPhoto(personName);
 			displayPhoto(photoIdList);
+			photoIdList->clear();
+			delete photoIdList;
 		}else if(lastOperation == operation::faceOperation){
 			/*
 			int pos = personPosList.indexOf(personName);
@@ -283,11 +292,16 @@ void treeWid::reDoLastOperation(){
 			else
 				faceIdList = database->selectPersonFace(personName,ApprovedList);
 			displayFace(faceIdList,ApprovedList);
+			faceIdList->clear();
+			ApprovedList->clear();
+			delete faceIdList;
+			delete ApprovedList;
 		}else if(lastOperation == operation::SearchOperation){
 			
 			QList<int>* photoIdList = database->selectPersonsInPhoto(SearchPersonList);
 			displayPhoto(photoIdList);
-			
+			photoIdList->clear();
+			delete photoIdList;
 		}
 		reDoRunning = false;
 	}
@@ -312,8 +326,10 @@ void treeWid::displayFace(QList<int>* faceIdList,QList<int>*ApprovedList){
 	if(!reDoFlag){
 		mdids->clearMdiDS();
 		listPos = 0;
+	}else if(reDoRunning){
+		mdiArea->clearPhotos();
+		listPos = 0;
 	}
-
 	for(int i = listPos; i< faceIdList->size(); i++){
 		if(personName == "Unknown"){
 			face* fc = (*faceList)[(*faceIdList)[i]-1];
