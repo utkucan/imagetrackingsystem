@@ -74,6 +74,7 @@ bool db::insertIntoPerson(QString name){
 		QSqlQuery query(database);
 		query.prepare("INSERT INTO Person VALUES(NULL , :name)");
 		query.bindValue(":name", name);
+		//query.bindValue(":date", date);
 		a=query.exec();
 
 
@@ -140,13 +141,14 @@ QList<Rank*> db::selectFromEqual(int faceId){
 	return myList;
 
 }
-bool db::insertIntoPhoto(photo *p){
+bool db::insertIntoPhoto(photo *p, QString date){
 	{
 		bool a=false;
 		QSqlQuery query(database);
-		query.prepare("INSERT INTO Images VALUES(NULL , :name)");
+		query.prepare("INSERT INTO Images VALUES(NULL , :name, :date)");
 		QString s=  QString(p->getPath().c_str());
 		query.bindValue(":name", s);
+		query.bindValue(":date", date);
 		a=query.exec();
 		int k=0;
 		if(a){
@@ -615,7 +617,7 @@ void db::createTables(){
 		qDebug() << "Failed to create table:" << query.lastError();
 	}
 
-	const QString	CREATE_TABLE2("CREATE TABLE Person (Pid INTEGER PRIMARY KEY,name TEXT UNIQUE );");
+	const QString	CREATE_TABLE2("CREATE TABLE Person (Pid INTEGER PRIMARY KEY,name TEXT UNIQUE,date TEXT );");
 	if(query.exec(CREATE_TABLE2))
 	{
 		qDebug() << "Table created";
