@@ -8,7 +8,7 @@ mdiPhoto::mdiPhoto(QMdiArea* parent,photo* photoObject,db* database,QList<face*>
 	setMouseTracking(true);
 	this->photoObject = photoObject;
 	this->database = database;
-	this->faceList2 = faceList;
+	this->faceList2 = faceList2;
 	this->rt =rt;
 	image = new QLabel(this);
 	image->setScaledContents(true);

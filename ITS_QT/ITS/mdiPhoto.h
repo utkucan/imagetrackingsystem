@@ -45,11 +45,12 @@ private:
 	int posX, posY, w, h;
 	QList<QRect*> *faceRects;
 	QList<face*> *faceList2;
+	QList<face*> *faceList;
 //	QList<QString*> *labelList;
 	QPixmap* p;
 	labelDialog* ld;
 	db* database;
-	QList<face*> *faceList;
+	
 	rankingThread* rt;
 };
 
