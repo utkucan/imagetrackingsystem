@@ -134,20 +134,10 @@ void treeWid::updateTree(){
 				i--;
 			}
 		}
-		treeWidget->update();
-		
-		/*
-		delete itemPhotos;
-		itemPhotos = NULL;
-		delete itemSearch;
-		itemSearch = NULL;
-		treeWidget->clear();
-		buildSearchTree(personList);
-		buildTree(personList);
-		*/
+//		treeWidget->update();
 		size = personList.size();
 	}
-	checkRecognizedFaces();
+//	checkRecognizedFaces();
 }
 
 void treeWid::buildTree(QStringList personList){
@@ -331,7 +321,8 @@ void treeWid::displayFace(QList<int>* faceIdList,QList<int>*ApprovedList){
 	if(!reDoFlag){
 		mdids->clearMdiDS();
 		listPos = 0;
-	}else if(reDoRunning){
+	}
+	else if(reDoRunning){
 		QList<int> preDisplayedFaces = mdiArea->displayedFaces();
 		for(int i = 0; i<faceIdList->size(); i++){
 			if(preDisplayedFaces.contains((*faceIdList)[i])){
@@ -343,6 +334,19 @@ void treeWid::displayFace(QList<int>* faceIdList,QList<int>*ApprovedList){
 		}
 		listPos = 0;
 	}
+	/*
+
+	QList<int> preDisplayedFaces = mdiArea->displayedFaces();
+	for(int i = 0; i<faceIdList->size(); i++){
+		if(preDisplayedFaces.contains((*faceIdList)[i])){
+			faceIdList->removeAt(i);
+			i--;
+		}else{
+			preDisplayedFaces.append((*faceIdList)[i]);
+		}
+	}
+	listPos = 0;
+	*/
 	for(int i = listPos; i< faceIdList->size(); i++){
 		if(i == faceIdList->size()-1)
 			updateFaces = false;

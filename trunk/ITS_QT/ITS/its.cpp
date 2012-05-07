@@ -12,9 +12,10 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	p->convertFromImage(*(new QImage("LOGO2.png")));
 	QSplashScreen* frame= new QSplashScreen(*p);
 	frame->show();
+	frame->setMask(p->mask());
 	
-	rti = 3;
-	iti = 3;
+	rti = 10;
+	iti = 10;
 	importTimer = new QTimer();
 	recognizedTimer = new QTimer();
 	database = new db();
@@ -116,8 +117,10 @@ void ITS::updateFace(){
 		treeWidget->updateTree();
 		mdiArea->reDisplayLastPhoto();
 
-		if(!recognizedTimer->isActive())
+		if(!recognizedTimer->isActive()){
+			treeWidget->checkRecognizedFaces();
 			recognizedTimer->singleShot(1000*rti, this, SLOT(checkRecognizedFaces()));
+		}
 		//	recognizedTimer->stop();
 		//checkRecognizedFaces();
 	//	if(rt->getFound() || !recognizedTimer->isActive() )//!recognizedTimer->isActive())
