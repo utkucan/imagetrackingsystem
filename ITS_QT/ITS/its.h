@@ -69,7 +69,7 @@ private:
 	treeWid* treeWidget;
 	matlab* m;
 	rankingThread* rt;
-	
+	QTimer* recognizedTimer;
 	/*
 	QTreeWidget* treeWidget;
 	QTreeWidgetItem* unlabeledPhotoItem;

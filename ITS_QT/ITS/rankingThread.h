@@ -15,6 +15,7 @@ public:
 	void run();
 	bool rankingRunning(){return r->isRunning();}
 	void stopThread();
+	bool getFound(){return r->getFound();}
 private:
 	ranking* r;
 };
