@@ -33,6 +33,10 @@ face::~face(void)
 
 void face::loadFaceImage(){
 	IplImage* img = cvLoadImage(imagePath.c_str());
+	if(!img){
+		//errmsg = "Can not load image " + imagename;
+		return;// false;
+	}
 	IplImage* temp = cvCreateImage( cvSize( width, height), img->depth, img->nChannels );
 	cvSetImageROI(img,cvRect( x, y, width, height));
 	cvCopy( img, temp ); 
