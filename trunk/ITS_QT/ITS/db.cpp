@@ -604,7 +604,7 @@ bool db::updateHasFaces(int faceId, QString  s, int imageId,int Approved ){
 
 
 void db::createTables(){
-	const QString	CREATE_TABLE("CREATE TABLE Images (Iid  INTEGER PRIMARY KEY,path TEXT UNIQUE);");
+	const QString	CREATE_TABLE("CREATE TABLE Images (Iid  INTEGER PRIMARY KEY,path TEXT UNIQUE,date TEXT);");
 	QSqlQuery	query(database);
 
 	if(query.exec(CREATE_TABLE))
@@ -617,7 +617,7 @@ void db::createTables(){
 		qDebug() << "Failed to create table:" << query.lastError();
 	}
 
-	const QString	CREATE_TABLE2("CREATE TABLE Person (Pid INTEGER PRIMARY KEY,name TEXT UNIQUE,date TEXT );");
+	const QString	CREATE_TABLE2("CREATE TABLE Person (Pid INTEGER PRIMARY KEY,name TEXT UNIQUE );");
 	if(query.exec(CREATE_TABLE2))
 	{
 		qDebug() << "Table created";

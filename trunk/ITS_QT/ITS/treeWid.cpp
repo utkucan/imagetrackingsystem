@@ -343,6 +343,7 @@ void treeWid::displayFace(QList<int>* faceIdList,QList<int>*ApprovedList){
 			mdiArea->addMdiFace(fc,1);
 		}
 	}
+	updateFaces = false;
 	listPos = faceIdList->size();
 }
 
