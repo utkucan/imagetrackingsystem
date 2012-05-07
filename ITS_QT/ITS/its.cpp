@@ -163,6 +163,25 @@ void ITS::controlList(){
 	*/
 }
 
+void ITS::closeEvent(QCloseEvent *event){
+	rt->stopThread();
+	/*
+	while(count<ipList.size()){
+		if(ipList[count]->isRunning()){
+			ipList[count]->lockProcess();
+	//		displayPhoto(photoPos);
+			//displayFace(photoPos);
+	//		photoPos = photoList->size();
+	//		treeWidget->reDoLastOperation();
+	//		ipList[count]->wakeProcess();
+			count++;
+		}else{
+			ipList.removeAt(count);
+		}
+	}
+	*/
+}
+
 void ITS::updateFace(){
 	/*
 	ranking* r = new ranking(database,treeWidget->getFaceList());

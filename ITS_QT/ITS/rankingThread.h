@@ -14,6 +14,7 @@ public:
 	void initRanking(db* database,QList<face*>* faceList);
 	void run();
 	bool rankingRunning(){return r->isRunning();}
+	void stopThread();
 private:
 	ranking* r;
 };

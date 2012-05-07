@@ -49,6 +49,7 @@ private slots:;
 	void updateFace();
 	void showAbout();
 	void checkRecognizedFaces();
+	void closeEvent(QCloseEvent *event);
 private:
 	
 //	void displayFace(int);

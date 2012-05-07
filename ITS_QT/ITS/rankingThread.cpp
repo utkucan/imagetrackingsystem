@@ -22,3 +22,9 @@ void rankingThread::run(){
 	r->setStop(false);
 	r->start();
 }
+
+void rankingThread::stopThread(){
+	if(r->isRunning())
+		r->setStop(true);
+	while(r->isRunning());
+}
