@@ -10,7 +10,7 @@ ITS::ITS(QWidget *parent, Qt::WFlags flags)
 	this->setWindowIcon(*icon);
 	recognizedTimer = new QTimer();
 	QPixmap* p = new QPixmap();
-	p->convertFromImage(*(new QImage("LOGO2.jpg")),Qt::AutoColor);
+	p->convertFromImage(*(new QImage("LOGO2.png")));
 	QSplashScreen* frame= new QSplashScreen(*p);
 	frame->show();
 	

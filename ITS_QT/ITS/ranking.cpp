@@ -20,7 +20,7 @@ ranking::~ranking(void)
 double ranking::compareFaces(face* f1 , face* f2){
 	double* a1 = f1->getFecialFeatures();
 	double* a2 = f2->getFecialFeatures();
-	if(f1->getID()== f2->getID())
+	if(f1->getID()<= f2->getID())
 		return 0;
 
 	double sum = 0;

@@ -35,6 +35,7 @@ void labelDialog::textChanged(){
 	this->fc->setLabel(l);
 	database->updateHasFaces(fc->getID(),lbl,fc->getPhotoId(),1);
 	database->DeletePersonHasNoFace();
+	database->deleteFromSuggested(fc->getID());
 	this->close();
 	rt->start();
 	/*

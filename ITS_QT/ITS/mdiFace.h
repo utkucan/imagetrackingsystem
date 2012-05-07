@@ -28,6 +28,7 @@ public:
 	 bool event(QEvent * e);
 	 void setChildGeometry(int posX,int posY);
 	 bool isClosed(){return closed;}
+	 int getFaceId(){return FaceObject->getID();}
 	 QMdiSubWindow* getWidgetaddr(){return widgetadd;}
 
 protected:

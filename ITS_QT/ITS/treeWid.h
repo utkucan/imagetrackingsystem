@@ -60,6 +60,6 @@ private:
 	QStringList personPosList;
 	mdiDS* mdids;
 	mdi* mdiArea;
-	QList<int>* preDisplayedFaces;
+//	QList<int>* preDisplayedFaces;
 };
 #endif

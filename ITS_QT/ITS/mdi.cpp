@@ -16,6 +16,14 @@ mdi::~mdi(void)
 {
 }
 
+QList<int> mdi::displayedFaces(){
+	QList<int> faceIds;
+	for(int i = 0; i<faceWindows.size(); i++){
+		faceIds.append(faceWindows[i]->getFaceId());
+	}
+	return faceIds;
+}
+
 void mdi::updateFace(){
 	int cursize = faceWindows.size();
 	QList<mdiFace*> tmpList;
