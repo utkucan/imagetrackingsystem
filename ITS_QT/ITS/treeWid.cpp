@@ -53,7 +53,7 @@ void treeWid::checkRecognizedFaces(){
 			totalCount += (*counts)[pos];
 			if(personNonApprovedFaceCount[i] != (*counts)[pos]){
 				if(personName != personPosList[i]){
-					itemPhotos->child(i)->setTextColor(0,QColor(255,0,0,255));
+					//itemPhotos->child(i)->setTextColor(0,QColor(255,0,0,255));
 					itemPhotos->child(i)->setText(0,QString("%1 (%2)").arg(personPosList[i]).arg((*counts)[pos]));
 				}else{
 					if(lastOperation == operation::faceOperation){
@@ -77,7 +77,7 @@ void treeWid::checkRecognizedFaces(){
 	if(personNonApprovedFaceCount[0] != totalCount){	
 		personNonApprovedFaceCount[0] = totalCount;
 		if(personName != personPosList[0]){
-			itemPhotos->child(0)->setTextColor(0,QColor(255,0,0,255));
+	//		itemPhotos->child(0)->setTextColor(0,QColor(255,0,0,255));
 		}
 		if(totalCount != 0)
 			itemPhotos->child(0)->setText(0,QString("%1 (%2)").arg(personPosList[0]).arg(totalCount));
@@ -210,7 +210,7 @@ void treeWid::selectedItemChange(){
 			delete photoIDList;
 		}else{
 			int pos = personPosList.indexOf(personName);
-			itemPhotos->child(pos)->setTextColor(0,QColor(0,0,0,255));
+	//		itemPhotos->child(pos)->setTextColor(0,QColor(0,0,0,255));
 			lastOperation = operation::faceOperation;
 			QList<int>*ApprovedList = new QList<int>();
 			QList<int>* faceIdList;
